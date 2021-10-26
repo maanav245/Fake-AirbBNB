@@ -1,17 +1,22 @@
 import React from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { StoreContext } from '../Store.jsx';
 
 function Button () {
+  const { page } = React.useContext(StoreContext);
+
+  const setPage = page[1];
+
   return (
     <Router>
-      <Link to={'./login'}>
+      <Link to={'./login'} onClick={() => setPage(1)}>
         Login/Register
       </Link>
     </Router>
   );
 }
 
-export default function Landing () {
+function Landing () {
   return (
     <>
       <header>
@@ -32,3 +37,5 @@ export default function Landing () {
     </>
   );
 }
+
+export default Landing;
