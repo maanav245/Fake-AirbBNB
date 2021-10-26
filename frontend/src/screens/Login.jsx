@@ -34,22 +34,28 @@ function Login () {
   }
 
   return (
-    <>
-    <h1>Login Page</h1>
-    <form>
-      <input type="email" onChange={({ target }) => setEmail(target.value)} placeholder="Email Address"/>
-      <input type="password" onChange={({ target }) => setPassword(target.value)} placeholder="Password"/>
-      <input type="submit" value="Login" onClick={(event) => loginUser(event)}/>
-    </form>
-    <Router>
-      <Link to={'/register'} onClick={() => page.setPage(2)}>
-        Register
-      </Link>
-      <Link to={'/'} onClick={() => page.setPage(2)}>
-        Back
-      </Link>
-    </Router>
-    </>
+    <section>
+      <header>
+        <h1>Login Page</h1>
+      </header>
+      <main>
+        <form>
+          <input className="input" type="email" onChange={({ target }) => setEmail(target.value)} placeholder="Email Address"/>
+          <input className="input" type="password" onChange={({ target }) => setPassword(target.value)} placeholder="Password"/>
+          <input className="button" type="submit" value="Login" onClick={(event) => loginUser(event)}/>
+        </form>
+        <Router>
+          <Link className="button" to={'/register'} onClick={() => page.setPage(2)}>
+            Register
+          </Link>
+          <Link className="button" to={'/'} onClick={() => page.setPage(2)}>
+            Back
+          </Link>
+        </Router>
+      </main>
+      <footer>
+      </footer>
+    </section>
   );
 }
 

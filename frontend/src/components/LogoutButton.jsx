@@ -26,7 +26,7 @@ function LogoutButton () {
 
   return (
     <Router>
-      <Link to={'/'} onClick={logoutUser}>
+      <Link className="button" to={'/'} onClick={logoutUser}>
         Logout
       </Link>
     </Router>

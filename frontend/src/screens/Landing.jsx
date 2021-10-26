@@ -9,38 +9,38 @@ function Landing () {
   const LoginStatus = () => {
     if (token.token !== '') {
       return (
-        <h1>Logged In</h1>
+        <h2>Logged In</h2>
       );
     } else {
       return (
-        <h1>Not Logged In</h1>
+        <h2>Not Logged In</h2>
       );
     }
   }
 
   return (
-    <>
+    <section>
       <header>
         <div>
+          <LogoutButton/>
         </div>
         <div id="logo">
-          <h1>Logo</h1>
+          AirBrb
         </div>
         <div>
-          <LoginStatus/>
           <Router>
-            <Link to={'/login'} onClick={() => page.setPage(1)}>
+            <Link className="button" to={'/login'} onClick={() => page.setPage(1)}>
               Login/Register
             </Link>
           </Router>
-          <LogoutButton/>
         </div>
       </header>
       <main>
+        <LoginStatus/>
       </main>
       <footer>
       </footer>
-    </>
+    </section>
   );
 }
 

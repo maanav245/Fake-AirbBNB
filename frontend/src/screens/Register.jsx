@@ -35,21 +35,27 @@ function Register () {
   }
 
   return (
-    <>
-    <h1>Register Page</h1>
-    <form>
-      <input type="text" onChange={({ target }) => setName(target.value)} placeholder="Your Name"/>
-      <input type="email" onChange={({ target }) => setEmail(target.value)} placeholder="Email Address"/>
-      <input type="password" onChange={({ target }) => setPassword1(target.value)} placeholder="Password"/>
-      <input type="password" onChange={({ target }) => setPassword2(target.value)} placeholder="Confirm Password"/>
-      <input type="submit" value="Login" onClick={(event) => registerUser(event)}/>
-    </form>
-    <Router>
-      <Link to={'/login'} onClick={() => page.setPage(1)}>
-        Back
-      </Link>
-    </Router>
-    </>
+    <section>
+      <header>
+        <h1>Register Page</h1>
+      </header>
+      <main>
+        <form>
+          <input className="input" type="text" onChange={({ target }) => setName(target.value)} placeholder="Your Name"/>
+          <input className="input" type="email" onChange={({ target }) => setEmail(target.value)} placeholder="Email Address"/>
+          <input className="input" type="password" onChange={({ target }) => setPassword1(target.value)} placeholder="Password"/>
+          <input className="input" type="password" onChange={({ target }) => setPassword2(target.value)} placeholder="Confirm Password"/>
+          <input className="button" type="submit" value="Register" onClick={(event) => registerUser(event)}/>
+        </form>
+        <Router>
+          <Link className="button" to={'/login'} onClick={() => page.setPage(1)}>
+            Back
+          </Link>
+        </Router>
+      </main>
+      <footer>
+      </footer>
+    </section>
   );
 }
 
