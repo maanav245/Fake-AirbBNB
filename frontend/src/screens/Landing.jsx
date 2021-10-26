@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { StoreContext } from '../Store.jsx';
 import LogoutButton from '../components/LogoutButton.jsx';
+import Modal from '../components/Modal.jsx';
 
 function Landing () {
   const { page, token } = React.useContext(StoreContext);
@@ -20,6 +21,7 @@ function Landing () {
 
   return (
     <section>
+      <Modal/>
       <header>
         <div>
           <LogoutButton/>

@@ -3,9 +3,10 @@ import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { StoreContext } from '../Store.jsx';
 import Port from '../config.json';
 import Error from '../Error.jsx';
+import Modal from '../components/Modal.jsx';
 
 function Register () {
-  const { page } = React.useContext(StoreContext);
+  const { page, token, modal } = React.useContext(StoreContext);
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password1, setPassword1] = React.useState('');
@@ -15,9 +16,9 @@ function Register () {
     event.preventDefault();
 
     if (password1 !== password2) {
-      Error('Passwords do not match!');
+      Error('Passwords do not match!', modal);
     } else if (email === '' || password1 === '' || password2 === '' || name === '') {
-      Error('You must complete all fields!');
+      Error('You must complete all fields!', modal);
     } else {
       const data = { email: email, password: password1, name: name };
       console.log(data);
@@ -26,20 +27,27 @@ function Register () {
         method: 'POST',
         headers: {
           Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(data)
       }).then((response) => {
         if (response.ok) {
-          Error('Registered');
+          console.log('registered');
+          updateToken(response.json());
         } else {
-          Error('Invalid data');
+          Error(response.json(), modal);
         }
-      }).catch((error) => Error(error));
+      }).catch((e) => Error(e), modal);
     }
+  }
+
+  const updateToken = (response) => {
+    response.then((data) => token.setToken('Bearer ' + data.token));
   }
 
   return (
     <section>
+      <Modal/>
       <header>
         <h1>Register Page</h1>
       </header>

@@ -5,13 +5,14 @@ import Port from '../config.json';
 import Error from '../Error.jsx';
 
 function LogoutButton () {
-  const { page, token } = React.useContext(StoreContext);
+  const { page, token, modal } = React.useContext(StoreContext);
 
   const logoutUser = () => {
     fetch(`http://localhost:${Port.BACKEND_PORT}/user/auth/logout`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
+        'Content-Type': 'application/json',
         Authorization: token.token,
       },
     }).then((response) => {
@@ -19,9 +20,9 @@ function LogoutButton () {
         page.setPage(0);
         token.setToken('');
       } else {
-        Error('Not logged in');
+        Error(response.json(), modal);
       }
-    }).catch((error) => Error(error));
+    }).catch((e) => Error(e, modal));
   }
 
   return (

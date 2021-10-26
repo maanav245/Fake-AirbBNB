@@ -3,9 +3,10 @@ import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { StoreContext } from '../Store.jsx';
 import Port from '../config.json';
 import Error from '../Error.jsx';
+import Modal from '../components/Modal.jsx';
 
 function Login () {
-  const { page, token } = React.useContext(StoreContext);
+  const { page, token, modal } = React.useContext(StoreContext);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
@@ -18,16 +19,17 @@ function Login () {
       method: 'POST',
       headers: {
         Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data)
     }).then((response) => {
       if (response.ok) {
-        Error('Logged In');
+        console.log('logged in');
         updateToken(response.json());
       } else {
-        Error('Invalid data');
+        Error(response.json(), modal);
       }
-    }).catch((error) => Error(error));
+    }).catch((e) => Error(e), modal);
   }
 
   const updateToken = (response) => {
@@ -36,6 +38,7 @@ function Login () {
 
   return (
     <section>
+      <Modal/>
       <header>
         <h1>Login Page</h1>
       </header>
