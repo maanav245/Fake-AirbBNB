@@ -15,7 +15,7 @@ function Landing () {
         <div>
           <h1>Login Area</h1>
           <Router>
-            <Link to={'./login'} onClick={() => page.setPage(1)}>
+            <Link to={'/login'} onClick={() => page.setPage(1)}>
               Login/Register
             </Link>
           </Router>

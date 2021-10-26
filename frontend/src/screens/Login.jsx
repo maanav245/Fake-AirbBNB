@@ -6,7 +6,7 @@ import Port from '../config.json';
 const loginUser = (event, email, password) => {
   event.preventDefault();
 
-  const data = { email: email.email, password: password.password };
+  const data = { email: email, password: password };
 
   fetch(`http://localhost:${Port.BACKEND_PORT}/user/auth/login`, {
     method: 'POST',
@@ -25,18 +25,23 @@ const loginUser = (event, email, password) => {
 }
 
 function Login () {
-  const { page, email, password } = React.useContext(StoreContext);
+  const { page } = React.useContext(StoreContext);
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
   return (
     <>
     <h1>Login Page</h1>
     <form>
-      <input type="email" onChange={({ target }) => email.setEmail(target.value)} placeholder="Email Address"/>
-      <input type="password" onChange={({ target }) => password.setPassword(target.value)} placeholder="Password"/>
+      <input type="email" onChange={({ target }) => setEmail(target.value)} placeholder="Email Address"/>
+      <input type="password" onChange={({ target }) => setPassword(target.value)} placeholder="Password"/>
       <input type="submit" value="Login" onClick={(event) => loginUser(event, email, password)}/>
     </form>
     <Router>
-      <Link to={'./register'} onClick={() => page.setPage(2)}>
+      <Link to={'/register'} onClick={() => page.setPage(2)}>
         Register
+      </Link>
+      <Link to={'/'} onClick={() => page.setPage(2)}>
+        Back
       </Link>
     </Router>
     </>
