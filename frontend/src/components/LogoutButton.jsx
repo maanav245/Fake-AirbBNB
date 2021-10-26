@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { StoreContext } from '../Store.jsx';
 import Port from '../config.json';
+import Error from '../Error.jsx';
 
 function LogoutButton () {
   const { page, token } = React.useContext(StoreContext);
@@ -15,13 +16,12 @@ function LogoutButton () {
       },
     }).then((response) => {
       if (response.ok) {
-        alert('logged out');
         page.setPage(0);
         token.setToken('');
       } else {
-        alert('error');
+        Error('Not logged in');
       }
-    }).catch((error) => console.log(error));
+    }).catch((error) => Error(error));
   }
 
   return (

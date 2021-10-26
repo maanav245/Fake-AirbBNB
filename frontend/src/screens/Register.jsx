@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { StoreContext } from '../Store.jsx';
 import Port from '../config.json';
+import Error from '../Error.jsx';
 
 function Register () {
   const { page } = React.useContext(StoreContext);
@@ -14,9 +15,12 @@ function Register () {
     event.preventDefault();
 
     if (password1 !== password2) {
-      alert('passwords do not match');
+      Error('Passwords do not match!');
+    } else if (email === '' || password1 === '' || password2 === '' || name === '') {
+      Error('You must complete all fields!');
     } else {
       const data = { email: email, password: password1, name: name };
+      console.log(data);
 
       fetch(`http://localhost:${Port.BACKEND_PORT}/user/auth/register`, {
         method: 'POST',
@@ -26,11 +30,11 @@ function Register () {
         body: JSON.stringify(data)
       }).then((response) => {
         if (response.ok) {
-          alert('registered');
+          Error('Registered');
         } else {
-          alert('error');
+          Error('Invalid data');
         }
-      }).catch((error) => console.log(error));
+      }).catch((error) => Error(error));
     }
   }
 

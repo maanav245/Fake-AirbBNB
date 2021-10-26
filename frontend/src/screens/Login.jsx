@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { StoreContext } from '../Store.jsx';
 import Port from '../config.json';
+import Error from '../Error.jsx';
 
 function Login () {
   const { page, token } = React.useContext(StoreContext);
@@ -21,12 +22,12 @@ function Login () {
       body: JSON.stringify(data)
     }).then((response) => {
       if (response.ok) {
-        alert('logged in');
+        Error('Logged In');
         updateToken(response.json());
       } else {
-        alert('error');
+        Error('Invalid data');
       }
-    }).catch((error) => console.log(error));
+    }).catch((error) => Error(error));
   }
 
   const updateToken = (response) => {
