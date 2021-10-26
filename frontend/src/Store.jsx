@@ -9,9 +9,11 @@ Store.propTypes = {
 
 function Store ({ children }) {
   const [page, setPage] = React.useState(0);
+  const [token, setToken] = React.useState('');
 
   const store = {
     page: { page, setPage },
+    token: { token, setToken },
   }
 
   return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
