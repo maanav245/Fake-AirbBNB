@@ -1,44 +1,24 @@
 import React from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
-import { StoreContext } from '../Store.jsx';
-import LogoutButton from '../components/LogoutButton.jsx';
-import Modal from '../components/Modal.jsx';
+import Modal from '../components/Modal';
+import LoggedInButtons from '../components/LoggedInButtons';
+import LoginButton from '../components/LoginButton';
 
 function Landing () {
-  const { page, token } = React.useContext(StoreContext);
-
-  const LoginStatus = () => {
-    if (token.token !== '') {
-      return (
-        <h2>Logged In</h2>
-      );
-    } else {
-      return (
-        <h2>Not Logged In</h2>
-      );
-    }
-  }
-
   return (
     <section>
       <Modal/>
       <header>
-        <div>
-          <LogoutButton/>
+        <LoggedInButtons/>
+        <div className="banner">
+          <div id="logo">
+            AirBrb
+          </div>
         </div>
-        <div id="logo">
-          AirBrb
-        </div>
-        <div>
-          <Router>
-            <Link className="button" to={'/login'} onClick={() => page.setPage(1)}>
-              Login/Register
-            </Link>
-          </Router>
+        <div className="banner">
+          <LoginButton/>
         </div>
       </header>
       <main>
-        <LoginStatus/>
       </main>
       <footer>
       </footer>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
-import { StoreContext } from '../Store.jsx';
+import { StoreContext } from '../Store';
 import Port from '../config.json';
-import Error from '../Error.jsx';
+import Error from '../Error';
 
 function LogoutButton () {
   const { page, token, modal } = React.useContext(StoreContext);
@@ -17,12 +17,12 @@ function LogoutButton () {
       },
     }).then((response) => {
       if (response.ok) {
-        page.setPage(0);
         token.setToken('');
       } else {
         Error(response.json(), modal);
       }
     }).catch((e) => Error(e, modal));
+    page.setPage(0);
   }
 
   return (

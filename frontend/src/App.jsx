@@ -1,10 +1,18 @@
 import React from 'react';
 import './App.css';
-import Landing from './screens/Landing.jsx';
-import Login from './screens/Login.jsx';
-import Register from './screens/Register.jsx';
+import Landing from './screens/Landing';
+import Login from './screens/Login';
+import Register from './screens/Register';
 import { BrowserRouter as Switch, Route } from 'react-router-dom';
-import { StoreContext } from './Store.jsx';
+import { StoreContext } from './Store';
+
+/* setPage values:
+  Landing = setPage(0);
+  Login = setPage(1);
+  Register = setPage(2);
+  ViewAllListings = setPage(3);
+  ViewHostedListings = setPage(4);
+*/
 
 function App () {
   <Switch>

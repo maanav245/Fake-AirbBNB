@@ -1,5 +1,5 @@
 import React from 'react';
-import { StoreContext } from '../Store.jsx';
+import { StoreContext } from '../Store';
 
 function Modal () {
   const { modal } = React.useContext(StoreContext);
