@@ -19,6 +19,7 @@ function Landing () {
         </div>
       </header>
       <main>
+        <h1>Listings</h1>
       </main>
       <footer>
       </footer>

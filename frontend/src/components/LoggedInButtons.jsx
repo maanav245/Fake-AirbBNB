@@ -9,11 +9,11 @@ function LoggedInButtons () {
     return (
       <div className="banner">
         <Router>
-          <Link className="button" to={'/allListings'} onClick={() => page.setPage(3)}>
-            Listings
-          </Link>
-          <Link className="button" to={'/allHostedListings'} onClick={() => page.setPage(4)}>
+          <Link className="button" to={'/hosted-listings'} onClick={() => page.setPage(3)}>
             Hosted Listings
+          </Link>
+          <Link className="button" to={'/'} onClick={() => page.setPage(0)}>
+            Listings
           </Link>
         </Router>
       </div>

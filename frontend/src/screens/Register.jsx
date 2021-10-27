@@ -57,7 +57,7 @@ function Register () {
         </div>
       </header>
       <main>
-        <h1>Register Page</h1>
+        <h1>Register</h1>
         <form>
           <input className="input" type="text" onChange={({ target }) => setName(target.value)} placeholder="Your Name"/>
           <input className="input" type="email" onChange={({ target }) => setEmail(target.value)} placeholder="Email Address"/>
