@@ -30,11 +30,11 @@ function NewListing () {
     console.log(metadata.bedrooms);
   }, [bedrooms]);
 
-  const createListing = () => {
+  async function createListing () {
     const data = { title: title, address: address, price: price, thumbnail: thumbnail, metadata: metadata };
     console.log(data);
 
-    fetch(`http://localhost:${Port.BACKEND_PORT}/listings/new`, {
+    const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/new`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -42,15 +42,15 @@ function NewListing () {
         Authorization: token.token,
       },
       body: JSON.stringify(data)
-    }).then((response) => {
-      if (response.ok) {
-        console.log(response.json());
-      } else {
-        Error(response.json(), modal);
-      }
-    }).catch((e) => Error(e), modal);
+    });
+    const json = await response.json();
+    if (response.ok) {
+      console.log(json);
+    } else {
+      Error(json.error, modal);
+    }
     page.setPage(3);
-  };
+  }
 
   const BedroomFields = () => {
     if (numBedrooms > 0) {

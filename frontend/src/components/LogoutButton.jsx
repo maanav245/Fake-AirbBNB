@@ -7,21 +7,21 @@ import Error from '../Error';
 function LogoutButton () {
   const { page, token, modal } = React.useContext(StoreContext);
 
-  const logoutUser = () => {
-    fetch(`http://localhost:${Port.BACKEND_PORT}/user/auth/logout`, {
+  async function logoutUser () {
+    const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/user/auth/logout`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: token.token,
       },
-    }).then((response) => {
-      if (response.ok) {
-        token.setToken('');
-      } else {
-        Error(response.json(), modal);
-      }
-    }).catch((e) => Error(e, modal));
+    });
+    const json = await response.json();
+    if (response.ok) {
+      token.setToken('');
+    } else {
+      Error(json.error, modal);
+    }
     page.setPage(0);
   }
 

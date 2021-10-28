@@ -1,11 +1,5 @@
 function Error (e, modal) {
-  Promise.resolve(e).then((data) => {
-    if (data.error !== undefined) {
-      modal.setModal(data.error);
-    } else {
-      modal.setModal(data);
-    }
-  });
+  modal.setModal(e);
 }
 
 export default Error;

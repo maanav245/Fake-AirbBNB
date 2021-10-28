@@ -7,33 +7,38 @@ import Modal from '../components/Modal';
 import LoggedInButtons from '../components/LoggedInButtons';
 
 function Login () {
-  const { page, token, modal } = React.useContext(StoreContext);
+  const { page, token, modal, users, user } = React.useContext(StoreContext);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const loginUser = () => {
+  async function loginUser () {
     const data = { email: email, password: password };
 
-    fetch(`http://localhost:${Port.BACKEND_PORT}/user/auth/login`, {
+    const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/user/auth/login`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data)
-    }).then((response) => {
-      if (response.ok) {
-        updateToken(response.json());
-      } else {
-        Error(response.json(), modal);
-      }
-    }).catch((e) => Error(e), modal);
+    });
+    const json = await response.json();
+    if (response.ok) {
+      token.setToken('Bearer ' + json.token)
+      getUser();
+    } else {
+      Error(json.error, modal);
+    }
     page.setPage(0);
   }
 
-  const updateToken = (response) => {
-    response.then((data) => token.setToken('Bearer ' + data.token));
-  }
+  const getUser = () => {
+    for (let i = 0; i < users.users.length; i++) {
+      if (users.users[i].email === email) {
+        user.setUser(users.users[i].name);
+      }
+    }
+  };
 
   return (
     <section>

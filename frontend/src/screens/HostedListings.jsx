@@ -4,9 +4,83 @@ import LoginButton from '../components/LoginButton';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { StoreContext } from '../Store';
 import Modal from '../components/Modal';
+import Port from '../config.json';
 
 function HostedListings () {
-  const { page, token } = React.useContext(StoreContext);
+  const { page, token, modal, user } = React.useContext(StoreContext);
+
+  const [done, setDone] = React.useState([]);
+
+  async function getAllListings () {
+    const listings = [];
+    const listings2 = [];
+
+    const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token.token,
+      },
+    });
+    const json = await response.json();
+    if (response.ok) {
+      for (let i = 0; i < json.listings.length; i++) {
+        if (json.listings[i].owner === user.user) {
+          if (!listings.includes(json.listings[i].id)) {
+            listings.push(json.listings[i].id);
+          }
+        }
+      }
+      for (let i = 0; i < listings.length; i++) {
+        const res = await getSingleListing(listings[i]);
+        if (!listings2.includes(res)) {
+          listings2.push(res);
+        }
+      }
+      return listings2;
+    } else {
+      Error(json.error, modal);
+    }
+  }
+
+  async function getSingleListing (id) {
+    const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/${id}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token.token,
+      },
+    });
+    const json = await response.json();
+    if (response.ok) {
+      return json.listing;
+    } else {
+      Error(json.error, modal);
+    }
+  }
+
+  async function foo () {
+    const res = await getAllListings();
+    setDone(res);
+  }
+
+  // THIS WORKS BUT RE-RENDERS TOO MANY TIMES
+  const Bar = () => {
+    foo();
+    if (done !== []) {
+      return (
+        done.map((e, i) => (
+          <div key={i}>
+            <p>{e.title}</p>
+          </div>
+        ))
+      );
+    } else {
+      return null;
+    }
+  }
 
   if (token.token !== '') {
     return (
@@ -31,6 +105,7 @@ function HostedListings () {
             </Link>
           </Router>
           <div id="hosted-listings-area">See hosted listings here</div>
+          <Bar/>
         </main>
         <footer>
         </footer>
@@ -56,7 +131,7 @@ function HostedListings () {
         <footer>
         </footer>
       </section>
-    )
+    );
   }
 }
 

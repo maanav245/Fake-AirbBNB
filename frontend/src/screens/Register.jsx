@@ -7,13 +7,18 @@ import Modal from '../components/Modal';
 import LoggedInButtons from '../components/LoggedInButtons';
 
 function Register () {
-  const { page, token, modal } = React.useContext(StoreContext);
+  const { page, token, modal, users, user } = React.useContext(StoreContext);
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password1, setPassword1] = React.useState('');
   const [password2, setPassword2] = React.useState('');
 
-  const registerUser = () => {
+  React.useEffect(() => {
+    console.log(users.users);
+    localStorage.setItem('users', JSON.stringify(users.users));
+  }, [users]);
+
+  async function registerUser () {
     if (password1 !== password2) {
       Error('Passwords do not match!', modal);
     } else if (email === '' || password1 === '' || password2 === '' || name === '') {
@@ -21,26 +26,24 @@ function Register () {
     } else {
       const data = { email: email, password: password1, name: name };
 
-      fetch(`http://localhost:${Port.BACKEND_PORT}/user/auth/register`, {
+      const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/user/auth/register`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data)
-      }).then((response) => {
-        if (response.ok) {
-          updateToken(response.json());
-        } else {
-          Error(response.json(), modal);
-        }
-      }).catch((e) => Error(e), modal);
+      });
+      const json = await response.json();
+      if (response.ok) {
+        token.setToken('Bearer ' + json.token);
+        users.setUsers([...users.users, { name: name, email: email }]);
+        user.setUser(name);
+      } else {
+        Error(json.error, modal);
+      }
     }
     page.setPage(0);
-  }
-
-  const updateToken = (response) => {
-    response.then((data) => token.setToken('Bearer ' + data.token));
   }
 
   return (
