@@ -11,7 +11,7 @@ function HostedListings () {
 
   const [done, setDone] = React.useState([]);
 
-  async function getAllListings () {
+  React.useEffect(async () => {
     const listings = [];
     const listings2 = [];
 
@@ -38,11 +38,11 @@ function HostedListings () {
           listings2.push(res);
         }
       }
-      return listings2;
+      setDone(listings2);
     } else {
       Error(json.error, modal);
     }
-  }
+  }, []);
 
   async function getSingleListing (id) {
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/${id}`, {
@@ -60,16 +60,9 @@ function HostedListings () {
       Error(json.error, modal);
     }
   }
-
-  async function foo () {
-    const res = await getAllListings();
-    setDone(res);
-  }
-
-  // THIS WORKS BUT RE-RENDERS TOO MANY TIMES
   const Bar = () => {
-    foo();
     if (done !== []) {
+      console.log('rendering');
       return (
         done.map((e, i) => (
           <div key={i}>
