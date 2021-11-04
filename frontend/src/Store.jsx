@@ -13,13 +13,14 @@ function Store ({ children }) {
   const [modal, setModal] = React.useState('');
   const [users, setUsers] = React.useState(JSON.parse(localStorage.getItem('users')));
   const [user, setUser] = React.useState('');
-
+  const [listingInfo, setlistingInfo] = React.useState({});
   const store = {
     page: { page, setPage },
     token: { token, setToken },
     modal: { modal, setModal },
     users: { users, setUsers },
     user: { user, setUser },
+    listingInfo: { listingInfo, setlistingInfo },
   }
 
   return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>

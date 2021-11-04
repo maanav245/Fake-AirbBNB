@@ -37,7 +37,7 @@ function Register () {
       const json = await response.json();
       if (response.ok) {
         token.setToken('Bearer ' + json.token);
-        users.setUsers([...users.users, { name: name, email: email }]);
+        users.setUsers([{ name: name, email: email }]);
         user.setUser(name);
       } else {
         Error(json.error, modal);

@@ -7,9 +7,11 @@ import Modal from '../components/Modal';
 import Port from '../config.json';
 
 function HostedListings () {
-  const { page, token, modal, user } = React.useContext(StoreContext);
-
+  const { page, token, modal, user, listingInfo } = React.useContext(StoreContext);
+  console.log(token);
+  console.log(user.user);
   const [done, setDone] = React.useState([]);
+  page.setPage(4);
 
   React.useEffect(async () => {
     const listings = [];
@@ -25,9 +27,13 @@ function HostedListings () {
     });
     const json = await response.json();
     if (response.ok) {
+      console.log('got fetch');
+      console.log(json.listings);
+
       for (let i = 0; i < json.listings.length; i++) {
         if (json.listings[i].owner === user.user) {
-          if (!listings.includes(json.listings[i].id)) {
+          if (!listings.includes(json.listings[i].owner)) {
+            console.log(json.listings[i].id);
             listings.push(json.listings[i].id);
           }
         }
@@ -38,6 +44,7 @@ function HostedListings () {
           listings2.push(res);
         }
       }
+      console.log(listings);
       setDone(listings2);
     } else {
       Error(json.error, modal);
@@ -60,14 +67,31 @@ function HostedListings () {
       Error(json.error, modal);
     }
   }
+
   const Bar = () => {
     if (done !== []) {
       console.log('rendering');
+
+      for (let index = 0; index < done.length; index++) {
+        console.log(done[index]);
+      }
       return (
+
         done.map((e, i) => (
-          <div key={i}>
-            <p>{e.title}</p>
+          <div className="listing_cont" key={i}>
+            <img className="listing_image" src={e.thumbnail}></img>
+            <div className="listing_info">{e.title} <br /> {e.price} <br />{e.metadata.type} <br /> {e.metadata.totalbedrooms}  <br /> {e.metadata.bathrooms}
+            <Router>
+            <Link to={'/edit-listings/'} onClick={function () {
+              console.log(e);
+              listingInfo.setlistingInfo(e);
+            }} >
+            Edit
+              </Link>
+            </Router>
+            </div>
           </div>
+
         ))
       );
     } else {
@@ -98,7 +122,8 @@ function HostedListings () {
             </Link>
           </Router>
           <div id="hosted-listings-area">See hosted listings here</div>
-          <Bar/>
+          <div className="hosted_container"> <Bar/>  </div>
+
         </main>
         <footer>
         </footer>

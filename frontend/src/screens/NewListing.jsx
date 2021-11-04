@@ -27,13 +27,17 @@ function NewListing () {
 
   React.useEffect(() => {
     setMetadata({ ...metadata, bedrooms: bedrooms });
+
     console.log(metadata.bedrooms);
   }, [bedrooms]);
 
   async function createListing () {
-    const data = { title: title, address: address, price: price, thumbnail: thumbnail, metadata: metadata };
-    console.log(data);
-
+    let totalbedrooms = 0;
+    for (let index = 0; index < metadata.bedrooms.length; index++) {
+      totalbedrooms = parseInt(totalbedrooms) + parseInt(metadata.bedrooms[index].number);
+    }
+    const newMetadata = { ...metadata, totalbedrooms: totalbedrooms }
+    const data = { title: title, address: address, price: price, thumbnail: thumbnail, metadata: newMetadata };
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/new`, {
       method: 'POST',
       headers: {
@@ -70,6 +74,27 @@ function NewListing () {
       return null;
     }
   }
+  function fileToDataUrl (file) {
+    const validFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    const valid = validFileTypes.find((type) => type === file.type);
+    // Bad data, let's walk away.
+    if (!valid) {
+      throw Error('provided file is not a png, jpg or jpeg image.');
+    }
+
+    const reader = new FileReader();
+    const dataUrlPromise = new Promise((resolve, reject) => {
+      reader.onerror = reject;
+      reader.onload = () => resolve(reader.result);
+    });
+    reader.readAsDataURL(file);
+    return dataUrlPromise;
+  }
+  async function uploadImage (e) {
+    const dataURL = await fileToDataUrl(e.target.files[0]);
+    console.log(dataURL);
+    setThumbnail(dataURL);
+  }
 
   if (token.token !== '') {
     return (
@@ -96,7 +121,7 @@ function NewListing () {
             <input className="input" type="number" onChange={({ target }) => setAddress({ ...address, postcode: target.value })} placeholder="Postcode"/>
             <input className="input" type="text" onChange={({ target }) => setAddress({ ...address, country: target.value })} placeholder="Country"/>
             <input className="input" type="number" onChange={({ target }) => setPrice(target.value)} placeholder="Price Per Night"/>
-            <input className="input" type="file" onChange={({ target }) => setThumbnail(target.value)}/>
+            <input className="input" type="file" onChange={uploadImage}/>
             <input className="input" type="text" onChange={({ target }) => setMetadata({ ...metadata, type: target.value })} placeholder="Property Type"/>
             <input className="input" type="number" onChange={({ target }) => setMetadata({ ...metadata, bathrooms: target.value })} placeholder="Number of Bathrooms"/>
             <input className="input" type="number" onChange={({ target }) => setNumBedrooms(parseInt(target.value))} placeholder="Number of Bedrooms"/>
