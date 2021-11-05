@@ -7,11 +7,11 @@ import Modal from '../components/Modal';
 import Port from '../config.json';
 
 function HostedListings () {
-  const { page, token, modal, user, listingInfo } = React.useContext(StoreContext);
+  const { page, token, modal, user, listingInfo, editListingId } = React.useContext(StoreContext);
   console.log(token);
   console.log(user.user);
   const [done, setDone] = React.useState([]);
-  page.setPage(4);
+  page.setPage(3);
 
   React.useEffect(async () => {
     const listings = [];
@@ -41,7 +41,7 @@ function HostedListings () {
       for (let i = 0; i < listings.length; i++) {
         const res = await getSingleListing(listings[i]);
         if (!listings2.includes(res)) {
-          listings2.push(res);
+          listings2.push({ id: listings[i], info: res });
         }
       }
       console.log(listings);
@@ -75,16 +75,19 @@ function HostedListings () {
       for (let index = 0; index < done.length; index++) {
         console.log(done[index]);
       }
+
       return (
 
         done.map((e, i) => (
           <div className="listing_cont" key={i}>
-            <img className="listing_image" src={e.thumbnail}></img>
-            <div className="listing_info">{e.title} <br /> {e.price} <br />{e.metadata.type} <br /> {e.metadata.totalbedrooms}  <br /> {e.metadata.bathrooms}
+            <img className="listing_image" src={e.info.thumbnail}></img>
+            <div className="listing_info">{e.info.title} <br /> {e.info.address.street} {', '}  {e.info.address.city} {', '} {e.info.address.state} {', '} {e.info.address.postcode} {', '} {e.info.address.country} {' '}  <br />  {e.info.price} <br />{e.info.metadata.type} <br /> {e.info.metadata.totalbedrooms}  <br /> {e.info.metadata.bathrooms}
             <Router>
-            <Link to={'/edit-listings/'} onClick={function () {
+            <Link to={'/edit-listings/' + e.id} onClick={function () {
               console.log(e);
-              listingInfo.setlistingInfo(e);
+              listingInfo.setlistingInfo(e.info);
+              editListingId.seteditListingId(e.id)
+              page.setPage(5);
             }} >
             Edit
               </Link>
