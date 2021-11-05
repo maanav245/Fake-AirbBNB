@@ -14,6 +14,7 @@ function Store ({ children }) {
   const [users, setUsers] = React.useState(JSON.parse(localStorage.getItem('users')));
   const [user, setUser] = React.useState('');
   const [listingInfo, setlistingInfo] = React.useState({});
+  const [editListingId, seteditListingId] = React.useState('');
   const store = {
     page: { page, setPage },
     token: { token, setToken },
@@ -21,6 +22,7 @@ function Store ({ children }) {
     users: { users, setUsers },
     user: { user, setUser },
     listingInfo: { listingInfo, setlistingInfo },
+    editListingId: { editListingId, seteditListingId },
   }
 
   return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
