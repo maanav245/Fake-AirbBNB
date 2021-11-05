@@ -25,6 +25,8 @@ function Login () {
     const json = await response.json();
     if (response.ok) {
       token.setToken('Bearer ' + json.token)
+      user.setUser(email)
+      console.log(token);
       getUser();
     } else {
       Error(json.error, modal);
@@ -33,8 +35,9 @@ function Login () {
   }
 
   const getUser = () => {
-    for (let i = 0; i < users.users.length; i++) {
+    for (let i = 0; i < users.length; i++) {
       if (users.users[i].email === email) {
+        console.log(users.users[i].name);
         user.setUser(users.users[i].name);
       }
     }

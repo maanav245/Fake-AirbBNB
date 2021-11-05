@@ -7,9 +7,11 @@ import Modal from '../components/Modal';
 import Port from '../config.json';
 
 function HostedListings () {
-  const { page, token, modal, user } = React.useContext(StoreContext);
-
+  const { page, token, modal, user, listingInfo, editListingId } = React.useContext(StoreContext);
+  console.log(token);
+  console.log(user.user);
   const [done, setDone] = React.useState([]);
+  page.setPage(3);
 
   React.useEffect(async () => {
     const listings = [];
@@ -25,9 +27,13 @@ function HostedListings () {
     });
     const json = await response.json();
     if (response.ok) {
+      console.log('got fetch');
+      console.log(json.listings);
+
       for (let i = 0; i < json.listings.length; i++) {
         if (json.listings[i].owner === user.user) {
-          if (!listings.includes(json.listings[i].id)) {
+          if (!listings.includes(json.listings[i].owner)) {
+            console.log(json.listings[i].id);
             listings.push(json.listings[i].id);
           }
         }
@@ -35,9 +41,10 @@ function HostedListings () {
       for (let i = 0; i < listings.length; i++) {
         const res = await getSingleListing(listings[i]);
         if (!listings2.includes(res)) {
-          listings2.push(res);
+          listings2.push({ id: listings[i], info: res });
         }
       }
+      console.log(listings);
       setDone(listings2);
     } else {
       Error(json.error, modal);
@@ -60,14 +67,34 @@ function HostedListings () {
       Error(json.error, modal);
     }
   }
+
   const Bar = () => {
     if (done !== []) {
       console.log('rendering');
+
+      for (let index = 0; index < done.length; index++) {
+        console.log(done[index]);
+      }
+
       return (
+
         done.map((e, i) => (
-          <div key={i}>
-            <p>{e.title}</p>
+          <div className="listing_cont" key={i}>
+            <img className="listing_image" src={e.info.thumbnail}></img>
+            <div className="listing_info">{e.info.title} <br /> {e.info.address.street} {', '}  {e.info.address.city} {', '} {e.info.address.state} {', '} {e.info.address.postcode} {', '} {e.info.address.country} {' '}  <br />  {e.info.price} <br />{e.info.metadata.type} <br /> {e.info.metadata.totalbedrooms}  <br /> {e.info.metadata.bathrooms}
+            <Router>
+            <Link to={'/edit-listings/' + e.id} onClick={function () {
+              console.log(e);
+              listingInfo.setlistingInfo(e.info);
+              editListingId.seteditListingId(e.id)
+              page.setPage(5);
+            }} >
+            Edit
+              </Link>
+            </Router>
+            </div>
           </div>
+
         ))
       );
     } else {
@@ -98,7 +125,8 @@ function HostedListings () {
             </Link>
           </Router>
           <div id="hosted-listings-area">See hosted listings here</div>
-          <Bar/>
+          <div className="hosted_container"> <Bar/>  </div>
+
         </main>
         <footer>
         </footer>

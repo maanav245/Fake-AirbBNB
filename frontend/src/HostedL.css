@@ -1,0 +1,30 @@
+.hosted_container {
+    width: 90vw;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    background-color: beige;
+    overflow-y: scroll;
+    margin-bottom: 20vh;
+}
+
+.listing_cont {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    width: 100%;
+    height: 80%;
+    background-color: blue;
+}
+
+.listing_image {
+    height: 100%;
+    width: 45%;
+}
+
+.listing_info {
+    display: flex;
+    flex-direction: column;
+    background-color: red;
+    width: 55%;
+}
