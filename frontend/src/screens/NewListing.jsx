@@ -58,6 +58,7 @@ function NewListing () {
 
   const BedroomFields = () => {
     if (numBedrooms > 0) {
+      console.log(bedrooms);
       return (
         [...Array(numBedrooms)].map((e, i) => (
           <div key={i}>
