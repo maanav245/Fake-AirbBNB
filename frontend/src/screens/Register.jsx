@@ -38,7 +38,7 @@ function Register () {
       if (response.ok) {
         token.setToken('Bearer ' + json.token);
         users.setUsers([{ name: name, email: email }]);
-        user.setUser(name);
+        user.setUser(email);
       } else {
         Error(json.error, modal);
       }
