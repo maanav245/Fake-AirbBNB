@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { StoreContext } from '../Store';
 import LogoutButton from './LogoutButton';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function LoginButton () {
   const { page, token } = React.useContext(StoreContext);
