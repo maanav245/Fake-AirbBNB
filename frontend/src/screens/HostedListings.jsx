@@ -145,7 +145,7 @@ function HostedListings () {
     setRender(Math.random);
   }
 
-  const Bar = () => {
+  const DisplayListings = () => {
     if (done !== []) {
       console.log('rendering');
 
@@ -206,7 +206,7 @@ function HostedListings () {
               </Link>
             </Router>
             <div id="hosted-listings-area">See hosted listings here</div>
-            <div className="hosted_container"> <Bar/>  </div>
+            <div className="hosted_container"> <DisplayListings/>  </div>
 
           </main>
           <footer>
@@ -237,7 +237,7 @@ function HostedListings () {
             </Link>
           </Router>
           <div id="hosted-listings-area">See hosted listings here</div>
-          <div className="hosted_container"> <Bar/>  </div>
+          <div className="hosted_container"> <DisplayListings/>  </div>
 
         </main>
         <footer>

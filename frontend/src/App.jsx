@@ -22,6 +22,7 @@ import EditListing from './screens/EditListing';
 function App () {
   <Switch>
     <Route exact path="/" component={Landing}/>
+    <Route path="/listings" component={Landing}/>
     <Route path="/login" component={Login}/>
     <Route path="/register" component={Register}/>
     <Route path="/hosted-listings" component={HostedListings}/>
@@ -31,7 +32,7 @@ function App () {
 
   React.useContext(StoreContext);
   const route = window.location.pathname;
-  if (route === '/') {
+  if (route === '/' || route === '/listings') {
     return (
       <Landing/>
     );
