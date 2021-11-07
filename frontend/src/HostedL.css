@@ -1,4 +1,4 @@
-.hosted_container {
+.hosted_container, .listings_container {
     width: 90vw;
     height: 80vh;
     display: flex;

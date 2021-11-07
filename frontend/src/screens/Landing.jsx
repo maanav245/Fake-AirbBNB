@@ -2,12 +2,12 @@ import React from 'react';
 import Modal from '../components/Modal';
 import LoggedInButtons from '../components/LoggedInButtons';
 import LoginButton from '../components/LoginButton';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { StoreContext } from '../Store';
 import Port from '../config.json';
+import Error from '../Error';
 
 function Landing () {
-  const { page, token, modal, user } = React.useContext(StoreContext);
+  const { token, modal, user, filters } = React.useContext(StoreContext);
 
   const [listings, setListings] = React.useState([]);
 
@@ -26,11 +26,17 @@ function Landing () {
       for (let i = 0; i < json.listings.length; i++) {
         listings2.push(json.listings[i]);
       }
-      sortListings(listings2);
+      const sortedListings = await sortListings(listings2);
+      if (filters.filters !== {}) {
+        const filteredListings = applyFilters(sortedListings);
+        setListings(filteredListings);
+      } else {
+        setListings(sortListings);
+      }
     } else {
       Error(json.error, modal);
     }
-  }, [])
+  }, [filters])
 
   const sortListings = async (listings2) => {
     if (token.token !== '') {
@@ -63,18 +69,25 @@ function Landing () {
         const sortedBookedListings = sortAlphabetically(bookedListings);
         const sortedUnbookedListings = sortAlphabetically(unbookedListings);
         const sortedListings = [...sortedBookedListings, ...sortedUnbookedListings];
-        setListings(sortedListings);
+        return sortedListings;
       } else {
         Error(json.error, modal);
       }
     } else {
       const sortedListings = sortAlphabetically(listings2);
-      setListings(sortedListings);
+      return sortedListings;
     }
   }
 
   const sortAlphabetically = (listings2) => {
     return listings2.sort((a, b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
+  }
+
+  const applyFilters = (listings2) => {
+    if (filters.filters.search) {
+      console.log('applying filters');
+    }
+    return listings2;
   }
 
   const DisplayListings = () => {
@@ -93,6 +106,10 @@ function Landing () {
     }
   }
 
+  const displayFilterModal = () => {
+    modal.setModal('filters');
+  }
+
   return (
     <section>
       <Modal/>
@@ -109,13 +126,10 @@ function Landing () {
       </header>
       <main>
         <h1>Listings</h1>
-        <Router>
-          <Link className="button" to={'/new-listing'} onClick={() => page.setPage(4)}>
-            Create New Listing
-          </Link>
-        </Router>
-        <div id="hosted-listings-area">See hosted listings here</div>
-        <div className="hosted_container"> <DisplayListings/>  </div>
+        <button className="button" onClick={() => displayFilterModal()}>Filter Listings</button>
+        <div className="listings_container">
+          <DisplayListings/>
+        </div>
       </main>
       <footer>
       </footer>
