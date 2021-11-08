@@ -24,8 +24,10 @@ function Landing () {
     const json = await response.json();
     if (response.ok) {
       for (let i = 0; i < json.listings.length; i++) {
-        listings2.push(json.listings[i]);
+        const res = await getSingleListing(json.listings[i].id);
+        listings2.push({ id: json.listings[i].id, info: res });
       }
+
       const sortedListings = await sortListings(listings2);
       const filteredListings = applyFilters(sortedListings);
       setListings(filteredListings);
@@ -33,6 +35,23 @@ function Landing () {
       Error(json.error, modal);
     }
   }, [filters])
+
+  async function getSingleListing (id) {
+    const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/${id}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token.token,
+      },
+    });
+    const json = await response.json();
+    if (response.ok) {
+      return json.listing;
+    } else {
+      Error(json.error, modal);
+    }
+  }
 
   const sortListings = async (listings2) => {
     if (token.token !== '') {
@@ -76,25 +95,43 @@ function Landing () {
   }
 
   const sortAlphabetically = (listings2) => {
-    return listings2.sort((a, b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
+    return listings2.sort((a, b) => (a.info.title > b.info.title) ? 1 : ((b.info.title > a.info.title) ? -1 : 0));
   }
 
   const applyFilters = (listings2) => {
-    console.log(listings2);
-    const filteredListings = []
-    let filtered = false;
-    if (filters.filters.search) {
-      filtered = true;
-      for (let i = 0; i < listings2.length; i++) {
-        if (listings2[i].title.toLowerCase().includes(filters.filters.search.toLowerCase()) || listings2[i].address.city.toLowerCase().includes(filters.filters.search.toLowerCase())) {
-          filteredListings.push(listings2[i]);
+    console.log(filters.filters);
+    if (Object.keys(filters.filters).length !== 0) {
+      const filteredListings = []
+      if (filters.filters.search) {
+        for (let i = 0; i < listings2.length; i++) {
+          if (listings2[i].info.title.toLowerCase().includes(filters.filters.search.toLowerCase()) || listings2[i].info.address.city.toLowerCase().includes(filters.filters.search.toLowerCase())) {
+            filteredListings.push(listings2[i]);
+          }
         }
       }
-    }
-    if (filtered) {
+      /* if (filters.filters.bedrooms) {
+        setFiltered(true);
+        const previousFilteredListings = filteredListings;
+        filteredListings = [];
+        for (let i = 0; i < previousFilteredListings.length; i++) {
+          if (previousFilteredListings[i].info.metadata.bedrooms.length >= Math.min.apply(Math, filters.filters.bedrooms) && previousFilteredListings[i].info.metadata.bedrooms.length <= Math.max.apply(Math, filters.filters.bedrooms)) {
+            filteredListings.push(previousFilteredListings[i]);
+          }
+        }
+      } */
       return filteredListings;
     } else {
       return listings2;
+    }
+  }
+
+  const FiltersApplied = () => {
+    if (Object.keys(filters.filters).length !== 0) {
+      return (
+        <p>Filtering by...</p>
+      )
+    } else {
+      return null;
     }
   }
 
@@ -103,11 +140,12 @@ function Landing () {
       return (
         listings.map((e, i) => (
           <div className="listing_cont" key={i}>
-            <img className="listing_image" src={e.thumbnail}></img>
+            <img className="listing_image" src={e.info.thumbnail}></img>
             <div className="listing_info">
-              <p>Title: {e.title}</p>
-              <p>City: {e.address.city}</p>
-              <p>Number of reviews: {e.reviews.length}</p>
+              <p>Title: {e.info.title}</p>
+              <p>City: {e.info.address.city}</p>
+              <p>Number of bedrooms: {e.info.metadata.bedrooms.length}</p>
+              <p>Number of reviews: {e.info.reviews.length}</p>
             </div>
           </div>
         ))
@@ -136,6 +174,7 @@ function Landing () {
       <main>
         <h1>Listings</h1>
         <button className="button" onClick={() => modal.setModal('filters')}>Filter Listings</button>
+        <FiltersApplied/>
         <button className="button" onClick={() => filters.setFilters({})}>Clear Filters</button>
         <div className="listings_container">
           <DisplayListings/>

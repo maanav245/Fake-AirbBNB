@@ -22,7 +22,6 @@ function Modal () {
 
   const handleChange = (event, newValue) => {
     setBedrooms(newValue);
-    console.log(bedrooms);
   }
 
   if (modal.modal === 'filters') {
