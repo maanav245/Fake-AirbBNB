@@ -37,6 +37,7 @@ function Login () {
   const getUser = () => {
     for (let i = 0; i < users.length; i++) {
       if (users.users[i].email === email) {
+        console.log('here');
         console.log(users.users[i].name);
         user.setUser(users.users[i].name);
       }
