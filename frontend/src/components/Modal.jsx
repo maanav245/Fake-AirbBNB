@@ -1,13 +1,16 @@
 import React from 'react';
 import { StoreContext } from '../Store';
+import { Slider } from '@mui/material';
 
 function Modal () {
   const { modal, filters } = React.useContext(StoreContext);
 
   const [search, setSearch] = React.useState('');
+  const [bedrooms, setBedrooms] = React.useState([1, 3]);
 
   const applyFilters = () => {
-    filters.setFilters({ ...filters, search: search });
+    event.preventDefault();
+    filters.setFilters({ search: search, bedrooms: bedrooms });
     modal.setModal('');
   }
 
@@ -17,6 +20,11 @@ function Modal () {
     )
   }
 
+  const handleChange = (event, newValue) => {
+    setBedrooms(newValue);
+    console.log(bedrooms);
+  }
+
   if (modal.modal === 'filters') {
     return (
       <div className="modal-container">
@@ -24,8 +32,19 @@ function Modal () {
             <h2 className="modal-title">Search Filters</h2>
             <form>
               <input className="input" type="text" onChange={({ target }) => setSearch(target.value)} placeholder="Search Title or City"/>
+              <p>Number of Bedrooms</p>
+              <Slider
+                getAriaLabel={() => 'Temperature range'}
+                onChange={handleChange}
+                valueLabelDisplay="auto"
+                value={bedrooms}
+                step={1}
+                marks
+                min={1}
+                max={10}
+              />
             </form>
-            <button onClick={() => applyFilters()} className="button">Search</button>
+            <button onClick={(event) => applyFilters()} className="button">Search</button>
             <button onClick={() => modal.setModal('')} className="button">Close</button>
         </div>
       </div>

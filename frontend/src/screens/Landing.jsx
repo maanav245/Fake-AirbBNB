@@ -27,12 +27,8 @@ function Landing () {
         listings2.push(json.listings[i]);
       }
       const sortedListings = await sortListings(listings2);
-      if (filters.filters !== {}) {
-        const filteredListings = applyFilters(sortedListings);
-        setListings(filteredListings);
-      } else {
-        setListings(sortListings);
-      }
+      const filteredListings = applyFilters(sortedListings);
+      setListings(filteredListings);
     } else {
       Error(json.error, modal);
     }
@@ -84,30 +80,43 @@ function Landing () {
   }
 
   const applyFilters = (listings2) => {
+    console.log(listings2);
+    const filteredListings = []
+    let filtered = false;
     if (filters.filters.search) {
-      console.log('applying filters');
+      filtered = true;
+      for (let i = 0; i < listings2.length; i++) {
+        if (listings2[i].title.toLowerCase().includes(filters.filters.search.toLowerCase()) || listings2[i].address.city.toLowerCase().includes(filters.filters.search.toLowerCase())) {
+          filteredListings.push(listings2[i]);
+        }
+      }
     }
-    return listings2;
+    if (filtered) {
+      return filteredListings;
+    } else {
+      return listings2;
+    }
   }
 
   const DisplayListings = () => {
-    if (listings !== []) {
+    if (listings.length !== 0) {
       return (
         listings.map((e, i) => (
           <div className="listing_cont" key={i}>
             <img className="listing_image" src={e.thumbnail}></img>
             <div className="listing_info">
               <p>Title: {e.title}</p>
+              <p>City: {e.address.city}</p>
               <p>Number of reviews: {e.reviews.length}</p>
             </div>
           </div>
         ))
       );
+    } else {
+      return (
+        <p>No Listings to Display!</p>
+      )
     }
-  }
-
-  const displayFilterModal = () => {
-    modal.setModal('filters');
   }
 
   return (
@@ -126,7 +135,8 @@ function Landing () {
       </header>
       <main>
         <h1>Listings</h1>
-        <button className="button" onClick={() => displayFilterModal()}>Filter Listings</button>
+        <button className="button" onClick={() => modal.setModal('filters')}>Filter Listings</button>
+        <button className="button" onClick={() => filters.setFilters({})}>Clear Filters</button>
         <div className="listings_container">
           <DisplayListings/>
         </div>
