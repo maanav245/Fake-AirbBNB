@@ -162,7 +162,7 @@ function Landing () {
     if (Object.keys(filters.filters).length !== 0) {
       return (
         <div>
-          <p>Filtering by...</p>
+          <p>Listings filtered by...</p>
           <SearchFilterApplied/>
           <BedroomFilterApplied/>
           <DateFilterApplied/>
@@ -178,7 +178,7 @@ function Landing () {
   const SearchFilterApplied = () => {
     if (filters.filters.search !== '') {
       return (
-        <li>Title or City containing {filters.filters.search}</li>
+        <li>Title or City: {`"${filters.filters.search}"`}</li>
       )
     } else {
       return null;
@@ -194,7 +194,7 @@ function Landing () {
   const DateFilterApplied = () => {
     if (filters.filters.startDate !== '' && filters.filters.endDate !== '') {
       return (
-        <li>Stay between {filters.filters.startDate} and {filters.filters.endDate}</li>
+        <li>Available between {filters.filters.startDate} and {filters.filters.endDate}</li>
       )
     } else {
       return null;
@@ -210,11 +210,11 @@ function Landing () {
   const ReviewFilterApplied = () => {
     if (filters.filters.review === 'highToLow') {
       return (
-        <li>Sorted from highest to lowest review rating</li>
+        <li>Sorted by reviews from highest to lowest</li>
       )
     } else {
       return (
-        <li>Sorted from lowest to highest review rating</li>
+        <li>Sorted by reviews from lowest to highest</li>
       )
     }
   }

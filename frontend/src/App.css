@@ -81,8 +81,8 @@ form {
   display: inline-block;
 }
 
-.modal-container {
-  position: absolute;
+.my-modal-container {
+  position: fixed;
   left: 0;
   top: 0;
   right: 0;
@@ -93,8 +93,8 @@ form {
   justify-content: center;
 }
 
-.modal-content {
-  width: 500px;
+.my-modal-content {
+  width: 70vw;
   background-color: #fff;
   display: flex;
   align-items: center;
@@ -110,7 +110,7 @@ form {
   display: flex;
 }
 
-.listingInput, .loginInput, .registerInput {
+.listingInput, .loginInput, .registerInput, .searchInput {
   display: flex;
   align-items: center;
   width: 50vw;
@@ -123,4 +123,17 @@ form {
 
 .registerInput {
   width: 31vw;
+}
+
+.searchInput {
+  width: 40vw;
+  margin: 10px;
+}
+
+.my-slider {
+  max-width: 260px;
+}
+
+.radio-button {
+  margin-right: 260px;
 }
