@@ -100,38 +100,122 @@ function Landing () {
 
   const applyFilters = (listings2) => {
     console.log(filters.filters);
-    if (Object.keys(filters.filters).length !== 0) {
-      const filteredListings = []
-      if (filters.filters.search) {
-        for (let i = 0; i < listings2.length; i++) {
-          if (listings2[i].info.title.toLowerCase().includes(filters.filters.search.toLowerCase()) || listings2[i].info.address.city.toLowerCase().includes(filters.filters.search.toLowerCase())) {
-            filteredListings.push(listings2[i]);
-          }
+    let filtered = false;
+    const filteredListings = [];
+    if (filters.filters.search) {
+      filtered = true;
+      const searchFilteredListings = [];
+      for (let i = 0; i < listings2.length; i++) {
+        if (listings2[i].info.title.toLowerCase().includes(filters.filters.search.toLowerCase()) || listings2[i].info.address.city.toLowerCase().includes(filters.filters.search.toLowerCase())) {
+          searchFilteredListings.push(listings2[i]);
         }
       }
-      /* if (filters.filters.bedrooms) {
-        setFiltered(true);
-        const previousFilteredListings = filteredListings;
-        filteredListings = [];
-        for (let i = 0; i < previousFilteredListings.length; i++) {
-          if (previousFilteredListings[i].info.metadata.bedrooms.length >= Math.min.apply(Math, filters.filters.bedrooms) && previousFilteredListings[i].info.metadata.bedrooms.length <= Math.max.apply(Math, filters.filters.bedrooms)) {
-            filteredListings.push(previousFilteredListings[i]);
-          }
+      filteredListings.push(searchFilteredListings);
+    }
+    if (filters.filters.bedrooms) {
+      filtered = true;
+      const bedroomFilteredListings = [];
+      for (let i = 0; i < listings2.length; i++) {
+        if (listings2[i].info.metadata.bedrooms.length >= Math.min.apply(Math, filters.filters.bedrooms) && listings2[i].info.metadata.bedrooms.length <= Math.max.apply(Math, filters.filters.bedrooms)) {
+          bedroomFilteredListings.push(listings2[i]);
         }
-      } */
-      return filteredListings;
+      }
+      filteredListings.push(bedroomFilteredListings);
+    }
+    if (filters.filters.startDate && filters.filters.endDate) {
+      filtered = true;
+      const dateFilteredListings = listings2;
+      console.log('TODO: filter by date');
+      filteredListings.push(dateFilteredListings);
+    }
+    if (filters.filters.price) {
+      filtered = true;
+      const priceFilteredListings = [];
+      for (let i = 0; i < listings2.length; i++) {
+        if (listings2[i].info.price >= Math.min.apply(Math, filters.filters.price) && listings2[i].info.price <= Math.max.apply(Math, filters.filters.price)) {
+          priceFilteredListings.push(listings2[i]);
+        }
+      }
+      filteredListings.push(priceFilteredListings);
+    }
+    if (filters.filters.review) {
+      filtered = true;
+    }
+    if (filtered) {
+      let totalFiltered = filteredListings[0];
+      for (let i = 0; i < filteredListings.length; i++) {
+        totalFiltered = totalFiltered.filter(a => filteredListings[i].includes(a));
+      }
+      const sortedbyReview = sortByReview(totalFiltered);
+      return sortedbyReview;
     } else {
       return listings2;
     }
   }
 
+  const sortByReview = (allFilters) => {
+    console.log('TODO: sort listings by review');
+    return allFilters;
+  }
+
   const FiltersApplied = () => {
     if (Object.keys(filters.filters).length !== 0) {
       return (
-        <p>Filtering by...</p>
+        <div>
+          <p>Filtering by...</p>
+          <SearchFilterApplied/>
+          <BedroomFilterApplied/>
+          <DateFilterApplied/>
+          <PriceFilterApplied/>
+          <ReviewFilterApplied/>
+        </div>
       )
     } else {
       return null;
+    }
+  }
+
+  const SearchFilterApplied = () => {
+    if (filters.filters.search !== '') {
+      return (
+        <li>Title or City containing {filters.filters.search}</li>
+      )
+    } else {
+      return null;
+    }
+  }
+
+  const BedroomFilterApplied = () => {
+    return (
+      <li>Between {Math.min.apply(Math, filters.filters.bedrooms)} and {Math.max.apply(Math, filters.filters.bedrooms)} bedrooms</li>
+    )
+  }
+
+  const DateFilterApplied = () => {
+    if (filters.filters.startDate !== '' && filters.filters.endDate !== '') {
+      return (
+        <li>Stay between {filters.filters.startDate} and {filters.filters.endDate}</li>
+      )
+    } else {
+      return null;
+    }
+  }
+
+  const PriceFilterApplied = () => {
+    return (
+      <li>Between ${Math.min.apply(Math, filters.filters.price)} and ${Math.max.apply(Math, filters.filters.price)} per night</li>
+    )
+  }
+
+  const ReviewFilterApplied = () => {
+    if (filters.filters.review === 'highToLow') {
+      return (
+        <li>Sorted from highest to lowest review rating</li>
+      )
+    } else {
+      return (
+        <li>Sorted from lowest to highest review rating</li>
+      )
     }
   }
 
@@ -145,6 +229,7 @@ function Landing () {
               <p>Title: {e.info.title}</p>
               <p>City: {e.info.address.city}</p>
               <p>Number of bedrooms: {e.info.metadata.bedrooms.length}</p>
+              <p>Price per night: {e.info.price}</p>
               <p>Number of reviews: {e.info.reviews.length}</p>
             </div>
           </div>
