@@ -229,7 +229,7 @@ function Landing () {
               <p>Title: {e.info.title}</p>
               <p>City: {e.info.address.city}</p>
               <p>Number of bedrooms: {e.info.metadata.bedrooms.length}</p>
-              <p>Price per night: {e.info.price}</p>
+              <p>Price per night: ${e.info.price}</p>
               <p>Number of reviews: {e.info.reviews.length}</p>
             </div>
           </div>
