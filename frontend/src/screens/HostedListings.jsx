@@ -154,30 +154,43 @@ function HostedListings () {
       }
 
       return (
-
         done.map((e, i) => (
           <div className="listing_cont" key={i}>
-            <img className="listing_image" src={e.info.thumbnail}></img>
-            <div className="listing_info">{e.info.title} <br /> {e.info.address.street} {', '}  {e.info.address.city} {', '} {e.info.address.state} {', '} {e.info.address.postcode} {', '} {e.info.address.country} {' '}  <br />  {e.info.price} <br />{e.info.metadata.type} <br /> {e.info.metadata.totalbedrooms}  <br /> {e.info.metadata.bathrooms}
-            <Router>
-            <Link to={'/edit-listings/' + e.id} onClick={function () {
-              console.log(e);
-              listingInfo.setlistingInfo(e.info);
-              editListingId.seteditListingId(e.id)
-              page.setPage(5);
-            }} >
-            Edit
-              </Link>
-            </Router>
-            <button type="button" onClick={() => deleteSingleListing(e.id)}>Delete</button>
-            <button type="button" onClick={() => setPid(e.id)}>Publish</button>
+            <div>
+              <img className="listing_image" src={e.info.thumbnail}></img>
+              <div className="listing_buttons">
+                <Router>
+                  <Link className="button listing_button" to={'/edit-listings/' + e.id} onClick={function () {
+                    console.log(e);
+                    listingInfo.setlistingInfo(e.info);
+                    editListingId.seteditListingId(e.id)
+                    page.setPage(5);
+                  }} >
+                    Edit
+                  </Link>
+                </Router>
+                <button className="button listing_button" type="button" onClick={() => deleteSingleListing(e.id)}>Delete</button>
+                <button className="button listing_button" type="button" onClick={() => setPid(e.id)}>Publish</button>
+              </div>
+            </div>
+            <div className="listing_info">
+              <h2>{e.info.title}</h2>
+              <p>{e.info.address.street}, {e.info.address.city}, {e.info.address.state}, {e.info.address.postcode}, {e.info.address.country}</p>
+              <p>${e.info.price} per night</p>
+              <p>Type: {e.info.metadata.type}</p>
+              <p>Number of beds: {e.info.metadata.totalbedrooms}</p>
+              {console.log(e.info.metadata)}
+              <p>Number of bathrooms: {e.info.metadata.bathrooms}</p>
+              <p>Average rating: TODO</p>
+              <p>Number of reviews: {e.info.reviews.length}</p>
             </div>
           </div>
-
         ))
       );
     } else {
-      return null;
+      return (
+        <h2>No Hosted Listings</h2>
+      );
     }
   }
 
@@ -205,9 +218,9 @@ function HostedListings () {
                 Create New Listing
               </Link>
             </Router>
-            <div id="hosted-listings-area">See hosted listings here</div>
-            <div className="hosted_container"> <DisplayListings/>  </div>
-
+            <div className="hosted_container">
+              <DisplayListings/>
+            </div>
           </main>
           <footer>
           </footer>
@@ -236,9 +249,9 @@ function HostedListings () {
               Create New Listing
             </Link>
           </Router>
-          <div id="hosted-listings-area">See hosted listings here</div>
-          <div className="hosted_container"> <DisplayListings/>  </div>
-
+          <div className="hosted_container">
+            <DisplayListings/>
+          </div>
         </main>
         <footer>
         </footer>

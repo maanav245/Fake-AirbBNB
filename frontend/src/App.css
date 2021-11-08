@@ -48,6 +48,12 @@ form {
   cursor: pointer;
   width: 120px;
   text-align: center;
+  border: 1px solid blue;
+}
+
+.button:hover {
+  background-color: white;
+  color: blue;
 }
 
 .input {

@@ -226,10 +226,10 @@ function Landing () {
           <div className="listing_cont" key={i}>
             <img className="listing_image" src={e.info.thumbnail}></img>
             <div className="listing_info">
-              <p>Title: {e.info.title}</p>
-              <p>City: {e.info.address.city}</p>
+              <h2>{e.info.title}</h2>
+              <p>Location: {e.info.address.city}</p>
               <p>Number of bedrooms: {e.info.metadata.bedrooms.length}</p>
-              <p>Price per night: ${e.info.price}</p>
+              <p>${e.info.price} per night</p>
               <p>Number of reviews: {e.info.reviews.length}</p>
             </div>
           </div>
