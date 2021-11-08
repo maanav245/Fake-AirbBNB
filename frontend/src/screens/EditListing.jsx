@@ -72,7 +72,7 @@ function EditListing () {
       }
     }
     const newMetadata = { ...metadata, totalbedrooms: totalbedrooms }
-    const address1 = { street: street, state: state, city: city, country: country, post: post }
+    const address1 = { street: street, state: state, city: city, country: country, postcode: post }
     const data = { title: title, address: address1, price: price, thumbnail: thumbnail, metadata: newMetadata };
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/` + editListingId.editListingId, {
       method: 'PUT',
