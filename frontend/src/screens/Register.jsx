@@ -62,10 +62,22 @@ function Register () {
       <main>
         <h1>Register</h1>
         <form>
-          <input className="input" type="text" onChange={({ target }) => setName(target.value)} placeholder="Your Name"/>
-          <input className="input" type="email" onChange={({ target }) => setEmail(target.value)} placeholder="Email Address"/>
-          <input className="input" type="password" onChange={({ target }) => setPassword1(target.value)} placeholder="Password"/>
-          <input className="input" type="password" onChange={({ target }) => setPassword2(target.value)} placeholder="Confirm Password"/>
+          <div className="registerInput">
+            <label htmlFor="registerName">Your Name:</label>
+            <input id="registerName" className="input" type="text" onChange={({ target }) => setName(target.value)} placeholder="John Smith"/>
+          </div>
+          <div className="registerInput">
+            <label htmlFor="registerEmail">Email Address:</label>
+            <input id="registerEmail" className="input" type="email" onChange={({ target }) => setEmail(target.value)} placeholder="example@email.com"/>
+          </div>
+          <div className="registerInput">
+            <label htmlFor="registerPassword1">Password:</label>
+            <input id="registerPassword1" className="input" type="password" onChange={({ target }) => setPassword1(target.value)} placeholder="password"/>
+          </div>
+          <div className="registerInput">
+            <label htmlFor="registerPassword2">Confirm Password:</label>
+            <input id="registerPassword2" className="input" type="password" onChange={({ target }) => setPassword2(target.value)} placeholder="password"/>
+          </div>
         </form>
         <Router>
           <Link className="button" to={'/'} onClick={registerUser}>

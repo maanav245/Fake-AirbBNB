@@ -61,13 +61,15 @@ function NewListing () {
       console.log(bedrooms);
       return (
         [...Array(numBedrooms)].map((e, i) => (
-          <div key={i}>
-            <input key={`${i}-number`} className="input" type="number" onChange={({ target }) => {
+          <div key={i} className="listingInput">
+            <label htmlFor={`${i}-number`}>Number of beds in bedroom {i + 1}:</label>
+            <input id={`${i}-number`} key={`${i}-number`} className="input" type="number" onChange={({ target }) => {
               setBedrooms(Object.values({ ...bedrooms, [i]: { ...bedrooms[i], number: target.value } }))
-            }} placeholder={`Number of beds in bedroom ${i + 1}`}/>
-            <input key={`${i}-type`} className="input" type="text" onChange={({ target }) => {
+            }} placeholder="1"/>
+            <label htmlFor={`${i}-type`}>Type of beds in bedroom {i + 1}:</label>
+            <input id={`${i}-type`} key={`${i}-type`} className="input" type="text" onChange={({ target }) => {
               setBedrooms(Object.values({ ...bedrooms, [i]: { ...bedrooms[i], type: target.value } }))
-            }} placeholder={`Type of beds in bedroom ${i + 1}`}/>
+            }} placeholder="Single/Double/etc."/>
           </div>
         ))
       );
@@ -75,10 +77,11 @@ function NewListing () {
       return null;
     }
   }
+
+  // From ASS2
   function fileToDataUrl (file) {
     const validFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
     const valid = validFileTypes.find((type) => type === file.type);
-    // Bad data, let's walk away.
     if (!valid) {
       throw Error('provided file is not a png, jpg or jpeg image.');
     }
@@ -115,19 +118,55 @@ function NewListing () {
         <main>
           <h1>Create New Listing</h1>
           <form>
-            <input className="input" type="text" onChange={({ target }) => setTitle(target.value)} placeholder="Listing Title"/>
-            <input className="input" type="text" onChange={({ target }) => setAddress({ ...address, street: target.value })} placeholder="Street Address"/>
-            <input className="input" type="text" onChange={({ target }) => setAddress({ ...address, city: target.value })} placeholder="City/Suburb"/>
-            <input className="input" type="text" onChange={({ target }) => setAddress({ ...address, state: target.value })} placeholder="State"/>
-            <input className="input" type="number" onChange={({ target }) => setAddress({ ...address, postcode: target.value })} placeholder="Postcode"/>
-            <input className="input" type="text" onChange={({ target }) => setAddress({ ...address, country: target.value })} placeholder="Country"/>
-            <input className="input" type="number" onChange={({ target }) => setPrice(target.value)} placeholder="Price Per Night"/>
-            <input className="input" type="file" onChange={uploadImage}/>
-            <input className="input" type="text" onChange={({ target }) => setMetadata({ ...metadata, type: target.value })} placeholder="Property Type"/>
-            <input className="input" type="number" onChange={({ target }) => setMetadata({ ...metadata, bathrooms: target.value })} placeholder="Number of Bathrooms"/>
-            <input className="input" type="number" onChange={({ target }) => setNumBedrooms(parseInt(target.value))} placeholder="Number of Bedrooms"/>
+            <div className="listingInput">
+              <label htmlFor="listingTitle">Listing Title:</label>
+              <input id="listingTitle" className="input" type="text" onChange={({ target }) => setTitle(target.value)} placeholder="Beach House"/>
+            </div>
+            <div className="listingInput">
+              <label htmlFor="addressStreet">Street Address:</label>
+              <input id="addressStreet" className="input" type="text" onChange={({ target }) => setAddress({ ...address, street: target.value })} placeholder="10 Example Street"/>
+            </div>
+            <div className="listingInput">
+              <label htmlFor="addressCity">City/Suburb:</label>
+              <input id="addressCity" className="input" type="text" onChange={({ target }) => setAddress({ ...address, city: target.value })} placeholder="Sydney"/>
+            </div>
+            <div className="listingInput">
+              <label htmlFor="addressState">State:</label>
+              <input id="addressState" className="input" type="text" onChange={({ target }) => setAddress({ ...address, state: target.value })} placeholder="NSW"/>
+            </div>
+            <div className="listingInput">
+              <label htmlFor="addressPostcode">Postcode:</label>
+              <input id="addressPostcode" className="input" type="number" onChange={({ target }) => setAddress({ ...address, postcode: target.value })} placeholder="2000"/>
+            </div>
+            <div className="listingInput">
+              <label htmlFor="addressCountry">Country:</label>
+              <input id="addressCountry" className="input" type="text" onChange={({ target }) => setAddress({ ...address, country: target.value })} placeholder="Australia"/>
+            </div>
+            <div className="listingInput">
+              <label htmlFor="propertyPrice">Price Per Night:</label>
+              <input id="propertyPrice" className="input" type="number" onChange={({ target }) => setPrice(target.value)} placeholder="$100"/>
+            </div>
+            <div className="listingInput">
+              <label htmlFor="propertyThumbnail">Property Thumbnail:</label>
+              <input id="propertyThumbnail" className="input fileInput" type="file" onChange={uploadImage}/>
+            </div>
+            <div className="listingInput">
+              <label htmlFor="propertyType">Property Type:</label>
+              <input id="propertyType" className="input" type="text" onChange={({ target }) => setMetadata({ ...metadata, type: target.value })} placeholder="House/Apartment/etc."/>
+            </div>
+            <div className="listingInput">
+              <label htmlFor="numBathrooms">Number of Bathrooms:</label>
+              <input id="numBathrooms" className="input" type="number" onChange={({ target }) => setMetadata({ ...metadata, bathrooms: target.value })} placeholder="2"/>
+            </div>
+            <div className="listingInput">
+              <label htmlFor="numBedrooms">Number of Bedrooms:</label>
+              <input id="numBedrooms" className="input" type="number" onChange={({ target }) => setNumBedrooms(parseInt(target.value))} placeholder="4"/>
+            </div>
             {BedroomFields()}
-            <input className="input" type="textarea" onChange={({ target }) => setMetadata({ ...metadata, amenities: target.value })} placeholder="Property Amenities"/>
+            <div className="listingInput">
+              <label htmlFor="amenities">Property Amenities:</label>
+              <input id="amenities" className="input" type="textarea" onChange={({ target }) => setMetadata({ ...metadata, amenities: target.value })} placeholder="Kitchen/Pool/WiFi/etc."/>
+            </div>
           </form>
           <Router>
             <Link className="button" to={'/hosted-listings'} onClick={createListing}>
