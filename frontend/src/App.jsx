@@ -9,6 +9,7 @@ import { StoreContext } from './Store';
 import HostedListings from './screens/HostedListings';
 import NewListing from './screens/NewListing';
 import EditListing from './screens/EditListing';
+import ViewListing from './screens/ViewListing';
 
 /* setPage values:
   Landing = setPage(0);
@@ -17,6 +18,7 @@ import EditListing from './screens/EditListing';
   HostedListings = setPage(3);
   NewListing = setPage(4);
   EditListing = setPage(5);
+  view/Book Listing = setPage(6);
 */
 
 function App () {
@@ -28,6 +30,7 @@ function App () {
     <Route path="/hosted-listings" component={HostedListings}/>
     <Route path="/new-listing" component={NewListing}/>
     <Route path="/edit-listing" component={EditListing}/>
+    <Route path="/view-listing" component={ViewListing}/>
   </Switch>
 
   React.useContext(StoreContext);
@@ -56,6 +59,10 @@ function App () {
     return (
       <EditListing />
     );
+  } else if (route.includes('/view-listing')) {
+    return (
+      <ViewListing/>
+    )
   } else {
     console.log(route);
     return (
