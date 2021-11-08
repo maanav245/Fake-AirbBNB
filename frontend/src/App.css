@@ -10,6 +10,24 @@
   text-align: center;
 }
 
+.booking_container {
+  position: absolute;
+  top: 50%;
+  left: 65%;
+  width: fit-content;
+  height: fit-content;
+  background-color: white;
+  border: 1px solid rgb(221, 221, 221);
+  border-radius: 5%;
+  padding: 3%;
+  box-shadow: rgb(0 0 0 / 12%) 0px 6px 16px;
+}
+
+.booking_cal {
+  width: 20vw;
+  height: 20vh;
+}
+
 section {
   display: flex;
   flex-direction: column;
