@@ -142,3 +142,105 @@ form {
 .radio-button {
   margin-right: 260px;
 }
+
+.viewing_title {
+  margin-top: 2vh;
+  font-size: xx-large;
+}
+
+.viewing_main {
+  display: flex;
+  flex-direction: column;
+  margin-left: 6.5vw;
+}
+
+.react-calendar {
+  max-width: 30vw;
+
+}
+.react-calendar__tile {
+  font-size: x-small;
+  width: 0.5vw;
+}
+
+.booking_container {
+  margin-left: 20vw;
+  width: fit-content;
+  height: 70vh;
+  background-color: white;
+  border: 1px solid rgb(221, 221, 221);
+  border-radius: 5%;
+  padding: 3%;
+  box-shadow: rgb(0 0 0 / 12%) 0px 6px 16px;
+}
+
+.book_btn_container {
+  padding-top: 3%;
+}
+
+.booking_cal {
+  width: 20vw;
+  height: 20vh;
+}
+
+.viewing_info_text {
+  width: 50%;
+}
+.viewing_body_info {
+  margin-top: 10vh;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10vh;
+  
+}
+
+
+.carousel .slide img {
+  max-width: 15%;
+  max-height: 15%;
+}
+
+.thumbs-wrapper {
+  display: none;
+}
+
+.review_box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  
+}
+
+.reviews_title {
+
+}
+
+.reviews_list {
+  overflow-y: scroll;
+  height: 70vh;
+}
+
+.review_itself {
+  width: 100%;
+  height: 20vh;
+  
+}
+
+.review_user { 
+  
+  font-size: large;
+  font-weight: bold;
+  height: 5vh;
+}
+
+.review_stars {
+  font-weight: bolder;
+  font-size: large;
+  height: 5vh;
+}
+
+.review_body {
+  font-size: medium;
+  height: 10vh;
+}
+
