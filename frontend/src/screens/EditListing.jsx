@@ -217,6 +217,10 @@ function EditListing () {
                 <input id="editPropertyThumbnail" className="input" type="file" onChange={uploadImage}/>
               </div>
               <div className="listingInput">
+                <label htmlFor="editPropertyThumbnail">Property Images:</label>
+                <input className="input" type="file" onChange={addImage}/>
+              </div>
+              <div className="listingInput">
                 <label htmlFor="editPropertyType">Property Type:</label>
                 <input id="editPropertyType" className="input" type="text" value={type} onChange={({ target }) => setType(target.value)} placeholder="House/Apartment/etc."/>
               </div>
