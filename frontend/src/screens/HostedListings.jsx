@@ -50,8 +50,8 @@ function HostedListings () {
           listings2.push({ id: listings[i], info: res });
         }
       }
-      console.log(listings);
-      setDone(listings2);
+      const sortedListings = await sortListings(listings2);
+      setDone(sortedListings);
     } else {
       Error(json.error, modal);
     }
@@ -72,6 +72,10 @@ function HostedListings () {
     } else {
       Error(json.error, modal);
     }
+  }
+
+  const sortListings = async (listings2) => {
+    return listings2.sort((a, b) => (a.info.title > b.info.title) ? 1 : ((b.info.title > a.info.title) ? -1 : 0));
   }
 
   async function publish (id) {
