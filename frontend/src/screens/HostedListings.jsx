@@ -8,6 +8,7 @@ import Port from '../config.json';
 import Error from '../Error';
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
+import PropTypes from 'prop-types';
 
 function HostedListings () {
   const { page, token, modal, user, listingInfo, editListingId } = React.useContext(StoreContext);
@@ -90,6 +91,27 @@ function HostedListings () {
       body: JSON.stringify(publishData)
     });
     const json = await response.json();
+    if (response.ok) {
+      setRender(Math.random);
+    }
+    if (!response.ok) {
+      Error(json.error, modal);
+    }
+  }
+
+  async function unpublish (id) {
+    const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/unpublish/${id}`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token.token,
+      },
+    });
+    const json = await response.json();
+    if (response.ok) {
+      setRender(Math.random);
+    }
     if (!response.ok) {
       Error(json.error, modal);
     }
@@ -149,6 +171,22 @@ function HostedListings () {
     setRender(Math.random);
   }
 
+  const PublishButton = ({ listing }) => {
+    if (listing.info.published) {
+      return (
+        <button className="button listing_button" type="button" onClick={() => unpublish(listing.id)}>Unpublish</button>
+      )
+    } else {
+      return (
+        <button className="button listing_button" type="button" onClick={() => setPid(listing.id)}>Publish</button>
+      )
+    }
+  }
+
+  PublishButton.propTypes = {
+    listing: PropTypes.object.isRequired,
+  };
+
   const DisplayListings = () => {
     if (done !== []) {
       console.log('rendering');
@@ -156,7 +194,6 @@ function HostedListings () {
       for (let index = 0; index < done.length; index++) {
         console.log(done[index]);
       }
-
       return (
         done.map((e, i) => (
           <div className="listing_cont" key={i}>
@@ -174,7 +211,7 @@ function HostedListings () {
                   </Link>
                 </Router>
                 <button className="button listing_button" type="button" onClick={() => deleteSingleListing(e.id)}>Delete</button>
-                <button className="button listing_button" type="button" onClick={() => setPid(e.id)}>Publish</button>
+                <PublishButton listing={e}/>
               </div>
             </div>
             <div className="listing_info">
