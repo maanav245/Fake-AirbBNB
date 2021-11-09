@@ -10,13 +10,14 @@ import Port from '../config.json';
 import Calendar from 'react-calendar'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-import InfiniteScroll from 'react-infinite-scroller';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 function ViewListing () {
   const { token, listingInfo, viewListingId, modal } = React.useContext(StoreContext);
   const [dateRange, setDateRange] = React.useState(null);
   console.log(listingInfo.listingInfo);
   const formD = listingInfo.listingInfo
+  const [infiniteList, setInfiniteList] = React.useState(Array.from({ length: 10 }))
 
   function GenerateCarousel () {
     if (listingInfo.listingInfo.metadata.images === undefined || listingInfo.listingInfo.metadata.images.length === 0) {
@@ -33,6 +34,10 @@ function ViewListing () {
         ))
       )
     }
+  }
+
+  function GenerateRandoms () {
+    setInfiniteList(infiniteList.concat(Array.from({ length: 10 })));
   }
 
   async function submitBooking () {
@@ -118,12 +123,18 @@ function ViewListing () {
           <div className="review_box">
             <h1 className="reviews_title">Reviews</h1>
             <InfiniteScroll
-              pageStart={0}
-
-              hasMore={true || false}
-              loader={<div className="loader" key={0}>Loading ...</div>}
+              dataLength={infiniteList.length}
+              next={GenerateRandoms}
+              hasMore={true}
+              loader={<h4>Loading...</h4>}
             >
-
+                {infiniteList.map((e, i) => (
+                  <div className="review_itself" key={i}>
+                    <div className="review_user">Matt</div>
+                    <div className="review_stars"> 4.93 </div>
+                    <div className="review_body"> Nice Place</div>
+                  </div>
+                ))}
             </InfiniteScroll>
 
           </div>
