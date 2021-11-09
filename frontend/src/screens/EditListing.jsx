@@ -22,6 +22,7 @@ function EditListing () {
   const [amenities, setAmenities] = React.useState('');
   const [numBedrooms, setNumBedrooms] = React.useState(0);
   const [bedrooms, setBedrooms] = React.useState([]);
+  const [newPhoto, setNewPhoto] = React.useState('')
   console.log(bedrooms);
 
   React.useEffect(() => {
@@ -65,7 +66,14 @@ function EditListing () {
   async function editListing () {
     let totalbedrooms = 0;
     console.log(bedrooms);
-    const metadata = { type: type, amenities: amenities, bathrooms: bathrooms, bedrooms: bedrooms }
+    const imgList = [];
+    if (listingInfo.listingInfo.metadata.images === undefined) {
+      imgList.push(newPhoto);
+    } else {
+      listingInfo.listingInfo.metadata.images.push(newPhoto);
+    }
+    console.log(newPhoto);
+    const metadata = { type: type, amenities: amenities, bathrooms: bathrooms, bedrooms: bedrooms, images: imgList }
     for (let index = 0; index < metadata.bedrooms.length; index++) {
       if (metadata.bedrooms[index].number !== '') {
         totalbedrooms = parseInt(totalbedrooms) + parseInt(metadata.bedrooms[index].number);
@@ -147,6 +155,11 @@ function EditListing () {
     setThumbnail(dataURL);
   }
 
+  async function addImage (e) {
+    const dataURL = await fileToDataUrl(e.target.files[0]);
+    setNewPhoto(dataURL);
+  }
+
   if (token.token !== '') {
     return (
 
@@ -173,7 +186,8 @@ function EditListing () {
               <input className="input" type="number" value={post} onChange={({ target }) => setPost(target.value)} placeholder="Postcode"/>
               <input className="input" type="text" value={country} onChange={({ target }) => setCountry(target.value)} placeholder="Country"/>
               <input className="input" type="number" value={price} onChange={({ target }) => setPrice(target.value)} placeholder="Price Per Night"/>
-              <input className="input" type="file" onChange={uploadImage}/>
+              Change thumbnail:<input className="input" type="file" onChange={uploadImage}/>
+              Add photos:<input className="input" type="file" onChange={addImage}/>
               <input className="input" type="text" value={type} onChange={({ target }) => setType(target.value)} placeholder="Property Type"/>
               <input className="input" type="number" value={bathrooms} onChange={({ target }) => setBathrooms(target.value)} placeholder="Number of Bathrooms"/>
               <input className="input" type="number" value={numBedrooms} onChange={({ target }) => setNumBedrooms(parseInt(target.value))} placeholder="Number of Bedrooms"/>
