@@ -37,39 +37,58 @@ function Modal () {
 
   if (modal.modal === 'filters') {
     return (
-      <div className="modal-container">
-        <div className="modal-content">
+      <div className="my-modal-container">
+        <div className="my-modal-content">
             <h2 className="modal-title">Search Filters</h2>
             <form>
-              <input className="input" type="text" value={search} onChange={({ target }) => setSearch(target.value)} placeholder="Search Title or City"/>
-              <p>Number of Bedrooms</p>
-              <Slider
-                getAriaLabel={() => 'Temperature range'}
-                onChange={handleBedroomChange}
-                valueLabelDisplay="auto"
-                value={bedrooms}
-                step={1}
-                marks
-                min={1}
-                max={10}
-              />
-              <label htmlFor="stateDate">Check-In Date</label>
-              <input id="startDate" className="input" type="date" value={startDate} onChange={({ target }) => setStartDate(target.value)}/>
-              <label htmlFor="endDate">Check-Out Date</label>
-              <input id="endDate" className="input" type="date" value={endDate} onChange={({ target }) => setEndDate(target.value)}/>
-              <p>Price</p>
-              <Slider
-                getAriaLabel={() => 'Temperature range'}
-                onChange={handlePriceChange}
-                valueLabelDisplay="auto"
-                value={price}
-                min={0}
-                max={1000}
-              />
-              <label htmlFor="highToLow">Sort By Review High to Low</label>
-              <input id="highToLow" value="highToLow" name="reviewSort" className="input" type="radio" checked={review === 'highToLow'} onChange={({ target }) => setReview(target.value)}/>
-              <label htmlFor="lowToHigh">Sort By Review Low to High</label>
-              <input id="lowToHigh" value="lowToHigh" name="reviewSort" className="input" type="radio" checked={review === 'lowToHigh'} onChange={({ target }) => setReview(target.value)}/>
+              <div className="searchInput">
+                <label htmlFor="searchTitle">Search by Title or City:</label>
+                <input id="searchTitle" className="input" type="text" value={search} onChange={({ target }) => setSearch(target.value)} placeholder="Beach/Sydney"/>
+              </div>
+              <div className="searchInput">
+                <label htmlFor="searchBedrooms">Number of Bedrooms:</label>
+                <Slider
+                  className="my-slider"
+                  id="searchBedrooms"
+                  getAriaLabel={() => 'Temperature range'}
+                  onChange={handleBedroomChange}
+                  valueLabelDisplay="auto"
+                  value={bedrooms}
+                  step={1}
+                  marks
+                  min={1}
+                  max={10}
+                />
+              </div>
+              <div className="searchInput">
+                <label htmlFor="stateDate">Check-In Date:</label>
+                <input id="startDate" className="input" type="date" value={startDate} onChange={({ target }) => setStartDate(target.value)}/>
+              </div>
+              <div className="searchInput">
+                <label htmlFor="endDate">Check-Out Date:</label>
+                <input id="endDate" className="input" type="date" value={endDate} onChange={({ target }) => setEndDate(target.value)}/>
+              </div>
+              <div className="searchInput">
+                <label htmlFor="searchPrice">Price Range:</label>
+                <Slider
+                  className="my-slider"
+                  id="searchPrice"
+                  getAriaLabel={() => 'Temperature range'}
+                  onChange={handlePriceChange}
+                  valueLabelDisplay="auto"
+                  value={price}
+                  min={0}
+                  max={1000}
+                />
+              </div>
+              <div className="searchInput">
+                <label htmlFor="highToLow">Sort By Review High to Low</label>
+                <input id="highToLow" className="radio-button" value="highToLow" name="reviewSort" type="radio" checked={review === 'highToLow'} onChange={({ target }) => setReview(target.value)}/>
+              </div>
+              <div className="searchInput">
+                <label htmlFor="lowToHigh">Sort By Review Low to High</label>
+                <input id="lowToHigh" className="radio-button" value="lowToHigh" name="reviewSort" type="radio" checked={review === 'lowToHigh'} onChange={({ target }) => setReview(target.value)}/>
+              </div>
             </form>
             <button onClick={(event) => applyFilters()} className="button">Search</button>
             <button onClick={() => modal.setModal('')} className="button">Close</button>
@@ -78,8 +97,8 @@ function Modal () {
     );
   } else if (modal.modal !== '') {
     return (
-      <div className="modal-container">
-        <div className="modal-content">
+      <div className="my-modal-container">
+        <div className="my-modal-content">
             <h2 className="modal-title">Error!</h2>
             <ErrorContent/>
             <button onClick={() => modal.setModal('')} className="button">Close</button>

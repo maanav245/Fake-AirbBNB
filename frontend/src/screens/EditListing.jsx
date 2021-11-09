@@ -80,7 +80,7 @@ function EditListing () {
       }
     }
     const newMetadata = { ...metadata, totalbedrooms: totalbedrooms }
-    const address1 = { street: street, state: state, city: city, country: country, post: post }
+    const address1 = { street: street, state: state, city: city, country: country, postcode: post }
     const data = { title: title, address: address1, price: price, thumbnail: thumbnail, metadata: newMetadata };
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/` + editListingId.editListingId, {
       method: 'PUT',
@@ -105,26 +105,30 @@ function EditListing () {
       if (bedrooms[numBedrooms - 1] !== undefined) {
         return (
           [...Array(numBedrooms)].map((e, i) => (
-            <div key={i}>
-              <input key={`${i}-number`} className="input" value={bedrooms[i].number} type="number" onChange={({ target }) => {
+            <div key={i} className="listingInput">
+              <label htmlFor={`${i}-number`}>Number of beds in bedroom {i + 1}:</label>
+              <input id={`${i}-number`} key={`${i}-number`} className="input" value={bedrooms[i].number} type="number" onChange={({ target }) => {
                 setBedrooms(Object.values({ ...bedrooms, [i]: { ...bedrooms[i], number: target.value } }))
-              }} placeholder={`Number of beds in bedroom ${i + 1}`}/>
-              <input key={`${i}-type`} className="input" value={bedrooms[i].type} type="text" onChange={({ target }) => {
+              }} placeholder="1"/>
+              <label htmlFor={`${i}-type`}>Type of beds in bedroom {i + 1}:</label>
+              <input id={`${i}-type`} key={`${i}-type`} className="input" value={bedrooms[i].type} type="text" onChange={({ target }) => {
                 setBedrooms(Object.values({ ...bedrooms, [i]: { ...bedrooms[i], type: target.value } }))
-              }} placeholder={`Type of beds in bedroom ${i + 1}`}/>
+              }} placeholder="Single/Double/etc."/>
             </div>
           ))
         );
       } else {
         return (
           [...Array(numBedrooms)].map((e, i) => (
-            <div key={i}>
-              <input key={`${i}-number`} className="input" type="number" onChange={({ target }) => {
+            <div key={i} className="listingInput">
+              <label htmlFor={`${i}-number`}>Number of beds in bedroom {i + 1}:</label>
+              <input id={`${i}-number`} key={`${i}-number`} className="input" type="number" onChange={({ target }) => {
                 setBedrooms(Object.values({ ...bedrooms, [i]: { ...bedrooms[i], number: target.value } }))
-              }} placeholder={`Number of beds in bedroom ${i + 1}`}/>
-              <input key={`${i}-type`} className="input" type="text" onChange={({ target }) => {
+              }} placeholder="1"/>
+              <label htmlFor={`${i}-type`}>Type of beds in bedroom {i + 1}:</label>
+              <input id={`${i}-type`} key={`${i}-type`} className="input" type="text" onChange={({ target }) => {
                 setBedrooms(Object.values({ ...bedrooms, [i]: { ...bedrooms[i], type: target.value } }))
-              }} placeholder={`Type of beds in bedroom ${i + 1}`}/>
+              }} placeholder="Single/Double/etc."/>
             </div>
           ))
         );
@@ -133,10 +137,10 @@ function EditListing () {
       return null;
     }
   }
+
   function fileToDataUrl (file) {
     const validFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
     const valid = validFileTypes.find((type) => type === file.type);
-    // Bad data, let's walk away.
     if (!valid) {
       throw Error('provided file is not a png, jpg or jpeg image.');
     }
@@ -178,21 +182,57 @@ function EditListing () {
           </header>
           <main>
             <h1>Edit Listing</h1>
+
             <form>
-              <input className="input" type="text" value={title} onChange={({ target }) => setTitle(target.value)} placeholder="Listing Title"/>
-              <input className="input" type="text" value={street} onChange={({ target }) => setStreet(target.value)} placeholder="Street Address"/>
-              <input className="input" type="text" value={city} onChange={({ target }) => setCity(target.value)} placeholder="City/Suburb"/>
-              <input className="input" type="text" value={state} onChange={({ target }) => setState(target.value)} placeholder="State"/>
-              <input className="input" type="number" value={post} onChange={({ target }) => setPost(target.value)} placeholder="Postcode"/>
-              <input className="input" type="text" value={country} onChange={({ target }) => setCountry(target.value)} placeholder="Country"/>
-              <input className="input" type="number" value={price} onChange={({ target }) => setPrice(target.value)} placeholder="Price Per Night"/>
-              Change thumbnail:<input className="input" type="file" onChange={uploadImage}/>
-              Add photos:<input className="input" type="file" onChange={addImage}/>
-              <input className="input" type="text" value={type} onChange={({ target }) => setType(target.value)} placeholder="Property Type"/>
-              <input className="input" type="number" value={bathrooms} onChange={({ target }) => setBathrooms(target.value)} placeholder="Number of Bathrooms"/>
-              <input className="input" type="number" value={numBedrooms} onChange={({ target }) => setNumBedrooms(parseInt(target.value))} placeholder="Number of Bedrooms"/>
+              <div className="listingInput">
+                <label htmlFor="editListingTitle">Listing Title:</label>
+                <input id="editListingTitle" className="input" type="text" value={title} onChange={({ target }) => setTitle(target.value)} placeholder="Beach House"/>
+              </div>
+              <div className="listingInput">
+                <label htmlFor="editAddressStreet">Street Address:</label>
+                <input id="editAddressStreet" className="input" type="text" value={street} onChange={({ target }) => setStreet(target.value)} placeholder="10 Example Street"/>
+              </div>
+              <div className="listingInput">
+                <label htmlFor="editAddressCity">City/Suburb:</label>
+                <input id="editAddressCity" className="input" type="text" value={city} onChange={({ target }) => setCity(target.value)} placeholder="Sydney"/>
+              </div>
+              <div className="listingInput">
+                <label htmlFor="editAddressState">State:</label>
+                <input id="editAddressState" className="input" type="text" value={state} onChange={({ target }) => setState(target.value)} placeholder="NSW"/>
+              </div>
+              <div className="listingInput">
+                <label htmlFor="editAddressPostcode">Postcode:</label>
+                <input id="editAddressPostcode" className="input" type="number" value={post} onChange={({ target }) => setPost(target.value)} placeholder="2000"/>
+              </div>
+              <div className="listingInput">
+                <label htmlFor="editAddressCounty">Country:</label>
+                <input id="editAddressCountry" className="input" type="text" value={country} onChange={({ target }) => setCountry(target.value)} placeholder="Australia"/>
+              </div>
+              <div className="listingInput">
+                <label htmlFor="editPropertyPrice">Price Per Night:</label>
+                <input id="editPropertyPrice" className="input" type="number" value={price} onChange={({ target }) => setPrice(target.value)} placeholder="$100"/>
+              </div>
+              <div className="listingInput">
+                <label htmlFor="editPropertyThumbnail">Property Thumbnail:</label>
+                <input id="editPropertyThumbnail" className="input" type="file" onChange={uploadImage}/>
+              </div>
+              <div className="listingInput">
+                <label htmlFor="editPropertyType">Property Type:</label>
+                <input id="editPropertyType" className="input" type="text" value={type} onChange={({ target }) => setType(target.value)} placeholder="House/Apartment/etc."/>
+              </div>
+              <div className="listingInput">
+                <label htmlFor="editNumBathrooms">Number of Bathrooms:</label>
+                <input id="editNumBathrooms" className="input" type="number" value={bathrooms} onChange={({ target }) => setBathrooms(target.value)} placeholder="2"/>
+              </div>
+              <div className="listingInput">
+                <label htmlFor="editNumBedrooms">Number of Bedrooms:</label>
+                <input id="editNumBedrooms" className="input" type="number" value={numBedrooms} onChange={({ target }) => setNumBedrooms(parseInt(target.value))} placeholder="4"/>
+              </div>
               {BedroomFields()}
-              <input className="input" type="textarea" value={amenities} onChange={({ target }) => setAmenities(target.value)} placeholder="Property Amenities"/>
+              <div className="listingInput">
+                <label htmlFor="editAmenities">Property Amenities:</label>
+                <input id="editAmenities" className="input" type="textarea" value={amenities} onChange={({ target }) => setAmenities(target.value)} placeholder="Kitchen/Pool/WiFi/etc."/>
+              </div>
             </form>
             <Router>
               <Link className="button" to={'/hosted-listings'} onClick={editListing}>

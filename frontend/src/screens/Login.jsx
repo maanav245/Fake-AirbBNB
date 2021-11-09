@@ -60,8 +60,14 @@ function Login () {
       <main>
       <h1>Login Page</h1>
         <form>
-          <input className="input" type="email" onChange={({ target }) => setEmail(target.value)} placeholder="Email Address"/>
-          <input className="input" type="password" onChange={({ target }) => setPassword(target.value)} placeholder="Password"/>
+          <div className="loginInput">
+            <label htmlFor="loginEmail">Email Address:</label>
+            <input id="loginEmail" className="input" type="email" onChange={({ target }) => setEmail(target.value)} placeholder="example@email.com"/>
+          </div>
+          <div className="loginInput">
+            <label htmlFor="loginPassword">Password:</label>
+            <input id="loginPassword" className="input" type="password" onChange={({ target }) => setPassword(target.value)} placeholder="password"/>
+          </div>
         </form>
         <Router>
           <Link className="button" to={'/'} onClick={loginUser}>
