@@ -37,7 +37,9 @@ function NewListing () {
       totalbedrooms = parseInt(totalbedrooms) + parseInt(metadata.bedrooms[index].number);
     }
     const newMetadata = { ...metadata, totalbedrooms: totalbedrooms }
-    const data = { title: title, address: address, price: price, thumbnail: thumbnail, metadata: newMetadata };
+    const actMetadata = { ...newMetadata, images: [] };
+
+    const data = { title: title, address: address, price: price, thumbnail: thumbnail, metadata: actMetadata };
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/new`, {
       method: 'POST',
       headers: {

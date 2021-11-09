@@ -3,11 +3,12 @@ import Modal from '../components/Modal';
 import LoggedInButtons from '../components/LoggedInButtons';
 import LoginButton from '../components/LoginButton';
 import { StoreContext } from '../Store';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 import Port from '../config.json';
 import Error from '../Error';
 
 function Landing () {
-  const { token, modal, user, filters } = React.useContext(StoreContext);
+  const { token, modal, user, filters, listingInfo, viewListingId, page } = React.useContext(StoreContext);
 
   const [listings, setListings] = React.useState([]);
 
@@ -231,6 +232,16 @@ function Landing () {
               <p>Number of bedrooms: {e.info.metadata.bedrooms.length}</p>
               <p>${e.info.price} per night</p>
               <p>Number of reviews: {e.info.reviews.length}</p>
+              <Router>
+              <Link to={'/view-listing/' + e.id} onClick={function () {
+                console.log(e);
+                listingInfo.setlistingInfo(e.info);
+                viewListingId.setViewListingId(e.id);
+                page.setPage(6);
+              }} >
+                View
+              </Link>
+              </Router>
             </div>
           </div>
         ))
