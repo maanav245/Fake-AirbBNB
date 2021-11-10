@@ -69,9 +69,9 @@ function Landing () {
       const json = await response.json();
       if (response.ok) {
         for (let i = 0; i < json.bookings.length; i++) {
-          if (json.bookings[i].owner === user.user) {
+          if (json.bookings[i].owner === user.user && json.bookings[i].status === 'accepted') {
             for (let j = 0; j < listings2.length; j++) {
-              if (listings2[j].id === json.bookings[i].id) {
+              if (listings2[j].id.toString() === json.bookings[i].listingId) {
                 bookedListings.push(listings2[j]);
               }
             }
@@ -100,7 +100,6 @@ function Landing () {
   }
 
   const applyFilters = (listings2) => {
-    console.log(filters.filters);
     let filtered = false;
     const filteredListings = [];
     if (filters.filters.search) {
