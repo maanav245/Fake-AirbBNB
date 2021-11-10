@@ -1,7 +1,6 @@
 import React from 'react';
 import LoggedInButtons from '../components/LoggedInButtons';
 import LoginButton from '../components/LoginButton';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { StoreContext } from '../Store';
 import Modal from '../components/Modal';
 import Port from '../config.json';
@@ -9,6 +8,7 @@ import Error from '../Error';
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 import PropTypes from 'prop-types';
+import LinkButton from '../components/LinkButton'
 
 function HostedListings () {
   const { page, token, modal, user, listingInfo, editListingId, bookingsListingId } = React.useContext(StoreContext);
@@ -172,11 +172,11 @@ function HostedListings () {
   const PublishButton = ({ listing }) => {
     if (listing.info.published) {
       return (
-        <button className="button listing_button" type="button" onClick={() => unpublish(listing.id)}>Unpublish</button>
+        <LinkButton to={'.'} onClick={() => unpublish(listing.id)} value="Unpublish"/>
       )
     } else {
       return (
-        <button className="button listing_button" type="button" onClick={() => setPid(listing.id)}>Publish</button>
+        <LinkButton to={'.'} onClick={() => setPid(listing.id)} value="Publish"/>
       )
     }
   }
@@ -198,17 +198,13 @@ function HostedListings () {
             <div>
               <img className="listing_image" src={e.info.thumbnail}></img>
               <div className="listing_buttons">
-                <Router>
-                  <Link className="button listing_button" to={'/edit-listings/' + e.id} onClick={function () {
-                    // console.log(e);
-                    listingInfo.setlistingInfo(e.info);
-                    editListingId.seteditListingId(e.id);
-                    page.setPage(5);
-                  }} >
-                    Edit
-                  </Link>
-                </Router>
-                <button className="button listing_button" type="button" onClick={() => deleteSingleListing(e.id)}>Delete</button>
+                <LinkButton to={'/edit-listings/' + e.id} onClick={function () {
+                  // console.log(e);
+                  listingInfo.setlistingInfo(e.info);
+                  editListingId.seteditListingId(e.id);
+                  page.setPage(5);
+                }} value="Edit"/>
+                <LinkButton to={'.'} onClick={() => deleteSingleListing(e.id)} value="Delete"/>
                 <PublishButton listing={e}/>
               </div>
             </div>
@@ -223,15 +219,11 @@ function HostedListings () {
               <p>Average rating: TODO</p>
               <p>Number of reviews: {e.info.reviews.length}</p>
             </div>
-            <Router>
-              <Link className="button listing_button" to={'/view-bookings/' + e.id} onClick={function () {
-                listingInfo.setlistingInfo(e.info);
-                bookingsListingId.setBookingsListingId(e.id);
-                page.setPage(7);
-              }} >
-                View Bookings
-              </Link>
-            </Router>
+            <LinkButton to={'/view-bookings/' + e.id} onClick={function () {
+              listingInfo.setlistingInfo(e.info);
+              bookingsListingId.setBookingsListingId(e.id);
+              page.setPage(7);
+            }} value="View Bookings"/>
           </div>
         ))
       );
@@ -261,11 +253,7 @@ function HostedListings () {
           <main>
             <PublishListing/>
             <h1>Hosted Listings</h1>
-            <Router>
-              <Link className="button" to={'/new-listing'} onClick={() => page.setPage(4)}>
-                Create New Listing
-              </Link>
-            </Router>
+            <LinkButton to={'/new-listing'} onClick={() => page.setPage(4)} value="Create New Listing"/>
             <div className="hosted_container">
               <DisplayListings/>
             </div>
@@ -292,11 +280,7 @@ function HostedListings () {
         <main>
 
           <h1>Hosted Listings</h1>
-          <Router>
-            <Link className="button" to={'/new-listing'} onClick={() => page.setPage(4)}>
-              Create New Listing
-            </Link>
-          </Router>
+          <LinkButton to={'/new-listing'} onClick={() => page.setPage(4)} value="Create New Listing"/>
           <div className="hosted_container">
             <DisplayListings/>
           </div>

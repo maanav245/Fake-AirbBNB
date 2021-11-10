@@ -1,11 +1,11 @@
 import React from 'react';
 import LoggedInButtons from '../components/LoggedInButtons';
 import LoginButton from '../components/LoginButton';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { StoreContext } from '../Store';
 import Modal from '../components/Modal';
 import Port from '../config.json';
 import Error from '../Error';
+import LinkButton from '../components/LinkButton'
 
 function EditListing () {
   const { listingInfo, token, modal, page, editListingId } = React.useContext(StoreContext);
@@ -239,11 +239,7 @@ function EditListing () {
                 <input id="editAmenities" className="input" type="textarea" value={amenities} onChange={({ target }) => setAmenities(target.value)} placeholder="Kitchen/Pool/WiFi/etc."/>
               </div>
             </form>
-            <Router>
-              <Link className="button" to={'/hosted-listings'} onClick={editListing}>
-                Confirm
-              </Link>
-            </Router>
+            <LinkButton to={'/hosted-listings'} onClick={editListing} value="Confirm"/>
           </main>
           <footer>
           </footer>

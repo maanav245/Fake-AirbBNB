@@ -6,6 +6,7 @@ import LoginButton from '../components/LoginButton';
 import Port from '../config.json';
 import Error from '../Error';
 import PropTypes from 'prop-types';
+import LinkButton from '../components/LinkButton'
 
 function ViewBookings () {
   const { token, modal, listingInfo, bookingsListingId, profit } = React.useContext(StoreContext);
@@ -81,8 +82,8 @@ function ViewBookings () {
     if (booking.status === 'pending') {
       return (
         <div>
-          <button className="button" type="button" onClick={() => acceptBooking(booking)}>Accept</button>
-          <button className="button" type="button" onClick={() => declineBooking(booking.id)}>Decline</button>
+          <LinkButton to={'.'} onClick={() => acceptBooking(booking)} value="Accept"/>
+          <LinkButton to={'.'} onClick={() => declineBooking(booking.id)} value="Decline"/>
         </div>
       );
     } else {

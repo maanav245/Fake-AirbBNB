@@ -35,7 +35,3 @@
 .listing_buttons {
   display: flex;
 }
-
-.listing_button {
-  max-width: 90px;
-}

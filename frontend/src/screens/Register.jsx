@@ -1,10 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { StoreContext } from '../Store';
 import Port from '../config.json';
 import Error from '../Error';
 import Modal from '../components/Modal';
 import LoggedInButtons from '../components/LoggedInButtons';
+import LinkButton from '../components/LinkButton'
 
 function Register () {
   const { page, token, modal, users, user } = React.useContext(StoreContext);
@@ -79,14 +79,8 @@ function Register () {
             <input id="registerPassword2" className="input" type="password" onChange={({ target }) => setPassword2(target.value)} placeholder="password"/>
           </div>
         </form>
-        <Router>
-          <Link className="button" to={'/'} onClick={registerUser}>
-            Register
-          </Link>
-          <Link className="button" to={'/login'} onClick={() => page.setPage(1)}>
-            Back
-          </Link>
-        </Router>
+        <LinkButton to={'/'} onClick={registerUser} value="Register"/>
+        <LinkButton to={'/login'} onClick={() => page.setPage(1)} value="Back"/>
       </main>
       <footer>
       </footer>

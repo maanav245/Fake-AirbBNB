@@ -1,6 +1,7 @@
 import React from 'react';
 import { StoreContext } from '../Store';
 import { Slider } from '@mui/material';
+import LinkButton from './LinkButton'
 
 function Modal () {
   const { modal, filters } = React.useContext(StoreContext);
@@ -90,8 +91,8 @@ function Modal () {
                 <input id="lowToHigh" className="radio-button" value="lowToHigh" name="reviewSort" type="radio" checked={review === 'lowToHigh'} onChange={({ target }) => setReview(target.value)}/>
               </div>
             </form>
-            <button onClick={(event) => applyFilters()} className="button">Search</button>
-            <button onClick={() => modal.setModal('')} className="button">Close</button>
+            <LinkButton to={'.'} onClick={(event) => applyFilters()} value="Search"/>
+            <LinkButton to={'.'} onClick={() => modal.setModal('')} value="Close"/>
         </div>
       </div>
     );
@@ -101,7 +102,7 @@ function Modal () {
         <div className="my-modal-content">
             <h2 className="modal-title">Error!</h2>
             <ErrorContent/>
-            <button onClick={() => modal.setModal('')} className="button">Close</button>
+            <LinkButton to={'.'} onClick={() => modal.setModal('')} value="Close"/>
         </div>
       </div>
     );

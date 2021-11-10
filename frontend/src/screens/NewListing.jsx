@@ -1,11 +1,11 @@
 import React from 'react';
 import LoggedInButtons from '../components/LoggedInButtons';
 import LoginButton from '../components/LoginButton';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { StoreContext } from '../Store';
 import Port from '../config.json';
 import Error from '../Error';
 import Modal from '../components/Modal';
+import LinkButton from '../components/LinkButton'
 
 function NewListing () {
   const { page, token, modal } = React.useContext(StoreContext);
@@ -170,11 +170,7 @@ function NewListing () {
               <input id="amenities" className="input" type="textarea" onChange={({ target }) => setMetadata({ ...metadata, amenities: target.value })} placeholder="Kitchen/Pool/WiFi/etc."/>
             </div>
           </form>
-          <Router>
-            <Link className="button" to={'/hosted-listings'} onClick={createListing}>
-              Confirm
-            </Link>
-          </Router>
+          <LinkButton to={'/hosted-listings'} onClick={createListing} value="Confirm"/>
         </main>
         <footer>
         </footer>

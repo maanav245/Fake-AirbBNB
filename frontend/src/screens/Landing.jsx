@@ -3,9 +3,9 @@ import Modal from '../components/Modal';
 import LoggedInButtons from '../components/LoggedInButtons';
 import LoginButton from '../components/LoginButton';
 import { StoreContext } from '../Store';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
 import Port from '../config.json';
 import Error from '../Error';
+import LinkButton from '../components/LinkButton'
 
 function Landing () {
   const { token, modal, user, filters, listingInfo, viewListingId, page } = React.useContext(StoreContext);
@@ -231,16 +231,12 @@ function Landing () {
               <p>Number of bedrooms: {e.info.metadata.bedrooms.length}</p>
               <p>${e.info.price} per night</p>
               <p>Number of reviews: {e.info.reviews.length}</p>
-              <Router>
-              <Link to={'/view-listing/' + e.id} onClick={function () {
+              <LinkButton to={'/view-listing/' + e.id} onClick={function () {
                 console.log(e);
                 listingInfo.setlistingInfo(e.info);
                 viewListingId.setViewListingId(e.id);
                 page.setPage(6);
-              }} >
-                View
-              </Link>
-              </Router>
+              }} value="View"/>
             </div>
           </div>
         ))
@@ -268,9 +264,9 @@ function Landing () {
       </header>
       <main>
         <h1>Listings</h1>
-        <button className="button" onClick={() => modal.setModal('filters')}>Filter Listings</button>
+        <LinkButton to={'.'} onClick={() => modal.setModal('filters')} value="Filter Listings"/>
         <FiltersApplied/>
-        <button className="button" onClick={() => filters.setFilters({})}>Clear Filters</button>
+        <LinkButton to={'.'} onClick={() => filters.setFilters({})} value="Clear Filters"/>
         <div className="listings_container">
           <DisplayListings/>
         </div>

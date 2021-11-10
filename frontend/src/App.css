@@ -41,26 +41,6 @@ form {
   align-items: center;
 }
 
-.button {
-  background-color: blue;
-  color: white;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  font-size: 12pt;
-  text-decoration: none;
-  margin: 10px;
-  cursor: pointer;
-  width: 120px;
-  text-align: center;
-  border: 1px solid blue;
-}
-
-.button:hover {
-  background-color: white;
-  color: blue;
-}
-
 .input {
   height: 40px;
   margin: 10px;
@@ -191,7 +171,7 @@ form {
   display: flex;
   flex-direction: row;
   margin-bottom: 10vh;
-  
+
 }
 
 
@@ -208,7 +188,7 @@ form {
   display: flex;
   flex-direction: column;
   width: 100%;
-  
+
 }
 
 .reviews_title {
@@ -223,11 +203,11 @@ form {
 .review_itself {
   width: 100%;
   height: 20vh;
-  
+
 }
 
-.review_user { 
-  
+.review_user {
+
   font-size: large;
   font-weight: bold;
   height: 5vh;
@@ -243,4 +223,3 @@ form {
   font-size: medium;
   height: 10vh;
 }
-
