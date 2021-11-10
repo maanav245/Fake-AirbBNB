@@ -18,6 +18,7 @@ function Store ({ children }) {
   const [filters, setFilters] = React.useState({});
   const [viewListingId, setViewListingId] = React.useState('');
   const [bookingsListingId, setBookingsListingId] = React.useState('');
+  const [profit, setProfit] = React.useState(0);
   const store = {
     page: { page, setPage },
     token: { token, setToken },
@@ -29,6 +30,7 @@ function Store ({ children }) {
     filters: { filters, setFilters },
     viewListingId: { viewListingId, setViewListingId },
     bookingsListingId: { bookingsListingId, setBookingsListingId },
+    profit: { profit, setProfit },
   }
 
   return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>

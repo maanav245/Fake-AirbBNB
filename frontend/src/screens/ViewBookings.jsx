@@ -5,9 +5,10 @@ import LoggedInButtons from '../components/LoggedInButtons';
 import LoginButton from '../components/LoginButton';
 import Port from '../config.json';
 import Error from '../Error';
+import PropTypes from 'prop-types';
 
 function ViewBookings () {
-  const { token, modal, listingInfo, bookingsListingId } = React.useContext(StoreContext);
+  const { token, modal, listingInfo, bookingsListingId, profit } = React.useContext(StoreContext);
 
   const [bookings, setBookings] = React.useState([]);
   const [render, setRender] = React.useState(0);
@@ -41,8 +42,8 @@ function ViewBookings () {
     return bookings2;
   }
 
-  const acceptBooking = async (id) => {
-    const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/bookings/accept/${id}`, {
+  const acceptBooking = async (booking) => {
+    const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/bookings/accept/${booking.id}`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
@@ -52,6 +53,7 @@ function ViewBookings () {
     });
     const json = await response.json();
     if (response.ok) {
+      profit.setProfit(profit.profit + booking.totalPrice);
       setRender(Math.random);
     } else {
       Error(json.error, modal);
@@ -75,6 +77,23 @@ function ViewBookings () {
     }
   }
 
+  const BookingRequestButtons = ({ booking }) => {
+    if (booking.status === 'pending') {
+      return (
+        <div>
+          <button className="button" type="button" onClick={() => acceptBooking(booking)}>Accept</button>
+          <button className="button" type="button" onClick={() => declineBooking(booking.id)}>Decline</button>
+        </div>
+      );
+    } else {
+      return null;
+    }
+  }
+
+  BookingRequestButtons.propTypes = {
+    booking: PropTypes.object.isRequired,
+  };
+
   const BookingsForThisListing = () => {
     if (bookings !== []) {
       return (
@@ -86,8 +105,7 @@ function ViewBookings () {
             <p>Check-Out Date: {e.dateRange[1]}</p>
             <p>Total Price: ${e.totalPrice}</p>
             <p>Booking Status: {e.status}</p>
-            <button className="button" type="button" onClick={() => acceptBooking(e.id)}>Accept</button>
-            <button className="button" type="button" onClick={() => declineBooking(e.id)}>Decline</button>
+            <BookingRequestButtons booking={e}/>
             <hr/>
           </div>
         ))
@@ -101,7 +119,11 @@ function ViewBookings () {
 
   const ListingInformation = () => {
     return (
-      <p>Listing Posted: {listingInfo.listingInfo.postedOn}</p>
+      <div>
+        <p>Listing Posted: {listingInfo.listingInfo.postedOn}</p>
+        <p>Listing Occupancy: TODO</p>
+        <p>Listing Profit in 2021: ${profit.profit}</p>
+      </div>
     )
   }
 
@@ -121,13 +143,13 @@ function ViewBookings () {
         </div>
       </header>
       <main>
-        <h1>Bookings</h1>
-        <div>
-          <BookingsForThisListing/>
-        </div>
         <h1>Listing Information</h1>
         <div>
           <ListingInformation/>
+        </div>
+        <h1>Booking Requests</h1>
+        <div>
+          <BookingsForThisListing/>
         </div>
       </main>
       <footer>
