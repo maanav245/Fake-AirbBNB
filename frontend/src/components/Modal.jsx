@@ -2,7 +2,7 @@ import React from 'react';
 import { StoreContext } from '../Store';
 import { Slider } from '@mui/material';
 import LinkButton from './LinkButton'
-import { StyledForm } from './StyledComponents.jsx'
+import { StyledForm, StyledInput } from './StyledComponents.jsx'
 
 function Modal () {
   const { modal, filters } = React.useContext(StoreContext);
@@ -45,7 +45,7 @@ function Modal () {
             <StyledForm>
               <div className="searchInput">
                 <label htmlFor="searchTitle">Search by Title or City:</label>
-                <input id="searchTitle" className="input" type="text" value={search} onChange={({ target }) => setSearch(target.value)} placeholder="Beach/Sydney"/>
+                <StyledInput id="searchTitle" type="text" value={search} onChange={({ target }) => setSearch(target.value)} placeholder="Beach/Sydney"/>
               </div>
               <div className="searchInput">
                 <label htmlFor="searchBedrooms">Number of Bedrooms:</label>
@@ -64,11 +64,11 @@ function Modal () {
               </div>
               <div className="searchInput">
                 <label htmlFor="stateDate">Check-In Date:</label>
-                <input id="startDate" className="input" type="date" value={startDate} onChange={({ target }) => setStartDate(target.value)}/>
+                <StyledInput id="startDate" type="date" value={startDate} onChange={({ target }) => setStartDate(target.value)}/>
               </div>
               <div className="searchInput">
                 <label htmlFor="endDate">Check-Out Date:</label>
-                <input id="endDate" className="input" type="date" value={endDate} onChange={({ target }) => setEndDate(target.value)}/>
+                <StyledInput id="endDate"type="date" value={endDate} onChange={({ target }) => setEndDate(target.value)}/>
               </div>
               <div className="searchInput">
                 <label htmlFor="searchPrice">Price Range:</label>

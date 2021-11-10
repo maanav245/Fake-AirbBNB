@@ -7,7 +7,7 @@ import Error from '../Error';
 import Modal from '../components/Modal';
 import LinkButton from '../components/LinkButton'
 import Logo from '../components/Logo'
-import { StyledSection, StyledHeader, StyledMain, StyledForm } from '../components/StyledComponents'
+import { StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, StyledFileInput } from '../components/StyledComponents'
 
 function NewListing () {
   const { page, token, modal } = React.useContext(StoreContext);
@@ -67,11 +67,11 @@ function NewListing () {
         [...Array(numBedrooms)].map((e, i) => (
           <div key={i} className="listingInput">
             <label htmlFor={`${i}-number`}>Number of beds in bedroom {i + 1}:</label>
-            <input id={`${i}-number`} key={`${i}-number`} className="input" type="number" onChange={({ target }) => {
+            <StyledInput id={`${i}-number`} key={`${i}-number`} type="number" onChange={({ target }) => {
               setBedrooms(Object.values({ ...bedrooms, [i]: { ...bedrooms[i], number: target.value } }))
             }} placeholder="1"/>
             <label htmlFor={`${i}-type`}>Type of beds in bedroom {i + 1}:</label>
-            <input id={`${i}-type`} key={`${i}-type`} className="input" type="text" onChange={({ target }) => {
+            <StyledInput id={`${i}-type`} key={`${i}-type`} type="text" onChange={({ target }) => {
               setBedrooms(Object.values({ ...bedrooms, [i]: { ...bedrooms[i], type: target.value } }))
             }} placeholder="Single/Double/etc."/>
           </div>
@@ -122,52 +122,52 @@ function NewListing () {
           <StyledForm>
             <div className="listingInput">
               <label htmlFor="listingTitle">Listing Title:</label>
-              <input id="listingTitle" className="input" type="text" onChange={({ target }) => setTitle(target.value)} placeholder="Beach House"/>
+              <StyledInput id="listingTitle" type="text" onChange={({ target }) => setTitle(target.value)} placeholder="Beach House"/>
             </div>
             <div className="listingInput">
               <label htmlFor="addressStreet">Street Address:</label>
-              <input id="addressStreet" className="input" type="text" onChange={({ target }) => setAddress({ ...address, street: target.value })} placeholder="10 Example Street"/>
+              <StyledInput id="addressStreet" type="text" onChange={({ target }) => setAddress({ ...address, street: target.value })} placeholder="10 Example Street"/>
             </div>
             <div className="listingInput">
               <label htmlFor="addressCity">City/Suburb:</label>
-              <input id="addressCity" className="input" type="text" onChange={({ target }) => setAddress({ ...address, city: target.value })} placeholder="Sydney"/>
+              <StyledInput id="addressCity" type="text" onChange={({ target }) => setAddress({ ...address, city: target.value })} placeholder="Sydney"/>
             </div>
             <div className="listingInput">
               <label htmlFor="addressState">State:</label>
-              <input id="addressState" className="input" type="text" onChange={({ target }) => setAddress({ ...address, state: target.value })} placeholder="NSW"/>
+              <StyledInput id="addressState" type="text" onChange={({ target }) => setAddress({ ...address, state: target.value })} placeholder="NSW"/>
             </div>
             <div className="listingInput">
               <label htmlFor="addressPostcode">Postcode:</label>
-              <input id="addressPostcode" className="input" type="number" onChange={({ target }) => setAddress({ ...address, postcode: target.value })} placeholder="2000"/>
+              <StyledInput id="addressPostcode" type="number" onChange={({ target }) => setAddress({ ...address, postcode: target.value })} placeholder="2000"/>
             </div>
             <div className="listingInput">
               <label htmlFor="addressCountry">Country:</label>
-              <input id="addressCountry" className="input" type="text" onChange={({ target }) => setAddress({ ...address, country: target.value })} placeholder="Australia"/>
+              <StyledInput id="addressCountry" type="text" onChange={({ target }) => setAddress({ ...address, country: target.value })} placeholder="Australia"/>
             </div>
             <div className="listingInput">
               <label htmlFor="propertyPrice">Price Per Night:</label>
-              <input id="propertyPrice" className="input" type="number" onChange={({ target }) => setPrice(target.value)} placeholder="$100"/>
+              <StyledInput id="propertyPrice" type="number" onChange={({ target }) => setPrice(target.value)} placeholder="$100"/>
             </div>
             <div className="listingInput">
               <label htmlFor="propertyThumbnail">Property Thumbnail:</label>
-              <input id="propertyThumbnail" className="input fileInput" type="file" onChange={uploadImage}/>
+              <StyledFileInput id="propertyThumbnail" type="file" onChange={uploadImage}/>
             </div>
             <div className="listingInput">
               <label htmlFor="propertyType">Property Type:</label>
-              <input id="propertyType" className="input" type="text" onChange={({ target }) => setMetadata({ ...metadata, type: target.value })} placeholder="House/Apartment/etc."/>
+              <StyledInput id="propertyType" type="text" onChange={({ target }) => setMetadata({ ...metadata, type: target.value })} placeholder="House/Apartment/etc."/>
             </div>
             <div className="listingInput">
               <label htmlFor="numBathrooms">Number of Bathrooms:</label>
-              <input id="numBathrooms" className="input" type="number" onChange={({ target }) => setMetadata({ ...metadata, bathrooms: target.value })} placeholder="2"/>
+              <StyledInput id="numBathrooms" type="number" onChange={({ target }) => setMetadata({ ...metadata, bathrooms: target.value })} placeholder="2"/>
             </div>
             <div className="listingInput">
               <label htmlFor="numBedrooms">Number of Bedrooms:</label>
-              <input id="numBedrooms" className="input" type="number" onChange={({ target }) => setNumBedrooms(parseInt(target.value))} placeholder="4"/>
+              <StyledInput id="numBedrooms" type="number" onChange={({ target }) => setNumBedrooms(parseInt(target.value))} placeholder="4"/>
             </div>
             {BedroomFields()}
             <div className="listingInput">
               <label htmlFor="amenities">Property Amenities:</label>
-              <input id="amenities" className="input" type="textarea" onChange={({ target }) => setMetadata({ ...metadata, amenities: target.value })} placeholder="Kitchen/Pool/WiFi/etc."/>
+              <StyledInput id="amenities" type="textarea" onChange={({ target }) => setMetadata({ ...metadata, amenities: target.value })} placeholder="Kitchen/Pool/WiFi/etc."/>
             </div>
           </StyledForm>
           <LinkButton to={'/hosted-listings'} onClick={createListing} value="Confirm"/>

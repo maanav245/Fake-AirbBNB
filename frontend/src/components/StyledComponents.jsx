@@ -29,4 +29,31 @@ const StyledForm = styled.form`
   align-items: center;
 `
 
-export { StyledSection, StyledHeader, StyledMain, StyledForm }
+const StyledInput = styled.input`
+  height: 40px;
+  margin: 10px;
+  font-size: 12pt;
+  border-radius: 10px;
+  border: 1px solid black;
+  width: 260px;
+`
+
+const StyledFileInput = styled(StyledInput)`
+  &::-webkit-file-upload-button {
+    display: none;
+  }
+
+  &::before {
+    background-color: blue;
+    color: white;
+    content: "Upload Thumbnail";
+    padding: 5px;
+    margin-top: 2px;
+    margin-left: 4px;
+    margin-right: 4px;
+    border-radius: 10px;
+    display: inline-block;
+  }
+`
+
+export { StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, StyledFileInput }

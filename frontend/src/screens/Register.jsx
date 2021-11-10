@@ -6,7 +6,7 @@ import Modal from '../components/Modal';
 import LoggedInButtons from '../components/LoggedInButtons';
 import LinkButton from '../components/LinkButton'
 import Logo from '../components/Logo'
-import { StyledSection, StyledHeader, StyledMain, StyledForm } from '../components/StyledComponents'
+import { StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput } from '../components/StyledComponents'
 
 function Register () {
   const { page, token, modal, users, user } = React.useContext(StoreContext);
@@ -64,19 +64,19 @@ function Register () {
         <StyledForm>
           <div className="registerInput">
             <label htmlFor="registerName">Your Name:</label>
-            <input id="registerName" className="input" type="text" onChange={({ target }) => setName(target.value)} placeholder="John Smith"/>
+            <StyledInput id="registerName" type="text" onChange={({ target }) => setName(target.value)} placeholder="John Smith"/>
           </div>
           <div className="registerInput">
             <label htmlFor="registerEmail">Email Address:</label>
-            <input id="registerEmail" className="input" type="email" onChange={({ target }) => setEmail(target.value)} placeholder="example@email.com"/>
+            <StyledInput id="registerEmail" type="email" onChange={({ target }) => setEmail(target.value)} placeholder="example@email.com"/>
           </div>
           <div className="registerInput">
             <label htmlFor="registerPassword1">Password:</label>
-            <input id="registerPassword1" className="input" type="password" onChange={({ target }) => setPassword1(target.value)} placeholder="password"/>
+            <StyledInput id="registerPassword1" type="password" onChange={({ target }) => setPassword1(target.value)} placeholder="password"/>
           </div>
           <div className="registerInput">
             <label htmlFor="registerPassword2">Confirm Password:</label>
-            <input id="registerPassword2" className="input" type="password" onChange={({ target }) => setPassword2(target.value)} placeholder="password"/>
+            <StyledInput id="registerPassword2" type="password" onChange={({ target }) => setPassword2(target.value)} placeholder="password"/>
           </div>
         </StyledForm>
         <LinkButton to={'/'} onClick={registerUser} value="Register"/>

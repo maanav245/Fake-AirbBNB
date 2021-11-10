@@ -6,7 +6,7 @@ import Modal from '../components/Modal';
 import LoggedInButtons from '../components/LoggedInButtons';
 import LinkButton from '../components/LinkButton'
 import Logo from '../components/Logo'
-import { StyledSection, StyledHeader, StyledMain, StyledForm } from '../components/StyledComponents'
+import { StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput } from '../components/StyledComponents'
 
 function Login () {
   const { page, token, modal, users, user } = React.useContext(StoreContext);
@@ -62,11 +62,11 @@ function Login () {
         <StyledForm>
           <div className="loginInput">
             <label htmlFor="loginEmail">Email Address:</label>
-            <input id="loginEmail" className="input" type="email" onChange={({ target }) => setEmail(target.value)} placeholder="example@email.com"/>
+            <StyledInput id="loginEmail" type="email" onChange={({ target }) => setEmail(target.value)} placeholder="example@email.com"/>
           </div>
           <div className="loginInput">
             <label htmlFor="loginPassword">Password:</label>
-            <input id="loginPassword" className="input" type="password" onChange={({ target }) => setPassword(target.value)} placeholder="password"/>
+            <StyledInput id="loginPassword" type="password" onChange={({ target }) => setPassword(target.value)} placeholder="password"/>
           </div>
         </StyledForm>
         <LinkButton to={'/'} onClick={loginUser} value="Login"/>
