@@ -3,6 +3,29 @@ import { StoreContext } from '../Store';
 import { Slider } from '@mui/material';
 import LinkButton from './LinkButton'
 import { StyledForm, StyledInput } from './StyledComponents.jsx'
+import styled from 'styled-components';
+
+const ModalContainer = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+`
+
+const ModalContent = styled.div`
+  width: 70vw;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 10px;
+  margin-top: 100px;
+`
 
 function Modal () {
   const { modal, filters } = React.useContext(StoreContext);
@@ -39,8 +62,8 @@ function Modal () {
 
   if (modal.modal === 'filters') {
     return (
-      <div className="my-modal-container">
-        <div className="my-modal-content">
+      <ModalContainer>
+        <ModalContent>
             <h2 className="modal-title">Search Filters</h2>
             <StyledForm>
               <div className="searchInput">
@@ -94,18 +117,18 @@ function Modal () {
             </StyledForm>
             <LinkButton to={'.'} onClick={(event) => applyFilters()} value="Search"/>
             <LinkButton to={'.'} onClick={() => modal.setModal('')} value="Close"/>
-        </div>
-      </div>
+        </ModalContent>
+      </ModalContainer>
     );
   } else if (modal.modal !== '') {
     return (
-      <div className="my-modal-container">
-        <div className="my-modal-content">
+      <ModalContainer>
+        <ModalContent>
             <h2 className="modal-title">Error!</h2>
             <ErrorContent/>
             <LinkButton to={'.'} onClick={() => modal.setModal('')} value="Close"/>
-        </div>
-      </div>
+        </ModalContent>
+      </ModalContainer>
     );
   } else {
     return null;

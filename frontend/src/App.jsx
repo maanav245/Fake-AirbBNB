@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import './HostedL.css';
 import Landing from './screens/Landing';
 import Login from './screens/Login';
 import Register from './screens/Register';

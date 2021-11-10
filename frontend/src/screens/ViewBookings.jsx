@@ -8,7 +8,7 @@ import Error from '../Error';
 import PropTypes from 'prop-types';
 import LinkButton from '../components/LinkButton'
 import Logo from '../components/Logo'
-import { StyledSection, StyledHeader, StyledMain } from '../components/StyledComponents'
+import { StyledSection, StyledHeader, StyledMain, Banner } from '../components/StyledComponents'
 
 function ViewBookings () {
   const { token, modal, listingInfo, bookingsListingId, profit } = React.useContext(StoreContext);
@@ -136,12 +136,12 @@ function ViewBookings () {
       <Modal/>
       <StyledHeader>
         <LoggedInButtons/>
-        <div className="banner">
+        <Banner>
           <Logo/>
-        </div>
-        <div className="banner">
+        </Banner>
+        <Banner>
           <LoginButton/>
-        </div>
+        </Banner>
       </StyledHeader>
       <StyledMain>
         <h1>Listing Information</h1>
@@ -162,12 +162,12 @@ function ViewBookings () {
       <StyledSection>
         <StyledHeader>
           <LoggedInButtons/>
-          <div className="banner">
+          <Banner>
             <Logo/>
-          </div>
-          <div className="banner">
+          </Banner>
+          <Banner>
             <LoginButton/>
-          </div>
+          </Banner>
         </StyledHeader>
         <StyledMain>
           <h1>You must log in to view this page</h1>

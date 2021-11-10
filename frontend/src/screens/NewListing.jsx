@@ -7,7 +7,7 @@ import Error from '../Error';
 import Modal from '../components/Modal';
 import LinkButton from '../components/LinkButton'
 import Logo from '../components/Logo'
-import { StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, StyledFileInput } from '../components/StyledComponents'
+import { StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, StyledFileInput, Banner } from '../components/StyledComponents'
 
 function NewListing () {
   const { page, token, modal } = React.useContext(StoreContext);
@@ -110,12 +110,12 @@ function NewListing () {
         <Modal/>
         <StyledHeader>
           <LoggedInButtons/>
-          <div className="banner">
+          <Banner>
             <Logo/>
-          </div>
-          <div className="banner">
+          </Banner>
+          <Banner>
             <LoginButton/>
-          </div>
+          </Banner>
         </StyledHeader>
         <StyledMain>
           <h1>Create New Listing</h1>
@@ -181,12 +181,12 @@ function NewListing () {
       <StyledSection>
         <StyledHeader>
           <LoggedInButtons/>
-          <div className="banner">
+          <Banner>
             <Logo/>
-          </div>
-          <div className="banner">
+          </Banner>
+          <Banner>
             <LoginButton/>
-          </div>
+          </Banner>
         </StyledHeader>
         <StyledMain>
           <h1>You must log in to view this page</h1>

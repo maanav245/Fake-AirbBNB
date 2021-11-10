@@ -10,7 +10,7 @@ import 'react-calendar/dist/Calendar.css';
 import PropTypes from 'prop-types';
 import LinkButton from '../components/LinkButton'
 import Logo from '../components/Logo'
-import { StyledSection, StyledHeader, StyledMain } from '../components/StyledComponents'
+import { StyledSection, StyledHeader, StyledMain, Banner, ListingsContainer, ListingContainer, ListingImage, ListingInfo, ListingButtons } from '../components/StyledComponents'
 
 function HostedListings () {
   const { page, token, modal, user, listingInfo, editListingId, bookingsListingId } = React.useContext(StoreContext);
@@ -196,10 +196,11 @@ function HostedListings () {
       }
       return (
         done.map((e, i) => (
-          <div className="listing_cont" key={i}>
+          <ListingContainer key={i}>
             <div>
-              <img className="listing_image" src={e.info.thumbnail}></img>
-              <div className="listing_buttons">
+              <ListingImage src={e.info.thumbnail}>
+              </ListingImage>
+              <ListingButtons>
                 <LinkButton to={'/edit-listings/' + e.id} onClick={function () {
                   // console.log(e);
                   listingInfo.setlistingInfo(e.info);
@@ -208,9 +209,9 @@ function HostedListings () {
                 }} value="Edit"/>
                 <LinkButton to={'.'} onClick={() => deleteSingleListing(e.id)} value="Delete"/>
                 <PublishButton listing={e}/>
-              </div>
+              </ListingButtons>
             </div>
-            <div className="listing_info">
+            <ListingInfo>
               <h2>{e.info.title}</h2>
               <p>{e.info.address.street}, {e.info.address.city}, {e.info.address.state}, {e.info.address.postcode}, {e.info.address.country}</p>
               <p>${e.info.price} per night</p>
@@ -220,13 +221,13 @@ function HostedListings () {
               <p>Number of bathrooms: {e.info.metadata.bathrooms}</p>
               <p>Average rating: TODO</p>
               <p>Number of reviews: {e.info.reviews.length}</p>
-            </div>
+            </ListingInfo>
             <LinkButton to={'/view-bookings/' + e.id} onClick={function () {
               listingInfo.setlistingInfo(e.info);
               bookingsListingId.setBookingsListingId(e.id);
               page.setPage(7);
             }} value="View Bookings"/>
-          </div>
+          </ListingContainer>
         ))
       );
     } else {
@@ -243,20 +244,20 @@ function HostedListings () {
           <Modal/>
           <StyledHeader>
             <LoggedInButtons/>
-            <div className="banner">
+            <Banner>
               <Logo/>
-            </div>
-            <div className="banner">
+            </Banner>
+            <Banner>
               <LoginButton/>
-            </div>
+            </Banner>
           </StyledHeader>
           <StyledMain>
             <PublishListing/>
             <h1>Hosted Listings</h1>
             <LinkButton to={'/new-listing'} onClick={() => page.setPage(4)} value="Create New Listing"/>
-            <div className="hosted_container">
+            <ListingsContainer>
               <DisplayListings/>
-            </div>
+            </ListingsContainer>
           </StyledMain>
           <footer>
           </footer>
@@ -268,19 +269,19 @@ function HostedListings () {
         <Modal/>
         <StyledHeader>
           <LoggedInButtons/>
-          <div className="banner">
+          <Banner>
             <Logo/>
-          </div>
-          <div className="banner">
+          </Banner>
+          <Banner>
             <LoginButton/>
-          </div>
+          </Banner>
         </StyledHeader>
         <StyledMain>
           <h1>Hosted Listings</h1>
           <LinkButton to={'/new-listing'} onClick={() => page.setPage(4)} value="Create New Listing"/>
-          <div className="hosted_container">
+          <ListingsContainer>
             <DisplayListings/>
-          </div>
+          </ListingsContainer>
         </StyledMain>
         <footer>
         </footer>
@@ -292,12 +293,12 @@ function HostedListings () {
       <StyledSection>
         <StyledHeader>
           <LoggedInButtons/>
-          <div className="banner">
+          <Banner>
             <Logo/>
-          </div>
-          <div className="banner">
+          </Banner>
+          <Banner>
             <LoginButton/>
-          </div>
+          </Banner>
         </StyledHeader>
         <StyledMain>
           <h1>You must log in to view this page</h1>

@@ -7,7 +7,7 @@ import Port from '../config.json';
 import Error from '../Error';
 import LinkButton from '../components/LinkButton'
 import Logo from '../components/Logo'
-import { StyledSection, StyledHeader, StyledMain } from '../components/StyledComponents'
+import { StyledSection, StyledHeader, StyledMain, Banner, ListingsContainer, ListingContainer, ListingImage, ListingInfo } from '../components/StyledComponents'
 
 function Landing () {
   const { token, modal, user, filters, listingInfo, viewListingId, page } = React.useContext(StoreContext);
@@ -225,9 +225,10 @@ function Landing () {
     if (listings.length !== 0) {
       return (
         listings.map((e, i) => (
-          <div className="listing_cont" key={i}>
-            <img className="listing_image" src={e.info.thumbnail}></img>
-            <div className="listing_info">
+          <ListingContainer key={i}>
+            <ListingImage src={e.info.thumbnail}>
+            </ListingImage>
+            <ListingInfo>
               <h2>{e.info.title}</h2>
               <p>Location: {e.info.address.city}</p>
               <p>Number of bedrooms: {e.info.metadata.bedrooms.length}</p>
@@ -239,8 +240,8 @@ function Landing () {
                 viewListingId.setViewListingId(e.id);
                 page.setPage(6);
               }} value="View"/>
-            </div>
-          </div>
+            </ListingInfo>
+          </ListingContainer>
         ))
       );
     } else {
@@ -255,21 +256,21 @@ function Landing () {
       <Modal/>
       <StyledHeader>
         <LoggedInButtons/>
-        <div className="banner">
+        <Banner>
           <Logo/>
-        </div>
-        <div className="banner">
+        </Banner>
+        <Banner>
           <LoginButton/>
-        </div>
+        </Banner>
       </StyledHeader>
       <StyledMain>
         <h1>Listings</h1>
         <LinkButton to={'.'} onClick={() => modal.setModal('filters')} value="Filter Listings"/>
         <FiltersApplied/>
         <LinkButton to={'.'} onClick={() => filters.setFilters({})} value="Clear Filters"/>
-        <div className="listings_container">
+        <ListingsContainer>
           <DisplayListings/>
-        </div>
+        </ListingsContainer>
       </StyledMain>
       <footer>
       </footer>

@@ -12,7 +12,7 @@ import { Carousel } from 'react-responsive-carousel';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Error from '../Error';
 import Logo from '../components/Logo'
-import { StyledSection, StyledHeader, StyledMain } from '../components/StyledComponents'
+import { StyledSection, StyledHeader, StyledMain, Banner } from '../components/StyledComponents'
 
 function ViewListing () {
   const { token, listingInfo, viewListingId, modal } = React.useContext(StoreContext);
@@ -76,12 +76,12 @@ function ViewListing () {
         <Modal/>
         <StyledHeader>
           <LoggedInButtons/>
-          <div className="banner">
+          <Banner>
             <Logo/>
-          </div>
-          <div className="banner">
+          </Banner>
+          <Banner>
             <LoginButton/>
-          </div>
+          </Banner>
         </StyledHeader>
         <StyledMain className="viewing_main">
 
@@ -150,12 +150,12 @@ function ViewListing () {
         <Modal/>
         <StyledHeader>
           <LoggedInButtons/>
-          <div className="banner">
+          <Banner>
             <Logo/>
-          </div>
-          <div className="banner">
+          </Banner>
+          <Banner>
             <LoginButton/>
-          </div>
+          </Banner>
         </StyledHeader>
         <StyledMain>
 

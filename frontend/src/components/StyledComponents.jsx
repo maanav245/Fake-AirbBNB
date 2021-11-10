@@ -56,4 +56,49 @@ const StyledFileInput = styled(StyledInput)`
   }
 `
 
-export { StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, StyledFileInput }
+const Banner = styled.div`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+`
+
+const ListingsContainer = styled.div`
+  width: 90vw;
+  display: flex;
+  flex-direction: column;
+  background-color: beige;
+  margin-bottom: 20vh;
+`
+
+const ListingContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  border: 2px solid black;
+  align-items: center;
+`
+
+const ListingImage = styled.img`
+  height: 100%;
+  width: 100%;
+  max-height: 300px;
+  max-width: 300px;
+  padding: 20px;
+`
+
+const ListingInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 55%;
+  margin: 10px;
+`
+
+const ListingButtons = styled.div`
+  display: flex;
+`
+
+export { StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, StyledFileInput, Banner, ListingsContainer, ListingContainer, ListingImage, ListingInfo, ListingButtons }

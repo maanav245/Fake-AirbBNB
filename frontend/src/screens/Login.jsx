@@ -6,7 +6,7 @@ import Modal from '../components/Modal';
 import LoggedInButtons from '../components/LoggedInButtons';
 import LinkButton from '../components/LinkButton'
 import Logo from '../components/Logo'
-import { StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput } from '../components/StyledComponents'
+import { StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, Banner } from '../components/StyledComponents'
 
 function Login () {
   const { page, token, modal, users, user } = React.useContext(StoreContext);
@@ -51,11 +51,11 @@ function Login () {
       <Modal/>
       <StyledHeader>
         <LoggedInButtons/>
-        <div className="banner">
+        <Banner>
           <Logo/>
-        </div>
-        <div className="banner">
-        </div>
+        </Banner>
+        <Banner>
+        </Banner>
       </StyledHeader>
       <StyledMain>
       <h1>Login Page</h1>
