@@ -11,9 +11,9 @@ import 'react-calendar/dist/Calendar.css';
 import PropTypes from 'prop-types';
 
 function HostedListings () {
-  const { page, token, modal, user, listingInfo, editListingId } = React.useContext(StoreContext);
-  console.log(token);
-  console.log(user.user);
+  const { page, token, modal, user, listingInfo, editListingId, bookingsListingId } = React.useContext(StoreContext);
+  // console.log(token);
+  // console.log(user.user);
   const [done, setDone] = React.useState([]);
   const [render, setRender] = React.useState(0);
   const [date, setDate] = React.useState([]);
@@ -34,13 +34,13 @@ function HostedListings () {
     });
     const json = await response.json();
     if (response.ok) {
-      console.log('got fetch');
-      console.log(json.listings);
+      // console.log('got fetch');
+      // console.log(json.listings);
 
       for (let i = 0; i < json.listings.length; i++) {
         if (json.listings[i].owner === user.user) {
           if (!listings.includes(json.listings[i].owner)) {
-            console.log(json.listings[i].id);
+            // console.log(json.listings[i].id);
             listings.push(json.listings[i].id);
           }
         }
@@ -93,8 +93,7 @@ function HostedListings () {
     const json = await response.json();
     if (response.ok) {
       setRender(Math.random);
-    }
-    if (!response.ok) {
+    } else {
       Error(json.error, modal);
     }
   }
@@ -111,17 +110,16 @@ function HostedListings () {
     const json = await response.json();
     if (response.ok) {
       setRender(Math.random);
-    }
-    if (!response.ok) {
+    } else {
       Error(json.error, modal);
     }
   }
 
   function PublishListing () {
     let val = date;
-    console.log('date var is: ' + val.length)
+    // console.log('date var is: ' + val.length)
     if (val.length === 0) {
-      console.log('correct')
+      // console.log('correct')
       val = null
     }
     return (
@@ -136,7 +134,7 @@ function HostedListings () {
                 <div className="modal-body">
                 <Calendar value = {val} onChange={function (e) {
                   setDate(e)
-                  console.log(date);
+                  // console.log(date);
                 } } selectRange={true}/>
 
                 </div>
@@ -154,8 +152,8 @@ function HostedListings () {
   }
 
   async function deleteSingleListing (id) {
-    console.log('clicked delete')
-    console.log(id);
+    // console.log('clicked delete')
+    // console.log(id);
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/${id}`, {
       method: 'DELETE',
       headers: {
@@ -189,10 +187,10 @@ function HostedListings () {
 
   const DisplayListings = () => {
     if (done !== []) {
-      console.log('rendering');
+      // console.log('rendering');
 
       for (let index = 0; index < done.length; index++) {
-        console.log(done[index]);
+        // console.log(done[index]);
       }
       return (
         done.map((e, i) => (
@@ -202,9 +200,9 @@ function HostedListings () {
               <div className="listing_buttons">
                 <Router>
                   <Link className="button listing_button" to={'/edit-listings/' + e.id} onClick={function () {
-                    console.log(e);
+                    // console.log(e);
                     listingInfo.setlistingInfo(e.info);
-                    editListingId.seteditListingId(e.id)
+                    editListingId.seteditListingId(e.id);
                     page.setPage(5);
                   }} >
                     Edit
@@ -220,11 +218,20 @@ function HostedListings () {
               <p>${e.info.price} per night</p>
               <p>Type: {e.info.metadata.type}</p>
               <p>Number of beds: {e.info.metadata.totalbedrooms}</p>
-              {console.log(e.info.metadata)}
+              { /* console.log(e.info.metadata) */}
               <p>Number of bathrooms: {e.info.metadata.bathrooms}</p>
               <p>Average rating: TODO</p>
               <p>Number of reviews: {e.info.reviews.length}</p>
             </div>
+            <Router>
+              <Link className="button listing_button" to={'/view-bookings/' + e.id} onClick={function () {
+                listingInfo.setlistingInfo(e.info);
+                bookingsListingId.setBookingsListingId(e.id);
+                page.setPage(7);
+              }} >
+                View Bookings
+              </Link>
+            </Router>
           </div>
         ))
       );

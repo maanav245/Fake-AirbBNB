@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { StoreContext } from '../Store';
 import Modal from '../components/Modal';
 import Port from '../config.json';
+import Error from '../Error';
 
 function EditListing () {
   const { listingInfo, token, modal, page, editListingId } = React.useContext(StoreContext);

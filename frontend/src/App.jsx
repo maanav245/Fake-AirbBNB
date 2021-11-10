@@ -10,6 +10,7 @@ import HostedListings from './screens/HostedListings';
 import NewListing from './screens/NewListing';
 import EditListing from './screens/EditListing';
 import ViewListing from './screens/ViewListing';
+import ViewBookings from './screens/ViewBookings';
 
 /* setPage values:
   Landing = setPage(0);
@@ -19,6 +20,7 @@ import ViewListing from './screens/ViewListing';
   NewListing = setPage(4);
   EditListing = setPage(5);
   view/Book Listing = setPage(6);
+  viewBookings = setPage(7);
 */
 
 function App () {
@@ -31,6 +33,7 @@ function App () {
     <Route path="/new-listing" component={NewListing}/>
     <Route path="/edit-listing" component={EditListing}/>
     <Route path="/view-listing" component={ViewListing}/>
+    <Route path="/view-bookings" component={ViewBookings}/>
   </Switch>
 
   React.useContext(StoreContext);
@@ -62,6 +65,10 @@ function App () {
   } else if (route.includes('/view-listing')) {
     return (
       <ViewListing/>
+    )
+  } else if (route.includes('/view-bookings')) {
+    return (
+      <ViewBookings/>
     )
   } else {
     console.log(route);

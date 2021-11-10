@@ -11,6 +11,7 @@ import Calendar from 'react-calendar'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import Error from '../Error';
 
 function ViewListing () {
   const { token, listingInfo, viewListingId, modal } = React.useContext(StoreContext);
