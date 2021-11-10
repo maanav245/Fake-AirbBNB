@@ -6,6 +6,7 @@ import Modal from '../components/Modal';
 import Port from '../config.json';
 import Error from '../Error';
 import LinkButton from '../components/LinkButton'
+import Logo from '../components/Logo'
 
 function EditListing () {
   const { listingInfo, token, modal, page, editListingId } = React.useContext(StoreContext);
@@ -173,9 +174,7 @@ function EditListing () {
           <header>
             <LoggedInButtons/>
             <div className="banner">
-              <div id="logo">
-                AirBrb
-              </div>
+              <Logo/>
             </div>
             <div className="banner">
               <LoginButton/>
@@ -251,9 +250,7 @@ function EditListing () {
         <header>
           <LoggedInButtons/>
           <div className="banner">
-            <div id="logo">
-              AirBrb
-            </div>
+            <Logo/>
           </div>
           <div className="banner">
             <LoginButton/>

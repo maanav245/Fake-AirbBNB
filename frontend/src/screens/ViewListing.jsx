@@ -12,6 +12,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Error from '../Error';
+import Logo from '../components/Logo'
 
 function ViewListing () {
   const { token, listingInfo, viewListingId, modal } = React.useContext(StoreContext);
@@ -76,9 +77,7 @@ function ViewListing () {
         <header>
           <LoggedInButtons/>
           <div className="banner">
-            <div id="logo">
-              AirBrb
-            </div>
+            <Logo/>
           </div>
           <div className="banner">
             <LoginButton/>
@@ -152,9 +151,7 @@ function ViewListing () {
         <header>
           <LoggedInButtons/>
           <div className="banner">
-            <div id="logo">
-              AirBrb
-            </div>
+            <Logo/>
           </div>
           <div className="banner">
             <LoginButton/>

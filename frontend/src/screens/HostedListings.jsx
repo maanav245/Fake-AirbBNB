@@ -9,6 +9,7 @@ import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 import PropTypes from 'prop-types';
 import LinkButton from '../components/LinkButton'
+import Logo from '../components/Logo'
 
 function HostedListings () {
   const { page, token, modal, user, listingInfo, editListingId, bookingsListingId } = React.useContext(StoreContext);
@@ -242,9 +243,7 @@ function HostedListings () {
           <header>
             <LoggedInButtons/>
             <div className="banner">
-              <div id="logo">
-                AirBrb
-              </div>
+              <Logo/>
             </div>
             <div className="banner">
               <LoginButton/>
@@ -269,9 +268,7 @@ function HostedListings () {
         <header>
           <LoggedInButtons/>
           <div className="banner">
-            <div id="logo">
-              AirBrb
-            </div>
+            <Logo/>
           </div>
           <div className="banner">
             <LoginButton/>
@@ -296,9 +293,7 @@ function HostedListings () {
         <header>
           <LoggedInButtons/>
           <div className="banner">
-            <div id="logo">
-              AirBrb
-            </div>
+            <Logo/>
           </div>
           <div className="banner">
             <LoginButton/>

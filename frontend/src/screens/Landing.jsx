@@ -6,6 +6,7 @@ import { StoreContext } from '../Store';
 import Port from '../config.json';
 import Error from '../Error';
 import LinkButton from '../components/LinkButton'
+import Logo from '../components/Logo'
 
 function Landing () {
   const { token, modal, user, filters, listingInfo, viewListingId, page } = React.useContext(StoreContext);
@@ -254,9 +255,7 @@ function Landing () {
       <header>
         <LoggedInButtons/>
         <div className="banner">
-          <div id="logo">
-            AirBrb
-          </div>
+          <Logo/>
         </div>
         <div className="banner">
           <LoginButton/>

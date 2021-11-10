@@ -7,6 +7,7 @@ import Port from '../config.json';
 import Error from '../Error';
 import PropTypes from 'prop-types';
 import LinkButton from '../components/LinkButton'
+import Logo from '../components/Logo'
 
 function ViewBookings () {
   const { token, modal, listingInfo, bookingsListingId, profit } = React.useContext(StoreContext);
@@ -135,9 +136,7 @@ function ViewBookings () {
       <header>
         <LoggedInButtons/>
         <div className="banner">
-          <div id="logo">
-            AirBrb
-          </div>
+          <Logo/>
         </div>
         <div className="banner">
           <LoginButton/>
@@ -163,9 +162,7 @@ function ViewBookings () {
         <header>
           <LoggedInButtons/>
           <div className="banner">
-            <div id="logo">
-              AirBrb
-            </div>
+            <Logo/>
           </div>
           <div className="banner">
             <LoginButton/>

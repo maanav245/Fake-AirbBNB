@@ -5,6 +5,7 @@ import Error from '../Error';
 import Modal from '../components/Modal';
 import LoggedInButtons from '../components/LoggedInButtons';
 import LinkButton from '../components/LinkButton'
+import Logo from '../components/Logo'
 
 function Login () {
   const { page, token, modal, users, user } = React.useContext(StoreContext);
@@ -50,9 +51,7 @@ function Login () {
       <header>
         <LoggedInButtons/>
         <div className="banner">
-          <div id="logo">
-            AirBrb
-          </div>
+          <Logo/>
         </div>
         <div className="banner">
         </div>

@@ -6,6 +6,7 @@ import Port from '../config.json';
 import Error from '../Error';
 import Modal from '../components/Modal';
 import LinkButton from '../components/LinkButton'
+import Logo from '../components/Logo'
 
 function NewListing () {
   const { page, token, modal } = React.useContext(StoreContext);
@@ -109,9 +110,7 @@ function NewListing () {
         <header>
           <LoggedInButtons/>
           <div className="banner">
-            <div id="logo">
-              AirBrb
-            </div>
+            <Logo/>
           </div>
           <div className="banner">
             <LoginButton/>
@@ -182,9 +181,7 @@ function NewListing () {
         <header>
           <LoggedInButtons/>
           <div className="banner">
-            <div id="logo">
-              AirBrb
-            </div>
+            <Logo/>
           </div>
           <div className="banner">
             <LoginButton/>
