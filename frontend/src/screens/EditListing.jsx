@@ -7,6 +7,7 @@ import Port from '../config.json';
 import Error from '../Error';
 import LinkButton from '../components/LinkButton'
 import Logo from '../components/Logo'
+import { StyledSection, StyledHeader, StyledMain, StyledForm } from '../components/StyledComponents'
 
 function EditListing () {
   const { listingInfo, token, modal, page, editListingId } = React.useContext(StoreContext);
@@ -169,9 +170,9 @@ function EditListing () {
   if (token.token !== '') {
     return (
 
-    <section>
+    <StyledSection>
           <Modal/>
-          <header>
+          <StyledHeader>
             <LoggedInButtons/>
             <div className="banner">
               <Logo/>
@@ -179,11 +180,11 @@ function EditListing () {
             <div className="banner">
               <LoginButton/>
             </div>
-          </header>
-          <main>
+          </StyledHeader>
+          <StyledMain>
             <h1>Edit Listing</h1>
 
-            <form>
+            <StyledForm>
               <div className="listingInput">
                 <label htmlFor="editListingTitle">Listing Title:</label>
                 <input id="editListingTitle" className="input" type="text" value={title} onChange={({ target }) => setTitle(target.value)} placeholder="Beach House"/>
@@ -237,17 +238,17 @@ function EditListing () {
                 <label htmlFor="editAmenities">Property Amenities:</label>
                 <input id="editAmenities" className="input" type="textarea" value={amenities} onChange={({ target }) => setAmenities(target.value)} placeholder="Kitchen/Pool/WiFi/etc."/>
               </div>
-            </form>
+            </StyledForm>
             <LinkButton to={'/hosted-listings'} onClick={editListing} value="Confirm"/>
-          </main>
+          </StyledMain>
           <footer>
           </footer>
-        </section>
+        </StyledSection>
     );
   } else {
     return (
-      <section>
-        <header>
+      <StyledSection>
+        <StyledHeader>
           <LoggedInButtons/>
           <div className="banner">
             <Logo/>
@@ -255,13 +256,13 @@ function EditListing () {
           <div className="banner">
             <LoginButton/>
           </div>
-        </header>
-        <main>
+        </StyledHeader>
+        <StyledMain>
           <h1>You must log in to view this page</h1>
-        </main>
+        </StyledMain>
         <footer>
         </footer>
-      </section>
+      </StyledSection>
     );
   }
 }

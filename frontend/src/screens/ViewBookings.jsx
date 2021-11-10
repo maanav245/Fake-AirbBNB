@@ -8,6 +8,7 @@ import Error from '../Error';
 import PropTypes from 'prop-types';
 import LinkButton from '../components/LinkButton'
 import Logo from '../components/Logo'
+import { StyledSection, StyledHeader, StyledMain } from '../components/StyledComponents'
 
 function ViewBookings () {
   const { token, modal, listingInfo, bookingsListingId, profit } = React.useContext(StoreContext);
@@ -25,7 +26,7 @@ function ViewBookings () {
 
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/bookings`, {
       method: 'GET',
-      headers: {
+      StyledHeaders: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: token.token,
@@ -131,9 +132,9 @@ function ViewBookings () {
 
   if (token.token !== '') {
     return (
-    <section>
+    <StyledSection>
       <Modal/>
-      <header>
+      <StyledHeader>
         <LoggedInButtons/>
         <div className="banner">
           <Logo/>
@@ -141,8 +142,8 @@ function ViewBookings () {
         <div className="banner">
           <LoginButton/>
         </div>
-      </header>
-      <main>
+      </StyledHeader>
+      <StyledMain>
         <h1>Listing Information</h1>
         <div>
           <ListingInformation/>
@@ -151,15 +152,15 @@ function ViewBookings () {
         <div>
           <BookingsForThisListing/>
         </div>
-      </main>
+      </StyledMain>
       <footer>
       </footer>
-    </section>
+    </StyledSection>
     );
   } else {
     return (
-      <section>
-        <header>
+      <StyledSection>
+        <StyledHeader>
           <LoggedInButtons/>
           <div className="banner">
             <Logo/>
@@ -167,13 +168,13 @@ function ViewBookings () {
           <div className="banner">
             <LoginButton/>
           </div>
-        </header>
-        <main>
+        </StyledHeader>
+        <StyledMain>
           <h1>You must log in to view this page</h1>
-        </main>
+        </StyledMain>
         <footer>
         </footer>
-      </section>
+      </StyledSection>
     );
   }
 }

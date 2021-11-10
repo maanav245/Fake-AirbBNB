@@ -6,6 +6,7 @@ import Modal from '../components/Modal';
 import LoggedInButtons from '../components/LoggedInButtons';
 import LinkButton from '../components/LinkButton'
 import Logo from '../components/Logo'
+import { StyledSection, StyledHeader, StyledMain, StyledForm } from '../components/StyledComponents'
 
 function Register () {
   const { page, token, modal, users, user } = React.useContext(StoreContext);
@@ -29,7 +30,7 @@ function Register () {
 
       const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/user/auth/register`, {
         method: 'POST',
-        headers: {
+        StyledHeaders: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
@@ -48,19 +49,19 @@ function Register () {
   }
 
   return (
-    <section>
+    <StyledSection>
       <Modal/>
-      <header>
+      <StyledHeader>
         <LoggedInButtons/>
         <div className="banner">
           <Logo/>
         </div>
         <div className="banner">
         </div>
-      </header>
-      <main>
+      </StyledHeader>
+      <StyledMain>
         <h1>Register</h1>
-        <form>
+        <StyledForm>
           <div className="registerInput">
             <label htmlFor="registerName">Your Name:</label>
             <input id="registerName" className="input" type="text" onChange={({ target }) => setName(target.value)} placeholder="John Smith"/>
@@ -77,13 +78,13 @@ function Register () {
             <label htmlFor="registerPassword2">Confirm Password:</label>
             <input id="registerPassword2" className="input" type="password" onChange={({ target }) => setPassword2(target.value)} placeholder="password"/>
           </div>
-        </form>
+        </StyledForm>
         <LinkButton to={'/'} onClick={registerUser} value="Register"/>
         <LinkButton to={'/login'} onClick={() => page.setPage(1)} value="Back"/>
-      </main>
+      </StyledMain>
       <footer>
       </footer>
-    </section>
+    </StyledSection>
   );
 }
 

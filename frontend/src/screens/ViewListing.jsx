@@ -1,4 +1,3 @@
-
 import React from 'react';
 import LoggedInButtons from '../components/LoggedInButtons';
 import LoginButton from '../components/LoginButton';
@@ -13,6 +12,7 @@ import { Carousel } from 'react-responsive-carousel';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Error from '../Error';
 import Logo from '../components/Logo'
+import { StyledSection, StyledHeader, StyledMain } from '../components/StyledComponents'
 
 function ViewListing () {
   const { token, listingInfo, viewListingId, modal } = React.useContext(StoreContext);
@@ -72,9 +72,9 @@ function ViewListing () {
 
   if (token.token !== '') {
     return (
-        <section>
+        <StyledSection>
         <Modal/>
-        <header>
+        <StyledHeader>
           <LoggedInButtons/>
           <div className="banner">
             <Logo/>
@@ -82,8 +82,8 @@ function ViewListing () {
           <div className="banner">
             <LoginButton/>
           </div>
-        </header>
-        <main className="viewing_main">
+        </StyledHeader>
+        <StyledMain className="viewing_main">
 
           <h1 className="viewing_title">{listingInfo.listingInfo.title}</h1>
 
@@ -139,16 +139,16 @@ function ViewListing () {
 
           </div>
 
-        </main>
+        </StyledMain>
         <footer>
         </footer>
-      </section>
+      </StyledSection>
     );
   } else {
     return (
-    <section>
+    <StyledSection>
         <Modal/>
-        <header>
+        <StyledHeader>
           <LoggedInButtons/>
           <div className="banner">
             <Logo/>
@@ -156,15 +156,15 @@ function ViewListing () {
           <div className="banner">
             <LoginButton/>
           </div>
-        </header>
-        <main>
+        </StyledHeader>
+        <StyledMain>
 
           <h1>{listingInfo.listingInfo.title}</h1>
 
-        </main>
+        </StyledMain>
         <footer>
         </footer>
-      </section>
+      </StyledSection>
     );
   }
 }

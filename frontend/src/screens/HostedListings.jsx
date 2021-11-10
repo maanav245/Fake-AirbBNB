@@ -10,6 +10,7 @@ import 'react-calendar/dist/Calendar.css';
 import PropTypes from 'prop-types';
 import LinkButton from '../components/LinkButton'
 import Logo from '../components/Logo'
+import { StyledSection, StyledHeader, StyledMain } from '../components/StyledComponents'
 
 function HostedListings () {
   const { page, token, modal, user, listingInfo, editListingId, bookingsListingId } = React.useContext(StoreContext);
@@ -238,9 +239,9 @@ function HostedListings () {
   if (token.token !== '') {
     if (pid !== '') {
       return (
-        <section>
+        <StyledSection>
           <Modal/>
-          <header>
+          <StyledHeader>
             <LoggedInButtons/>
             <div className="banner">
               <Logo/>
@@ -248,24 +249,24 @@ function HostedListings () {
             <div className="banner">
               <LoginButton/>
             </div>
-          </header>
-          <main>
+          </StyledHeader>
+          <StyledMain>
             <PublishListing/>
             <h1>Hosted Listings</h1>
             <LinkButton to={'/new-listing'} onClick={() => page.setPage(4)} value="Create New Listing"/>
             <div className="hosted_container">
               <DisplayListings/>
             </div>
-          </main>
+          </StyledMain>
           <footer>
           </footer>
-        </section>
+        </StyledSection>
       );
     } else {
       return (
-      <section>
+      <StyledSection>
         <Modal/>
-        <header>
+        <StyledHeader>
           <LoggedInButtons/>
           <div className="banner">
             <Logo/>
@@ -273,24 +274,23 @@ function HostedListings () {
           <div className="banner">
             <LoginButton/>
           </div>
-        </header>
-        <main>
-
+        </StyledHeader>
+        <StyledMain>
           <h1>Hosted Listings</h1>
           <LinkButton to={'/new-listing'} onClick={() => page.setPage(4)} value="Create New Listing"/>
           <div className="hosted_container">
             <DisplayListings/>
           </div>
-        </main>
+        </StyledMain>
         <footer>
         </footer>
-      </section>
+      </StyledSection>
       );
     }
   } else {
     return (
-      <section>
-        <header>
+      <StyledSection>
+        <StyledHeader>
           <LoggedInButtons/>
           <div className="banner">
             <Logo/>
@@ -298,14 +298,14 @@ function HostedListings () {
           <div className="banner">
             <LoginButton/>
           </div>
-        </header>
-        <main>
+        </StyledHeader>
+        <StyledMain>
           <h1>You must log in to view this page</h1>
 
-        </main>
+        </StyledMain>
         <footer>
         </footer>
-      </section>
+      </StyledSection>
     );
   }
 }

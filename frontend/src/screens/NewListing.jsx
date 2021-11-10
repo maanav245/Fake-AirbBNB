@@ -7,6 +7,7 @@ import Error from '../Error';
 import Modal from '../components/Modal';
 import LinkButton from '../components/LinkButton'
 import Logo from '../components/Logo'
+import { StyledSection, StyledHeader, StyledMain, StyledForm } from '../components/StyledComponents'
 
 function NewListing () {
   const { page, token, modal } = React.useContext(StoreContext);
@@ -43,7 +44,7 @@ function NewListing () {
     const data = { title: title, address: address, price: price, thumbnail: thumbnail, metadata: actMetadata };
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/new`, {
       method: 'POST',
-      headers: {
+      StyledHeaders: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: token.token,
@@ -105,9 +106,9 @@ function NewListing () {
 
   if (token.token !== '') {
     return (
-      <section>
+      <StyledSection>
         <Modal/>
-        <header>
+        <StyledHeader>
           <LoggedInButtons/>
           <div className="banner">
             <Logo/>
@@ -115,10 +116,10 @@ function NewListing () {
           <div className="banner">
             <LoginButton/>
           </div>
-        </header>
-        <main>
+        </StyledHeader>
+        <StyledMain>
           <h1>Create New Listing</h1>
-          <form>
+          <StyledForm>
             <div className="listingInput">
               <label htmlFor="listingTitle">Listing Title:</label>
               <input id="listingTitle" className="input" type="text" onChange={({ target }) => setTitle(target.value)} placeholder="Beach House"/>
@@ -168,17 +169,17 @@ function NewListing () {
               <label htmlFor="amenities">Property Amenities:</label>
               <input id="amenities" className="input" type="textarea" onChange={({ target }) => setMetadata({ ...metadata, amenities: target.value })} placeholder="Kitchen/Pool/WiFi/etc."/>
             </div>
-          </form>
+          </StyledForm>
           <LinkButton to={'/hosted-listings'} onClick={createListing} value="Confirm"/>
-        </main>
+        </StyledMain>
         <footer>
         </footer>
-      </section>
+      </StyledSection>
     );
   } else {
     return (
-      <section>
-        <header>
+      <StyledSection>
+        <StyledHeader>
           <LoggedInButtons/>
           <div className="banner">
             <Logo/>
@@ -186,13 +187,13 @@ function NewListing () {
           <div className="banner">
             <LoginButton/>
           </div>
-        </header>
-        <main>
+        </StyledHeader>
+        <StyledMain>
           <h1>You must log in to view this page</h1>
-        </main>
+        </StyledMain>
         <footer>
         </footer>
-      </section>
+      </StyledSection>
     )
   }
 }

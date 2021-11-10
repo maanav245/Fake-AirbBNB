@@ -7,6 +7,7 @@ import Port from '../config.json';
 import Error from '../Error';
 import LinkButton from '../components/LinkButton'
 import Logo from '../components/Logo'
+import { StyledSection, StyledHeader, StyledMain } from '../components/StyledComponents'
 
 function Landing () {
   const { token, modal, user, filters, listingInfo, viewListingId, page } = React.useContext(StoreContext);
@@ -250,9 +251,9 @@ function Landing () {
   }
 
   return (
-    <section>
+    <StyledSection>
       <Modal/>
-      <header>
+      <StyledHeader>
         <LoggedInButtons/>
         <div className="banner">
           <Logo/>
@@ -260,8 +261,8 @@ function Landing () {
         <div className="banner">
           <LoginButton/>
         </div>
-      </header>
-      <main>
+      </StyledHeader>
+      <StyledMain>
         <h1>Listings</h1>
         <LinkButton to={'.'} onClick={() => modal.setModal('filters')} value="Filter Listings"/>
         <FiltersApplied/>
@@ -269,10 +270,10 @@ function Landing () {
         <div className="listings_container">
           <DisplayListings/>
         </div>
-      </main>
+      </StyledMain>
       <footer>
       </footer>
-    </section>
+    </StyledSection>
   );
 }
 

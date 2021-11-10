@@ -2,6 +2,7 @@ import React from 'react';
 import { StoreContext } from '../Store';
 import { Slider } from '@mui/material';
 import LinkButton from './LinkButton'
+import { StyledForm } from './StyledComponents.jsx'
 
 function Modal () {
   const { modal, filters } = React.useContext(StoreContext);
@@ -41,7 +42,7 @@ function Modal () {
       <div className="my-modal-container">
         <div className="my-modal-content">
             <h2 className="modal-title">Search Filters</h2>
-            <form>
+            <StyledForm>
               <div className="searchInput">
                 <label htmlFor="searchTitle">Search by Title or City:</label>
                 <input id="searchTitle" className="input" type="text" value={search} onChange={({ target }) => setSearch(target.value)} placeholder="Beach/Sydney"/>
@@ -90,7 +91,7 @@ function Modal () {
                 <label htmlFor="lowToHigh">Sort By Review Low to High</label>
                 <input id="lowToHigh" className="radio-button" value="lowToHigh" name="reviewSort" type="radio" checked={review === 'lowToHigh'} onChange={({ target }) => setReview(target.value)}/>
               </div>
-            </form>
+            </StyledForm>
             <LinkButton to={'.'} onClick={(event) => applyFilters()} value="Search"/>
             <LinkButton to={'.'} onClick={() => modal.setModal('')} value="Close"/>
         </div>
