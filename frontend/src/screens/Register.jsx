@@ -27,10 +27,9 @@ function Register () {
       Error('You must complete all fields!', modal);
     } else {
       const data = { email: email, password: password1, name: name };
-
       const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/user/auth/register`, {
         method: 'POST',
-        StyledHeaders: {
+        headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
