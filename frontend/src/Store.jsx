@@ -19,6 +19,7 @@ function Store ({ children }) {
   const [viewListingId, setViewListingId] = React.useState('');
   const [bookingsListingId, setBookingsListingId] = React.useState('');
   const [profit, setProfit] = React.useState(0);
+
   const store = {
     page: { page, setPage },
     token: { token, setToken },
