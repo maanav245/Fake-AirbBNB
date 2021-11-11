@@ -26,7 +26,7 @@ function ViewBookings () {
 
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/bookings`, {
       method: 'GET',
-      StyledHeaders: {
+      headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: token.token,
