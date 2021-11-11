@@ -40,11 +40,11 @@ function NewListing () {
     }
     const newMetadata = { ...metadata, totalbedrooms: totalbedrooms }
     const actMetadata = { ...newMetadata, images: [] };
-
+    console.log(token.token);
     const data = { title: title, address: address, price: price, thumbnail: thumbnail, metadata: actMetadata };
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/new`, {
       method: 'POST',
-      StyledHeaders: {
+      headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: token.token,
