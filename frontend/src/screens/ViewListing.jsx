@@ -272,25 +272,52 @@ function ViewListing () {
     );
   } else {
     return (
-    <StyledSection>
-        <Modal/>
-        <StyledHeader>
-          <LoggedInButtons/>
-          <Banner>
-            <Logo/>
-          </Banner>
-          <Banner>
-            <LoginButton/>
-          </Banner>
-        </StyledHeader>
-        <StyledMain>
+      <StyledSection>
+      <Modal1/>
+      <StyledHeader>
+        <LoggedInButtons/>
+        <Banner>
+          <Logo/>
+        </Banner>
+        <Banner>
+          <LoginButton/>
+        </Banner>
+      </StyledHeader>
+      <StyledMain className="viewing_main">
 
-          <h1>{listingInfo.listingInfo.title}</h1>
+        <h1 className="viewing_title">{listingInfo.listingInfo.title}</h1>
 
-        </StyledMain>
-        <footer>
-        </footer>
-      </StyledSection>
+        <div className="image_location">
+          <Carousel>
+            <div>
+                <img src={listingInfo.listingInfo.thumbnail} />
+
+            </div>
+            <GenerateCarousel/>
+          </Carousel>
+        </div>
+        <div className="viewing_body_info">
+          <div className="viewing_info_text">
+            <p>{formD.address.street}, {formD.address.city}, {formD.address.state}, {formD.address.postcode}, {formD.address.country}</p>
+            <p>${formD.price} per night</p>
+            <p>Type: {formD.metadata.type}</p>
+            <p>Number of beds: {formD.metadata.totalbedrooms}</p>
+            {console.log(formD.metadata)}
+            <p>Number of bathrooms: {formD.metadata.bathrooms}</p>
+            <p>Average rating: TODO</p>
+            <p>Number of reviews: {formD.reviews.length}</p>
+          </div>
+        </div>
+
+        <div className="review_box">
+          <h1 className="reviews_title">Reviews</h1>
+          <ProduceReviewsList/>
+        </div>
+
+      </StyledMain>
+      <footer>
+      </footer>
+    </StyledSection>
     );
   }
 }
