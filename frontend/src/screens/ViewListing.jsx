@@ -3,23 +3,35 @@ import LoggedInButtons from '../components/LoggedInButtons';
 import LoginButton from '../components/LoginButton';
 import '../App.css';
 import { StoreContext } from '../Store';
-import Modal from '../components/Modal';
+import Modal1 from '../components/Modal';
 import 'react-calendar/dist/Calendar.css';
 import Port from '../config.json';
 import Calendar from 'react-calendar'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import Error from '../Error';
 import Logo from '../components/Logo'
+import { Badge, Form, Modal, Button, FloatingLabel } from 'react-bootstrap';
+
+import 'bootstrap/dist/css/bootstrap.min.css'
 import { StyledSection, StyledHeader, StyledMain, Banner } from '../components/StyledComponents'
 
 function ViewListing () {
-  const { token, listingInfo, viewListingId, modal } = React.useContext(StoreContext);
+  const { token, listingInfo, viewListingId, modal, user } = React.useContext(StoreContext);
   const [dateRange, setDateRange] = React.useState(null);
   console.log(listingInfo.listingInfo);
   const formD = listingInfo.listingInfo
-  const [infiniteList, setInfiniteList] = React.useState(Array.from({ length: 10 }))
+  const [reviewList, setreviewList] = React.useState([])
+  const [showModal, setShowModal] = React.useState(false);
+  const [rating, setRating] = React.useState('0');
+  const [review, setReview] = React.useState('');
+  const [bStatus, setBStatus] = React.useState('Not booked');
+  const [bID, setBID] = React.useState('');
+  console.log(rating);
+  console.log(review);
+  const closeModal = () => setShowModal(false);
+  const displayModal = () => setShowModal(true);
+  const [canReview, setCanReview] = React.useState(false);
 
   function GenerateCarousel () {
     if (listingInfo.listingInfo.metadata.images === undefined || listingInfo.listingInfo.metadata.images.length === 0) {
@@ -38,8 +50,90 @@ function ViewListing () {
     }
   }
 
-  function GenerateRandoms () {
-    setInfiniteList(infiniteList.concat(Array.from({ length: 10 })));
+  async function getReviewList (id) {
+    const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/${viewListingId.viewListingId}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token.token,
+      },
+    });
+    const json = await response.json();
+    if (response.ok) {
+      setreviewList(json.listing.reviews)
+    } else {
+      Error(json.error, modal);
+    }
+  }
+
+  function ProduceReviewsList () {
+    return (
+      reviewList.map((e, i) => (
+        <div className="review_itself" key={i}>
+          <div className="review_user">{e.name}</div>
+          <div className="review_stars">{e.rating} </div>
+          <div className="review_body">{e.review}</div>
+        </div>
+      ))
+    );
+  }
+  React.useEffect(async () => {
+    getReviewList()
+  }, [showModal])
+
+  React.useEffect(async () => {
+    let answer = false;
+    const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/bookings`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token.token,
+      },
+    });
+    const json = await response.json();
+    if (response.ok) {
+      for (let index = 0; index < json.bookings.length; index++) {
+        const element = json.bookings[index];
+        console.log(element.owner)
+        console.log(user.user);
+        console.log(element.listingId)
+        console.log(viewListingId.viewListingId)
+        if (element.owner === user.user && parseInt(element.listingId) === viewListingId.viewListingId) {
+          console.log('entered');
+          setBID(element.id);
+          setBStatus(element.status);
+          answer = true;
+          console.log(answer)
+        }
+      }
+    } else {
+      Error(json.error, modal);
+      answer = false;
+    }
+    setCanReview(answer);
+  }, [])
+  console.log(canReview)
+
+  async function submitReview () {
+    const review1 = { name: user.user, rating: rating, review: review };
+    const data = { review: review1 }
+    const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/${viewListingId.viewListingId}/review/${bID}`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token.token,
+      },
+      body: JSON.stringify(data)
+    });
+    const json = await response.json();
+    if (response.ok) {
+      return json.listing;
+    } else {
+      Error(json.error, modal);
+    }
   }
 
   async function submitBooking () {
@@ -73,7 +167,7 @@ function ViewListing () {
   if (token.token !== '') {
     return (
         <StyledSection>
-        <Modal/>
+        <Modal1/>
         <StyledHeader>
           <LoggedInButtons/>
           <Banner>
@@ -116,27 +210,59 @@ function ViewListing () {
               <div className="book_btn_container">
                   <button type="button" className="btn btn-primary " onClick={function () {
                     submitBooking();
-                  }}>Book</button>
+                  }}>Book </button>
+                  <Badge bg="secondary">{bStatus}</Badge>
               </div>
             </div>
           </div>
+          <Modal show={showModal} onHide={closeModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>Leave a Review</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label> Rating: {'     '} </Form.Label>
+                <Form.Select value={rating} onChange={(e) => { setRating(e.target.value) }}>
+                  <option value="0">Open this select menu</option>
+                  <option value="1">1 (Poor)</option>
+                  <option value="2">2 (not bad)</option>
+                  <option value="3">3 (Average)</option>
+                  <option value="4">4 (Good)</option>
+                  <option value="5">5 (Excellent)</option>
+                </Form.Select>
+              </Form.Group>
+              <FloatingLabel controlId="floatingTextarea2" label="Review" value={review} onChange = {(e) => { setReview(e.target.value) }}>
+                <Form.Control
+                  as="textarea"
+                  placeholder="Leave a review here"
+                  style={{ height: '20vh' }}
+                />
+              </FloatingLabel>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={closeModal}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={function () {
+                submitReview()
+                closeModal()
+              }}>
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
           <div className="review_box">
             <h1 className="reviews_title">Reviews</h1>
-            <InfiniteScroll
-              dataLength={infiniteList.length}
-              next={GenerateRandoms}
-              hasMore={true}
-              loader={<h4>Loading...</h4>}
-            >
-                {infiniteList.map((e, i) => (
-                  <div className="review_itself" key={i}>
-                    <div className="review_user">Matt</div>
-                    <div className="review_stars"> 4.93 </div>
-                    <div className="review_body"> Nice Place</div>
-                  </div>
-                ))}
-            </InfiniteScroll>
-
+            {canReview &&
+            <button type="button" className="btn btn-primary" onClick={function () {
+              displayModal();
+              console.log('Being clicked');
+            }}>Leave Review</button>
+            }
+            <ProduceReviewsList/>
           </div>
 
         </StyledMain>
