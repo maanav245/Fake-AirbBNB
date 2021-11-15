@@ -1,16 +1,5 @@
 /* TODO convert these to styled components */
 
-.viewing_title {
-  margin-top: 2vh;
-  font-size: xx-large;
-}
-
-.viewing_main {
-  display: flex;
-  flex-direction: column;
-  margin-left: 6.5vw;
-}
-
 .react-calendar {
   max-width: 30vw;
 
@@ -21,7 +10,7 @@
 }
 
 .booking_container {
-  margin-left: 20vw;
+  margin-left: 60vh;
   width: fit-content;
   height: 70vh;
   background-color: white;
@@ -48,12 +37,11 @@
   display: flex;
   flex-direction: row;
   margin-bottom: 10vh;
-
 }
 
 .carousel .slide img {
-  max-width: 15%;
-  max-height: 15%;
+  max-width: 35%;
+  max-height: 35%;
 }
 
 .thumbs-wrapper {
@@ -64,10 +52,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-
-}
-
-.reviews_title {
+  padding: 10vh;
 
 }
 

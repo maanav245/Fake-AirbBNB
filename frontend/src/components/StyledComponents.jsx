@@ -101,4 +101,31 @@ const ListingButtons = styled.div`
   display: flex;
 `
 
-export { StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, StyledFileInput, Banner, ListingsContainer, ListingContainer, ListingImage, ListingInfo, ListingButtons }
+const ViewingTitle = styled.header`
+  margin-top: 2vh;
+  font-size: xx-large;
+`
+
+const ViewingMain = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 6.5vw;
+`
+const RatingButtonPrimary = styled.div`
+  background-colour: white;
+  width: 25%;
+  cursor: pointer;
+`
+
+const RatingPopover = styled.div`
+  width: 30vw;
+  height: 60vh;
+`
+const RatingProgress = styled.div`
+  padding: 1vw;
+  display: flex;
+  flex-direction: row;
+
+`
+
+export { RatingProgress, RatingPopover, RatingButtonPrimary, ViewingMain, ViewingTitle, StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, StyledFileInput, Banner, ListingsContainer, ListingContainer, ListingImage, ListingInfo, ListingButtons }
