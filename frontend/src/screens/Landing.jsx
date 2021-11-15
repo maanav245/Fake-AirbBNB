@@ -28,7 +28,9 @@ function Landing () {
     if (response.ok) {
       for (let i = 0; i < json.listings.length; i++) {
         const res = await getSingleListing(json.listings[i].id);
-        listings2.push({ id: json.listings[i].id, info: res });
+        if (res.published) {
+          listings2.push({ id: json.listings[i].id, info: res });
+        }
       }
 
       const sortedListings = await sortListings(listings2);
@@ -126,8 +128,14 @@ function Landing () {
     }
     if (filters.filters.startDate && filters.filters.endDate) {
       filtered = true;
-      const dateFilteredListings = listings2;
-      console.log('TODO: filter by date');
+      const dateFilteredListings = [];
+      for (let i = 0; i < listings2.length; i++) {
+        if (listings2[i].info.availability.length > 0) {
+          if (listings2[i].info.availability[0] <= filters.filters.startDate && listings2[i].info.availability[1] >= filters.filters.endDate) {
+            dateFilteredListings.push(listings2[i]);
+          }
+        }
+      }
       filteredListings.push(dateFilteredListings);
     }
     if (filters.filters.price) {
@@ -156,6 +164,7 @@ function Landing () {
   }
 
   const sortByReview = (allFilters) => {
+    // TODO sort listings by review
     console.log('TODO: sort listings by review');
     return allFilters;
   }
