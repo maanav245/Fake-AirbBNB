@@ -11,7 +11,7 @@ import Logo from '../components/Logo'
 import { StyledSection, StyledHeader, StyledMain, Banner } from '../components/StyledComponents'
 
 function ViewBookings () {
-  const { token, modal, listingInfo, bookingsListingId, profit } = React.useContext(StoreContext);
+  const { token, modal, listingInfo, bookingsListingId } = React.useContext(StoreContext);
 
   const [bookings, setBookings] = React.useState([]);
   const [render, setRender] = React.useState(0);
@@ -56,7 +56,6 @@ function ViewBookings () {
     });
     const json = await response.json();
     if (response.ok) {
-      profit.setProfit(profit.profit + booking.totalPrice);
       setRender(Math.random);
     } else {
       Error(json.error, modal);
@@ -104,8 +103,8 @@ function ViewBookings () {
           <div key={i}>
             <hr/>
             <p>Booking Owner: {e.owner}</p>
-            <p>Check-In Date: {e.dateRange[0]}</p>
-            <p>Check-Out Date: {e.dateRange[1]}</p>
+            <p>Check-In Date: {formatDate(e.dateRange[0])}</p>
+            <p>Check-Out Date: {formatDate(e.dateRange[1])}</p>
             <p>Total Price: ${e.totalPrice}</p>
             <p>Booking Status: {e.status}</p>
             <BookingRequestButtons booking={e}/>
@@ -120,12 +119,52 @@ function ViewBookings () {
     }
   }
 
+  const formatDate = (date) => {
+    const year = date.split('-')[0];
+    const month = date.split('-')[1];
+    const day = date.split('-')[2].split('T')[0];
+    const formattedDate = day + '/' + month + '/' + year;
+    return formattedDate;
+  }
+
+  const getDays = (date) => {
+    const today = new Date();
+    const diff = today - Date.parse(date);
+    const diffDays = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
+
+  const getDays2 = (date1, date2) => {
+    const diff = Date.parse(date2) - date1;
+    const diffDays = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
+
+  const getDaysBooked = () => {
+    let totalDays = 0;
+    const today = new Date();
+    const thisYear = new Date(`1/1/${today.getFullYear()}`);
+    for (let i = 0; i < bookings.length; i++) {
+      if (Date.parse(bookings[i].dateRange[1]) >= thisYear) {
+        totalDays += getDays2(Math.max(Date.parse(bookings[i].dateRange[0]), thisYear), bookings[i].dateRange[1]);
+      }
+    }
+    return totalDays;
+  }
+
+  const getProfit = () => {
+    const days = getDaysBooked();
+    const price = listingInfo.listingInfo.price;
+    return days * price;
+  }
+
   const ListingInformation = () => {
     return (
       <div>
-        <p>Listing Posted: {listingInfo.listingInfo.postedOn}</p>
-        <p>Listing Occupancy: TODO</p>
-        <p>Listing Profit in 2021: ${profit.profit}</p>
+        <p>Listing Posted: {formatDate(listingInfo.listingInfo.postedOn)}</p>
+        <p>Days Live: {getDays(listingInfo.listingInfo.postedOn)}</p>
+        <p>Days Booked This Year: {getDaysBooked()}</p>
+        <p>Listing Profit This Year: ${getProfit()}</p>
       </div>
     )
   }
