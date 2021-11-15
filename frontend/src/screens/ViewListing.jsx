@@ -14,7 +14,7 @@ import Logo from '../components/Logo'
 import { ProgressBar, OverlayTrigger, Popover, Badge, Form, Modal, Button, FloatingLabel } from 'react-bootstrap';
 import Ratings from 'react-ratings-declarative';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { RatingProgress, RatingPopover, RatingButtonPrimary, ViewingTitle, StyledSection, StyledHeader, StyledMain, Banner } from '../components/StyledComponents'
+import { ViewingInfoTypeTitle, BookingContainer, ViewingBodyInfo, ViewingInfoText, RatingProgress, RatingPopover, RatingButtonPrimary, ViewingTitle, StyledSection, StyledHeader, StyledMain, Banner } from '../components/StyledComponents'
 
 function ViewListing () {
   const { token, listingInfo, viewListingId, modal, user } = React.useContext(StoreContext);
@@ -308,19 +308,20 @@ function ViewListing () {
               <GenerateCarousel/>
             </Carousel>
           </div>
-          <div className="viewing_body_info">
-            <div className="viewing_info_text">
+          <ViewingBodyInfo>
+            <ViewingInfoText>
+
+              <ViewingInfoTypeTitle>
+                <h1>{formD.metadata.type}</h1>
+                Bedrooms: {formD.metadata.bedrooms.length} {' '}
+                Beds: {formD.metadata.totalbedrooms} {' '}
+                Bathrooms: {formD.metadata.bathrooms}
+              </ViewingInfoTypeTitle>
               <p>{formD.address.street}, {formD.address.city}, {formD.address.state}, {formD.address.postcode}, {formD.address.country}</p>
-              <p>${formD.price} per night</p>
-              <p>Type: {formD.metadata.type}</p>
-              <p>Number of beds: {formD.metadata.totalbedrooms}</p>
-              {console.log(formD.metadata)}
-              <p>Number of bathrooms: {formD.metadata.bathrooms}</p>
-              <p>Average rating: TODO</p>
-              <p>Number of reviews: {formD.reviews.length}</p>
-            </div>
-            {token.token !== '' && <div className="booking_container">
-              <div>Booking</div>
+
+            </ViewingInfoText>
+            {token.token !== '' && <BookingContainer>
+              <h1>${formD.price} per night</h1>
               <Calendar value={dateRange} className="react-calendar" selectRange={true} onChange={function (e) {
                 setDateRange(e)
                 console.log(dateRange);
@@ -331,8 +332,8 @@ function ViewListing () {
                   }}>Book </button>
                   <Badge bg="secondary">{bStatus}</Badge>
               </div>
-            </div>}
-          </div>
+            </BookingContainer>}
+          </ViewingBodyInfo>
           <Modal show={showModal} onHide={closeModal}>
             <Modal.Header closeButton>
               <Modal.Title>Leave a Review</Modal.Title>

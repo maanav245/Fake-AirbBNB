@@ -101,9 +101,12 @@ const ListingButtons = styled.div`
   display: flex;
 `
 
-const ViewingTitle = styled.header`
+const ViewingTitle = styled.h1`
+  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  font-weight: 500;
+  margin-right: 75vw;
   margin-top: 2vh;
-  font-size: xx-large;
+
 `
 
 const ViewingMain = styled.div`
@@ -127,5 +130,42 @@ const RatingProgress = styled.div`
   flex-direction: row;
 
 `
+const ViewingBodyInfo = styled.div`
+  width: 90vw;
+  margin-top: 10vh;
 
-export { RatingProgress, RatingPopover, RatingButtonPrimary, ViewingMain, ViewingTitle, StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, StyledFileInput, Banner, ListingsContainer, ListingContainer, ListingImage, ListingInfo, ListingButtons }
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10vh;
+`
+const ViewingInfoText = styled.div`
+
+order: 1;
+
+`
+const BookingContainer = styled.div`
+  margin-left: auto;
+  order: 2;
+
+  width: fit-content;
+  height: 70vh;
+  background-color: white;
+  border: 1px solid rgb(221, 221, 221);
+  border-radius: 5%;
+  padding: 3%;
+  box-shadow: rgb(0 0 0 / 12%) 0px 6px 16px;
+`
+
+const ViewingInfoTypeTitle = styled.div`
+  width: 40vw;
+
+  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  font-weight: 300;
+
+  padding-bottom: 1vh;
+  margin-bottom: 2vh;
+  border-bottom: 0.5px rgb(214, 214, 214) solid;
+
+`
+
+export { ViewingInfoTypeTitle, BookingContainer, ViewingInfoText, ViewingBodyInfo, RatingProgress, RatingPopover, RatingButtonPrimary, ViewingMain, ViewingTitle, StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, StyledFileInput, Banner, ListingsContainer, ListingContainer, ListingImage, ListingInfo, ListingButtons }

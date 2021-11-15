@@ -7,17 +7,7 @@
 .react-calendar__tile {
   font-size: x-small;
   width: 0.5vw;
-}
 
-.booking_container {
-  margin-left: 60vh;
-  width: fit-content;
-  height: 70vh;
-  background-color: white;
-  border: 1px solid rgb(221, 221, 221);
-  border-radius: 5%;
-  padding: 3%;
-  box-shadow: rgb(0 0 0 / 12%) 0px 6px 16px;
 }
 
 .book_btn_container {
@@ -27,16 +17,6 @@
 .booking_cal {
   width: 20vw;
   height: 20vh;
-}
-
-.viewing_info_text {
-  width: 50%;
-}
-.viewing_body_info {
-  margin-top: 10vh;
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 10vh;
 }
 
 .carousel .slide img {
