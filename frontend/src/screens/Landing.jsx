@@ -131,7 +131,7 @@ function Landing () {
       const dateFilteredListings = [];
       for (let i = 0; i < listings2.length; i++) {
         if (listings2[i].info.availability.length > 0) {
-          if (listings2[i].info.availability[0] <= filters.filters.startDate && listings2[i].info.availability[1] >= filters.filters.endDate) {
+          if (listings2[i].info.availability[0] <= filters.filters.startDate && listings2[i].info.availability[listings2[i].info.availability.length - 1] >= filters.filters.endDate) {
             dateFilteredListings.push(listings2[i]);
           }
         }
