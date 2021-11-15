@@ -11,27 +11,33 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import Error from '../Error';
 import Logo from '../components/Logo'
-import { Badge, Form, Modal, Button, FloatingLabel } from 'react-bootstrap';
-
+import { ProgressBar, OverlayTrigger, Popover, Badge, Form, Modal, Button, FloatingLabel } from 'react-bootstrap';
+import Ratings from 'react-ratings-declarative';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { StyledSection, StyledHeader, StyledMain, Banner } from '../components/StyledComponents'
+import { RatingProgress, RatingPopover, RatingButtonPrimary, ViewingTitle, StyledSection, StyledHeader, StyledMain, Banner } from '../components/StyledComponents'
 
 function ViewListing () {
   const { token, listingInfo, viewListingId, modal, user } = React.useContext(StoreContext);
   const [dateRange, setDateRange] = React.useState(null);
   console.log(listingInfo.listingInfo);
   const formD = listingInfo.listingInfo
-  const [reviewList, setreviewList] = React.useState([])
+  const [reviewList, setreviewList] = React.useState({ one: [], two: [], three: [], four: [], five: [] })
   const [showModal, setShowModal] = React.useState(false);
+  const [showReviewModal, setShowReviewModal] = React.useState(false);
   const [rating, setRating] = React.useState('0');
   const [review, setReview] = React.useState('');
+  const [totalReviews, setTotalReviews] = React.useState(0);
   const [bStatus, setBStatus] = React.useState('Not booked');
   const [bID, setBID] = React.useState('');
   console.log(rating);
   console.log(review);
   const closeModal = () => setShowModal(false);
   const displayModal = () => setShowModal(true);
+  const closeReviewModal = () => setShowReviewModal(false);
+  const displayReviewModal = () => setShowReviewModal(true);
+  const [specificReviews, setSpecificReviews] = React.useState([]);
   const [canReview, setCanReview] = React.useState(false);
+  const [totalRating, setTotalRating] = React.useState(0);
 
   function GenerateCarousel () {
     if (listingInfo.listingInfo.metadata.images === undefined || listingInfo.listingInfo.metadata.images.length === 0) {
@@ -50,7 +56,59 @@ function ViewListing () {
     }
   }
 
-  async function getReviewList (id) {
+  const generateRatingPopover = (
+
+      <Popover style={{ maxWidth: '100vw', zIndex: '0' }}>
+           <RatingPopover>
+            <Popover.Header as="h3">{totalReviews} ratings</Popover.Header>
+              <Popover.Body style={{ display: 'flex', flexDirection: 'column' }}>
+                <RatingProgress>
+                  <a style={{ cursor: 'pointer' }} href="javascript:void(0)" onClick={function () {
+                    setSpecificReviews(reviewList.one);
+                    displayReviewModal();
+                  }}> 1 star </a> : ({reviewList.one.length})
+                 <ProgressBar style={{ height: '5vh', width: '70%', marginTop: '0.5vh', marginLeft: '1vw' }} now={(reviewList.one.length / totalReviews) * 100} label={`${Math.round((reviewList.one.length / totalReviews) * 100)}%`}/>
+                </RatingProgress>
+
+                <RatingProgress>
+                  <a style={{ cursor: 'pointer' }} href="javascript:void(0)" onClick={function () {
+                    setSpecificReviews(reviewList.two);
+                    displayReviewModal();
+                  }}> 2 star </a> : ({reviewList.two.length})
+                  <ProgressBar style={{ height: '5vh', width: '70%', marginTop: '0.5vh', marginLeft: '1vw' }} now={(reviewList.two.length / totalReviews) * 100} label={`${Math.round((reviewList.two.length / totalReviews) * 100)}%`} />
+                 </RatingProgress>
+
+                <RatingProgress>
+                  <a style={{ cursor: 'pointer' }} href="javascript:void(0)" onClick={function () {
+                    setSpecificReviews(reviewList.three);
+                    displayReviewModal();
+                  }}> 3 star </a> : ({reviewList.three.length})
+                  <ProgressBar style={{ height: '5vh', width: '70%', marginTop: '0.5vh', marginLeft: '1vw' }} now={(reviewList.three.length / totalReviews) * 100} label={`${Math.round((reviewList.three.length / totalReviews) * 100)}%`} />
+                </RatingProgress>
+
+                <RatingProgress>
+                  <a style={{ cursor: 'pointer' }} href="javascript:void(0)" onClick={function () {
+                    setSpecificReviews(reviewList.four);
+                    displayReviewModal();
+                  }}> 4 star</a> : ({reviewList.four.length})
+                 <ProgressBar style={{ height: '5vh', width: '70%', marginTop: '0.5vh', marginLeft: '1vw' }} now={(reviewList.four.length / totalReviews) * 100} label={`${Math.round((reviewList.four.length / totalReviews) * 100)}%`}/>
+                </RatingProgress>
+
+                <RatingProgress>
+                  <a style={{ cursor: 'pointer' }} href="javascript:void(0)" onClick={function () {
+                    setSpecificReviews(reviewList.five);
+                    displayReviewModal();
+                  }}> 5 star </a> : ({reviewList.five.length})
+                 <ProgressBar style={{ height: '5vh', width: '70%', marginTop: '0.5vh', marginLeft: '1vw' }} now={(reviewList.five.length / totalReviews) * 100} label={`${Math.round((reviewList.five.length / totalReviews) * 100)}%`}/>
+                </RatingProgress>
+
+              </Popover.Body>
+           </RatingPopover>
+      </Popover>
+
+  );
+
+  async function getReviewList () {
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/${viewListingId.viewListingId}`, {
       method: 'GET',
       headers: {
@@ -61,7 +119,27 @@ function ViewListing () {
     });
     const json = await response.json();
     if (response.ok) {
-      setreviewList(json.listing.reviews)
+      const tempRev = { one: [], two: [], three: [], four: [], five: [] }
+
+      let sum = 0;
+      for (let index = 0; index < json.listing.reviews.length; index++) {
+        sum = parseInt(json.listing.reviews[index].rating) + sum;
+        if (json.listing.reviews[index].rating === '1') {
+          tempRev.one.push(json.listing.reviews[index])
+        } else if (json.listing.reviews[index].rating === '2') {
+          tempRev.two.push(json.listing.reviews[index])
+        } else if (json.listing.reviews[index].rating === '3') {
+          tempRev.three.push(json.listing.reviews[index])
+        } else if (json.listing.reviews[index].rating === '4') {
+          tempRev.four.push(json.listing.reviews[index])
+        } else if (json.listing.reviews[index].rating === '5') {
+          tempRev.five.push(json.listing.reviews[index])
+        }
+      }
+      setreviewList(tempRev);
+      console.log(sum);
+      setTotalReviews(json.listing.reviews.length);
+      setTotalRating(sum / json.listing.reviews.length);
     } else {
       Error(json.error, modal);
     }
@@ -69,50 +147,91 @@ function ViewListing () {
 
   function ProduceReviewsList () {
     return (
-      reviewList.map((e, i) => (
-        <div className="review_itself" key={i}>
-          <div className="review_user">{e.name}</div>
-          <div className="review_stars">{e.rating} </div>
-          <div className="review_body">{e.review}</div>
-        </div>
+      Object.keys(reviewList).map((key, s) => (
+        reviewList[key].map((e, i) => (
+            <div className="review_itself" key={i}>
+              <div className="review_user">{e.name}</div>
+              <RatingButtonPrimary>
+                <Ratings
+                  rating={parseInt(e.rating)}
+                  widgetDimensions="2vw"
+                  widgetSpacings="0.2vw"
+                >
+                  <Ratings.Widget widgetRatedColor="Gold" />
+                  <Ratings.Widget widgetRatedColor="Gold" />
+                  <Ratings.Widget widgetRatedColor="Gold" />
+                  <Ratings.Widget widgetRatedColor="Gold" />
+                  <Ratings.Widget widgetRatedColor="Gold" />
+                </Ratings>
+              </RatingButtonPrimary>
+              <div className="review_body">{e.review}</div>
+            </div>
+        ))
       ))
     );
   }
+
+  function ProduceSpecificReviews () {
+    return (
+      specificReviews.map((e, i) => (
+          <div className="review_itself" key={i}>
+            <div className="review_user">{e.name}</div>
+            <RatingButtonPrimary>
+                <Ratings
+                  rating={parseInt(e.rating)}
+                  widgetDimensions="1vw"
+                  widgetSpacings="0.2vw"
+                >
+                  <Ratings.Widget widgetRatedColor="Gold" />
+                  <Ratings.Widget widgetRatedColor="Gold" />
+                  <Ratings.Widget widgetRatedColor="Gold" />
+                  <Ratings.Widget widgetRatedColor="Gold" />
+                  <Ratings.Widget widgetRatedColor="Gold" />
+                </Ratings>
+              </RatingButtonPrimary>
+            <div className="review_body">{e.review}</div>
+          </div>
+      ))
+    );
+  }
+
   React.useEffect(async () => {
     getReviewList()
   }, [showModal])
 
   React.useEffect(async () => {
-    let answer = false;
-    const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/bookings`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: token.token,
-      },
-    });
-    const json = await response.json();
-    if (response.ok) {
-      for (let index = 0; index < json.bookings.length; index++) {
-        const element = json.bookings[index];
-        console.log(element.owner)
-        console.log(user.user);
-        console.log(element.listingId)
-        console.log(viewListingId.viewListingId)
-        if (element.owner === user.user && parseInt(element.listingId) === viewListingId.viewListingId) {
-          console.log('entered');
-          setBID(element.id);
-          setBStatus(element.status);
-          answer = true;
-          console.log(answer)
+    if (token.token !== '') {
+      let answer = false;
+      const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/bookings`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: token.token,
+        },
+      });
+      const json = await response.json();
+      if (response.ok) {
+        for (let index = 0; index < json.bookings.length; index++) {
+          const element = json.bookings[index];
+          console.log(element.owner)
+          console.log(user.user);
+          console.log(element.listingId)
+          console.log(viewListingId.viewListingId)
+          if (element.owner === user.user && parseInt(element.listingId) === viewListingId.viewListingId) {
+            console.log('entered');
+            setBID(element.id);
+            setBStatus(element.status);
+            answer = true;
+            console.log(answer)
+          }
         }
+      } else {
+        Error(json.error, modal);
+        answer = false;
       }
-    } else {
-      Error(json.error, modal);
-      answer = false;
+      setCanReview(answer);
     }
-    setCanReview(answer);
   }, [])
   console.log(canReview)
 
@@ -164,9 +283,8 @@ function ViewListing () {
     }
   }
 
-  if (token.token !== '') {
-    return (
-        <StyledSection>
+  return (
+      <StyledSection>
         <Modal1/>
         <StyledHeader>
           <LoggedInButtons/>
@@ -177,9 +295,9 @@ function ViewListing () {
             <LoginButton/>
           </Banner>
         </StyledHeader>
-        <StyledMain className="viewing_main">
+        <StyledMain>
 
-          <h1 className="viewing_title">{listingInfo.listingInfo.title}</h1>
+          <ViewingTitle>{listingInfo.listingInfo.title}</ViewingTitle>
 
           <div className="image_location">
             <Carousel>
@@ -201,7 +319,7 @@ function ViewListing () {
               <p>Average rating: TODO</p>
               <p>Number of reviews: {formD.reviews.length}</p>
             </div>
-            <div className="booking_container">
+            {token.token !== '' && <div className="booking_container">
               <div>Booking</div>
               <Calendar value={dateRange} className="react-calendar" selectRange={true} onChange={function (e) {
                 setDateRange(e)
@@ -213,7 +331,7 @@ function ViewListing () {
                   }}>Book </button>
                   <Badge bg="secondary">{bStatus}</Badge>
               </div>
-            </div>
+            </div>}
           </div>
           <Modal show={showModal} onHide={closeModal}>
             <Modal.Header closeButton>
@@ -242,6 +360,7 @@ function ViewListing () {
               </Form>
             </Modal.Body>
             <Modal.Footer>
+
               <Button variant="secondary" onClick={closeModal}>
                 Close
               </Button>
@@ -254,8 +373,39 @@ function ViewListing () {
             </Modal.Footer>
           </Modal>
 
+          <Modal show={showReviewModal} onHide={closeReviewModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>Reviews</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <ProduceSpecificReviews ></ProduceSpecificReviews>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={closeReviewModal}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
           <div className="review_box">
             <h1 className="reviews_title">Reviews</h1>
+            {console.log(totalRating)}
+            <OverlayTrigger trigger="click" placement="right" overlay={generateRatingPopover}>
+              <RatingButtonPrimary>
+                <Ratings
+                  rating={totalRating}
+                  widgetDimensions="3vw"
+                  widgetSpacings="0.2vw"
+                >
+                  <Ratings.Widget widgetRatedColor="Gold" />
+                  <Ratings.Widget widgetRatedColor="Gold" />
+                  <Ratings.Widget widgetRatedColor="Gold" />
+                  <Ratings.Widget widgetRatedColor="Gold" />
+                  <Ratings.Widget widgetRatedColor="Gold" />
+                </Ratings>
+              </RatingButtonPrimary>
+
+            </OverlayTrigger>
             {canReview &&
             <button type="button" className="btn btn-primary" onClick={function () {
               displayModal();
@@ -269,57 +419,7 @@ function ViewListing () {
         <footer>
         </footer>
       </StyledSection>
-    );
-  } else {
-    return (
-      <StyledSection>
-      <Modal1/>
-      <StyledHeader>
-        <LoggedInButtons/>
-        <Banner>
-          <Logo/>
-        </Banner>
-        <Banner>
-          <LoginButton/>
-        </Banner>
-      </StyledHeader>
-      <StyledMain className="viewing_main">
-
-        <h1 className="viewing_title">{listingInfo.listingInfo.title}</h1>
-
-        <div className="image_location">
-          <Carousel>
-            <div>
-                <img src={listingInfo.listingInfo.thumbnail} />
-
-            </div>
-            <GenerateCarousel/>
-          </Carousel>
-        </div>
-        <div className="viewing_body_info">
-          <div className="viewing_info_text">
-            <p>{formD.address.street}, {formD.address.city}, {formD.address.state}, {formD.address.postcode}, {formD.address.country}</p>
-            <p>${formD.price} per night</p>
-            <p>Type: {formD.metadata.type}</p>
-            <p>Number of beds: {formD.metadata.totalbedrooms}</p>
-            {console.log(formD.metadata)}
-            <p>Number of bathrooms: {formD.metadata.bathrooms}</p>
-            <p>Average rating: TODO</p>
-            <p>Number of reviews: {formD.reviews.length}</p>
-          </div>
-        </div>
-
-        <div className="review_box">
-          <h1 className="reviews_title">Reviews</h1>
-          <ProduceReviewsList/>
-        </div>
-
-      </StyledMain>
-      <footer>
-      </footer>
-    </StyledSection>
-    );
-  }
+  );
 }
 
 export default ViewListing;
