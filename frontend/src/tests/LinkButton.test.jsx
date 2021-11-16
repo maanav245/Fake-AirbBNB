@@ -1,7 +1,6 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import { LinkButton, StyledLink } from '../components/LinkButton';
-import Login from '../screens/Login';
 
 describe('LinkButton', () => {
   const noop = () => {};

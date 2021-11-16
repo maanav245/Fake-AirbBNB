@@ -239,7 +239,7 @@ function HostedListings () {
               <ListingImage src={e.info.thumbnail}>
               </ListingImage>
               <ListingButtons>
-                <LinkButton to={'/edit-listings/' + e.id} onClick={function () {
+                <LinkButton to={'/edit-listing/' + e.id} onClick={function () {
                   // console.log(e);
                   listingInfo.setlistingInfo(e.info);
                   editListingId.seteditListingId(e.id);

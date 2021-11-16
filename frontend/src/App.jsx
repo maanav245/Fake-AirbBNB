@@ -57,7 +57,7 @@ function App () {
     return (
       <NewListing/>
     );
-  } else if (route.includes('/edit-listings')) {
+  } else if (route.includes('/edit-listing')) {
     return (
       <EditListing />
     );
