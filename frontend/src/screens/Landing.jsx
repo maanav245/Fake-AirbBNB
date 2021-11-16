@@ -231,6 +231,7 @@ function Landing () {
   }
 
   const DisplayListings = () => {
+    console.log(listings);
     if (listings.length !== 0) {
       return (
         listings.map((e, i) => (

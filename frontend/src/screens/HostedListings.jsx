@@ -2,7 +2,7 @@ import React from 'react';
 import LoggedInButtons from '../components/LoggedInButtons';
 import LoginButton from '../components/LoginButton';
 import { StoreContext } from '../Store';
-import Modal from '../components/Modal';
+import Modal1 from '../components/Modal';
 import Port from '../config.json';
 import Error from '../Error';
 import Calendar from 'react-calendar'
@@ -10,17 +10,24 @@ import 'react-calendar/dist/Calendar.css';
 import PropTypes from 'prop-types';
 import LinkButton from '../components/LinkButton'
 import Logo from '../components/Logo'
+import ProfitGraph from '../components/ProfitGraph';
+import { Modal, Button } from 'react-bootstrap';
 import { StyledSection, StyledHeader, StyledMain, Banner, ListingsContainer, ListingContainer, ListingImage, ListingInfo, ListingButtons } from '../components/StyledComponents'
 
 function HostedListings () {
   const { page, token, modal, user, listingInfo, editListingId, bookingsListingId } = React.useContext(StoreContext);
   // console.log(token);
   // console.log(user.user);
+  const closePublishModal = () => setShowPublishModal(false);
+  const displayPublishModal = () => setShowPublishModal(true);
   const [done, setDone] = React.useState([]);
   const [render, setRender] = React.useState(0);
-  const [date, setDate] = React.useState([]);
+  const [date, setDate] = React.useState(null);
   const [pid, setPid] = React.useState('');
+  const [bookings, setBookings] = React.useState([]);
+  const [showPublishModal, setShowPublishModal] = React.useState(false);
   page.setPage(3);
+  console.log(bookings);
 
   React.useEffect(async () => {
     const listings = [];
@@ -53,12 +60,61 @@ function HostedListings () {
           listings2.push({ id: listings[i], info: res });
         }
       }
-      const sortedListings = await sortListings(listings2);
-      setDone(sortedListings);
+      sortListings(listings2).then(response => {
+        setDone(response);
+        getBookings(response).then((res) => {
+          setBookings([...res.reverse()]);
+        })
+      });
     } else {
       Error(json.error, modal);
     }
   }, [render]);
+
+  const getBookings = async (list) => {
+    const bookings2 = [];
+    const bookingMap = new Map();
+    const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/bookings`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: token.token,
+      },
+    });
+    const json = await response.json();
+    const TodayDate = new Date();
+    const num = parseInt(TodayDate.getMonth()) + 1
+    if (response.ok) {
+      for (let i = 0; i < json.bookings.length; i++) {
+        console.log(json.bookings);
+        console.log(user.user)
+        console.log(done);
+        for (let index = 0; index < list.length; index++) {
+          const element = list[index].id;
+          console.log(element);
+          console.log(parseInt(json.bookings[i].listingId));
+
+          console.log('month of booking is: ' + num);
+          if (parseInt(json.bookings[i].listingId) === element && json.bookings[i].status === 'accepted' &&
+          parseInt(json.bookings[i].dateRange[0].split('-')[1]) === num) {
+            console.log('success')
+            if (bookingMap.has(json.bookings[i].dateRange[0])) {
+              bookingMap.set(json.bookings[i].dateRange[0], bookingMap.get(json.bookings[i].dateRange[0]) + json.bookings[i].totalPrice)
+            } else {
+              bookingMap.set(json.bookings[i].dateRange[0], json.bookings[i].totalPrice)
+            }
+          }
+        }
+      }
+    } else {
+      Error(json.error, modal);
+    }
+    bookingMap.forEach(function (value, key) {
+      bookings2.push({ date: key, price: value });
+    })
+    return bookings2;
+  }
 
   async function getSingleListing (id) {
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/${id}`, {
@@ -117,42 +173,6 @@ function HostedListings () {
     }
   }
 
-  function PublishListing () {
-    let val = date;
-    // console.log('date var is: ' + val.length)
-    if (val.length === 0) {
-      // console.log('correct')
-      val = null
-    }
-    return (
-
-        <div id="exampleModal">
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title" id="exampleModalLabel">Publish Listing</h5>
-
-                </div>
-                <div className="modal-body">
-                <Calendar value = {val} onChange={function (e) {
-                  setDate(e)
-                  // console.log(date);
-                } } selectRange={true}/>
-
-                </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" className="btn btn-primary" onClick={function () {
-                    publish(pid);
-                    setPid('');
-                  }}>Save changes</button>
-                </div>
-              </div>
-            </div>
-          </div>
-    );
-  }
-
   async function deleteSingleListing (id) {
     // console.log('clicked delete')
     // console.log(id);
@@ -178,7 +198,10 @@ function HostedListings () {
       )
     } else {
       return (
-        <LinkButton to={'.'} onClick={() => setPid(listing.id)} value="Publish"/>
+        <LinkButton to={'.'} onClick={function () {
+          setPid(listing.id);
+          displayPublishModal();
+        }} value="Publish"/>
       )
     }
   }
@@ -241,8 +264,9 @@ function HostedListings () {
     if (pid !== '') {
       return (
         <StyledSection>
-          <Modal/>
+          <Modal1/>
           <StyledHeader>
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             <LoggedInButtons/>
             <Banner>
               <Logo/>
@@ -252,12 +276,36 @@ function HostedListings () {
             </Banner>
           </StyledHeader>
           <StyledMain>
-            <PublishListing/>
+
+          <Modal show={showPublishModal} onHide={closePublishModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>Reviews</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Calendar value = {date} onChange={function (e) {
+                setDate(e)
+                // console.log(date);
+              } } selectRange={true}/>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={closePublishModal}>
+                Close
+              </Button>
+              <Button type="button" className="btn btn-primary" onClick={function () {
+                publish(pid);
+                setPid('');
+                closePublishModal();
+              }}>Save changes</Button>
+
+            </Modal.Footer>
+          </Modal>
+
             <h1>Hosted Listings</h1>
             <LinkButton to={'/new-listing'} onClick={() => page.setPage(4)} value="Create New Listing"/>
             <ListingsContainer>
               <DisplayListings/>
             </ListingsContainer>
+            <ProfitGraph bookings={bookings}/>
           </StyledMain>
           <footer>
           </footer>
@@ -266,7 +314,7 @@ function HostedListings () {
     } else {
       return (
       <StyledSection>
-        <Modal/>
+        <Modal1/>
         <StyledHeader>
           <LoggedInButtons/>
           <Banner>
@@ -282,6 +330,7 @@ function HostedListings () {
           <ListingsContainer>
             <DisplayListings/>
           </ListingsContainer>
+          <ProfitGraph bookings={bookings}/>
         </StyledMain>
         <footer>
         </footer>

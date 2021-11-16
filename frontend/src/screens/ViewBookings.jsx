@@ -120,6 +120,9 @@ function ViewBookings () {
   }
 
   const formatDate = (date) => {
+    if (date === null) {
+      return;
+    }
     const year = date.split('-')[0];
     const month = date.split('-')[1];
     const day = date.split('-')[2].split('T')[0];
