@@ -38,6 +38,7 @@ function ViewListing () {
   const [specificReviews, setSpecificReviews] = React.useState([]);
   const [canReview, setCanReview] = React.useState(false);
   const [totalRating, setTotalRating] = React.useState(0);
+  const [render, setRender] = React.useState(Math.random());
 
   function GenerateCarousel () {
     if (listingInfo.listingInfo.metadata.images === undefined || listingInfo.listingInfo.metadata.images.length === 0) {
@@ -139,7 +140,9 @@ function ViewListing () {
       setreviewList(tempRev);
       console.log(sum);
       setTotalReviews(json.listing.reviews.length);
-      setTotalRating(sum / json.listing.reviews.length);
+      if (sum !== 0 && json.listing.reviews.length !== 0) {
+        setTotalRating(sum / json.listing.reviews.length);
+      }
     } else {
       Error(json.error, modal);
     }
@@ -212,6 +215,7 @@ function ViewListing () {
       });
       const json = await response.json();
       if (response.ok) {
+        let actStatus = 'not booked';
         for (let index = 0; index < json.bookings.length; index++) {
           const element = json.bookings[index];
           console.log(element.owner)
@@ -219,20 +223,27 @@ function ViewListing () {
           console.log(element.listingId)
           console.log(viewListingId.viewListingId)
           if (element.owner === user.user && parseInt(element.listingId) === viewListingId.viewListingId) {
-            console.log('entered');
+            if (actStatus === 'not booked' || actStatus === 'booked') {
+              console.log('Inside if : ' + element.status);
+              actStatus = element.status;
+            }
             setBID(element.id);
-            setBStatus(element.status);
-            answer = true;
+
+            if (element.status === 'accepted') {
+              answer = true;
+            }
             console.log(answer)
           }
         }
+        console.log('final status is: ' + actStatus);
+        setBStatus(actStatus);
       } else {
         Error(json.error, modal);
         answer = false;
       }
       setCanReview(answer);
     }
-  }, [])
+  }, [render])
   console.log(canReview)
 
   async function submitReview () {
@@ -277,7 +288,8 @@ function ViewListing () {
     });
     const json = await response.json();
     if (response.ok) {
-      return json.listing;
+      console.log(render);
+      setRender(Math.random());
     } else {
       Error(json.error, modal);
     }
