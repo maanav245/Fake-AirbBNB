@@ -33,6 +33,9 @@ function Landing () {
         }
       }
 
+      for (let i = 0; i < listings2.length; i++) {
+        listings2[i].info.averageReview = calculateReview(listings2[i]);
+      }
       const sortedListings = await sortListings(listings2);
       const filteredListings = applyFilters(sortedListings);
       setListings(filteredListings);
@@ -164,9 +167,23 @@ function Landing () {
   }
 
   const sortByReview = (allFilters) => {
-    // TODO sort listings by review
-    console.log('TODO: sort listings by review');
-    return allFilters;
+    if (filters.filters.review === 'highToLow') {
+      return allFilters.sort((a, b) => (a.info.averageReview < b.info.averageReview) ? 1 : ((b.info.averageReview < a.info.averageReview) ? -1 : 0));
+    } else {
+      return allFilters.sort((a, b) => (a.info.averageReview > b.info.averageReview) ? 1 : ((b.info.averageReview > a.info.averageReview) ? -1 : 0));
+    }
+  }
+
+  const calculateReview = (listing) => {
+    let total = 0;
+    let count = 0;
+    for (let i = 0; i < listing.info.reviews.length; i++) {
+      console.log(listing.info.reviews[i].rating);
+      total += Number.parseInt(listing.info.reviews[i].rating);
+      count++;
+    }
+    console.log(total);
+    return count === 0 ? 0 : total / count;
   }
 
   const FiltersApplied = () => {
@@ -244,6 +261,7 @@ function Landing () {
               <p>Number of bedrooms: {e.info.metadata.bedrooms.length}</p>
               <p>${e.info.price} per night</p>
               <p>Number of reviews: {e.info.reviews.length}</p>
+              <p>Average review: {e.info.averageReview}</p>
               <LinkButton to={'/view-listing/' + e.id} onClick={function () {
                 console.log(e);
                 listingInfo.setlistingInfo(e.info);

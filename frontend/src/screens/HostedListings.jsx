@@ -60,6 +60,9 @@ function HostedListings () {
           listings2.push({ id: listings[i], info: res });
         }
       }
+      for (let i = 0; i < listings2.length; i++) {
+        listings2[i].info.averageReview = calculateReview(listings2[i]);
+      }
       sortListings(listings2).then(response => {
         setDone(response);
         getBookings(response).then((res) => {
@@ -135,6 +138,18 @@ function HostedListings () {
 
   const sortListings = async (listings2) => {
     return listings2.sort((a, b) => (a.info.title > b.info.title) ? 1 : ((b.info.title > a.info.title) ? -1 : 0));
+  }
+
+  const calculateReview = (listing) => {
+    let total = 0;
+    let count = 0;
+    for (let i = 0; i < listing.info.reviews.length; i++) {
+      console.log(listing.info.reviews[i].rating);
+      total += Number.parseInt(listing.info.reviews[i].rating);
+      count++;
+    }
+    console.log(total);
+    return count === 0 ? 0 : total / count;
   }
 
   async function publish (id) {
@@ -240,9 +255,8 @@ function HostedListings () {
               <p>${e.info.price} per night</p>
               <p>Type: {e.info.metadata.type}</p>
               <p>Number of beds: {e.info.metadata.totalbedrooms}</p>
-              { /* console.log(e.info.metadata) */}
               <p>Number of bathrooms: {e.info.metadata.bathrooms}</p>
-              <p>Average rating: TODO</p>
+              <p>Average rating: {e.info.averageReview}</p>
               <p>Number of reviews: {e.info.reviews.length}</p>
             </ListingInfo>
             <LinkButton to={'/view-bookings/' + e.id} onClick={function () {
