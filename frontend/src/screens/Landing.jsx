@@ -5,7 +5,7 @@ import LoginButton from '../components/LoginButton';
 import { StoreContext } from '../Store';
 import Port from '../config.json';
 import Error from '../Error';
-import LinkButton from '../components/LinkButton'
+import { LinkButton } from '../components/LinkButton'
 import Logo from '../components/Logo'
 import { StyledSection, StyledHeader, StyledMain, Banner, ListingsContainer, ListingContainer, ListingImage, ListingInfo } from '../components/StyledComponents'
 

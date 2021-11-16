@@ -5,7 +5,7 @@ import { StoreContext } from '../Store';
 import Port from '../config.json';
 import Error from '../Error';
 import Modal from '../components/Modal';
-import LinkButton from '../components/LinkButton'
+import { LinkButton } from '../components/LinkButton'
 import Logo from '../components/Logo'
 import { StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, StyledFileInput, Banner } from '../components/StyledComponents'
 

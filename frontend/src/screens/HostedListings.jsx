@@ -8,7 +8,7 @@ import Error from '../Error';
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 import PropTypes from 'prop-types';
-import LinkButton from '../components/LinkButton'
+import { LinkButton } from '../components/LinkButton'
 import Logo from '../components/Logo'
 import ProfitGraph from '../components/ProfitGraph';
 import { Modal, Button } from 'react-bootstrap';

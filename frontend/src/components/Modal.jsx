@@ -1,7 +1,7 @@
 import React from 'react';
 import { StoreContext } from '../Store';
 import { Slider } from '@mui/material';
-import LinkButton from './LinkButton'
+import { LinkButton } from './LinkButton'
 import { StyledForm, StyledInput } from './StyledComponents.jsx'
 import styled from 'styled-components';
 

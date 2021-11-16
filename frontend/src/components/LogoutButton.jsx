@@ -2,7 +2,7 @@ import React from 'react';
 import { StoreContext } from '../Store';
 import Port from '../config.json';
 import Error from '../Error';
-import LinkButton from './LinkButton'
+import { LinkButton } from './LinkButton'
 
 function LogoutButton () {
   const { page, token, modal } = React.useContext(StoreContext);

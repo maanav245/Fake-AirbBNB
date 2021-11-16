@@ -39,4 +39,4 @@ LinkButton.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-export default LinkButton;
+export { LinkButton, StyledLink };

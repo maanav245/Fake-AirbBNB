@@ -6,7 +6,7 @@ import LoginButton from '../components/LoginButton';
 import Port from '../config.json';
 import Error from '../Error';
 import PropTypes from 'prop-types';
-import LinkButton from '../components/LinkButton'
+import { LinkButton } from '../components/LinkButton'
 import Logo from '../components/Logo'
 import { StyledSection, StyledHeader, StyledMain, Banner } from '../components/StyledComponents'
 

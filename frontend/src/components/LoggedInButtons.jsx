@@ -1,6 +1,6 @@
 import React from 'react';
 import { StoreContext } from '../Store';
-import LinkButton from './LinkButton';
+import { LinkButton } from './LinkButton';
 import { Banner } from './StyledComponents';
 
 function LoggedInButtons () {
