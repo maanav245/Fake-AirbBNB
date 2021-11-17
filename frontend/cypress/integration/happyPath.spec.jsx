@@ -4,7 +4,7 @@ context('Happy Path', () => {
     cy.visit('localhost:3000');
   });
 
-  const x = '145';
+  const x = '146';
 
   const title1 = 'NewHouse1' + x;
   const title2 = 'NewHouse2' + x;
