@@ -262,7 +262,7 @@ function Landing () {
               <p>${e.info.price} per night</p>
               <p>Number of reviews: {e.info.reviews.length}</p>
               <p>Average review: {e.info.averageReview}</p>
-              <LinkButton to={'/view-listing/' + e.id} onClick={function () {
+              <LinkButton id={`view${e.info.title}`} to={'/view-listing/' + e.id} onClick={function () {
                 console.log(e);
                 listingInfo.setlistingInfo(e.info);
                 viewListingId.setViewListingId(e.id);

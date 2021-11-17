@@ -26,7 +26,7 @@ function LogoutButton () {
   }
 
   return (
-    <LinkButton to={'/'} onClick={logoutUser} value="Logout"/>
+    <LinkButton id={'logoutButton'} to={'/'} onClick={logoutUser} value="Logout"/>
   );
 }
 

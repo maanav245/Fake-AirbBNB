@@ -209,11 +209,11 @@ function HostedListings () {
   const PublishButton = ({ listing }) => {
     if (listing.info.published) {
       return (
-        <LinkButton to={'.'} onClick={() => unpublish(listing.id)} value="Unpublish"/>
+        <LinkButton id={`unpublish${listing.info.title}`} to={'.'} onClick={() => unpublish(listing.id)} value="Unpublish"/>
       )
     } else {
       return (
-        <LinkButton to={'.'} onClick={function () {
+        <LinkButton id={`publish${listing.info.title}`} to={'.'} onClick={function () {
           setPid(listing.id);
           displayPublishModal();
         }} value="Publish"/>
@@ -239,7 +239,7 @@ function HostedListings () {
               <ListingImage src={e.info.thumbnail}>
               </ListingImage>
               <ListingButtons>
-                <LinkButton to={'/edit-listing/' + e.id} onClick={function () {
+                <LinkButton id={`editListing${e.info.title}`} to={'/edit-listing/' + e.id} onClick={function () {
                   // console.log(e);
                   listingInfo.setlistingInfo(e.info);
                   editListingId.seteditListingId(e.id);
@@ -305,7 +305,7 @@ function HostedListings () {
               <Button variant="secondary" onClick={closePublishModal}>
                 Close
               </Button>
-              <Button type="button" className="btn btn-primary" onClick={function () {
+              <Button id="confirmPublishButton" type="button" className="btn btn-primary" onClick={function () {
                 publish(pid);
                 setPid('');
                 closePublishModal();

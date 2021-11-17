@@ -238,7 +238,7 @@ function EditListing () {
                 <StyledInput id="editAmenities" type="textarea" value={amenities} onChange={({ target }) => setAmenities(target.value)} placeholder="Kitchen/Pool/WiFi/etc."/>
               </div>
             </StyledForm>
-            <LinkButton to={'/hosted-listings'} onClick={editListing} value="Confirm"/>
+            <LinkButton id={'confirmEditListing'}to={'/hosted-listings'} onClick={editListing} value="Confirm"/>
           </StyledMain>
           <footer>
           </footer>

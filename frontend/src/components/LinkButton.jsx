@@ -34,7 +34,7 @@ function LinkButton ({ id, to, onClick, value }) {
 }
 
 LinkButton.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   to: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,

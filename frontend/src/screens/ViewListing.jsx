@@ -339,7 +339,7 @@ function ViewListing () {
                 console.log(dateRange);
               } }/>
               <div className="book_btn_container">
-                  <button type="button" className="btn btn-primary " onClick={function () {
+                  <button id={'confirmBookButton'} type="button" className="btn btn-primary " onClick={function () {
                     submitBooking();
                   }}>Book </button>
                   <Badge bg="secondary">{bStatus}</Badge>
