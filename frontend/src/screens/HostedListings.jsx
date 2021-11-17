@@ -365,7 +365,6 @@ function HostedListings () {
         </StyledHeader>
         <StyledMain>
           <h1>You must log in to view this page</h1>
-
         </StyledMain>
         <footer>
         </footer>

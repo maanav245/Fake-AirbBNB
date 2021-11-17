@@ -183,7 +183,6 @@ function EditListing () {
           </StyledHeader>
           <StyledMain>
             <h1>Edit Listing</h1>
-
             <StyledForm>
               <div className="listingInput">
                 <label htmlFor="editListingTitle">Listing Title:</label>

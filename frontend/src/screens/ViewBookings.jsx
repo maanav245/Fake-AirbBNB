@@ -120,7 +120,7 @@ function ViewBookings () {
   }
 
   const formatDate = (date) => {
-    if (date === null) {
+    if (date === null || date === undefined) {
       return;
     }
     const year = date.split('-')[0];

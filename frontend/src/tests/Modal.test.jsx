@@ -9,7 +9,6 @@ describe('Modal', () => {
     const testVal = {
       modal: {
         modal: 'Error!',
-        setModal: jest.fn(),
       },
     }
     const wrapper = mount(
@@ -25,7 +24,6 @@ describe('Modal', () => {
     const testVal = {
       modal: {
         modal: '',
-        setModal: jest.fn(),
       },
     }
     const wrapper = mount(
@@ -41,7 +39,6 @@ describe('Modal', () => {
     const testVal = {
       modal: {
         modal: 'filters',
-        setModal: jest.fn(),
       },
     }
     const wrapper = mount(
