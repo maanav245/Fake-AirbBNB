@@ -11,7 +11,7 @@ function LoginButton () {
   if (token.token === '') {
     return (
       <Banner>
-        <LinkButton to={'/login'} onClick={() => page.setPage(1)} value="Login/Register"/>
+        <LinkButton id={'loginButton'} to={'/login'} onClick={() => page.setPage(1)} value="Login/Register"/>
       </Banner>
     );
   } else {

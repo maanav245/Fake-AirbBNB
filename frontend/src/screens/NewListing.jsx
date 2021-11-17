@@ -170,7 +170,7 @@ function NewListing () {
               <StyledInput id="amenities" type="textarea" onChange={({ target }) => setMetadata({ ...metadata, amenities: target.value })} placeholder="Kitchen/Pool/WiFi/etc."/>
             </div>
           </StyledForm>
-          <LinkButton to={'/hosted-listings'} onClick={createListing} value="Confirm"/>
+          <LinkButton id={'confirmNewListing'} to={'/hosted-listings'} onClick={createListing} value="Confirm"/>
         </StyledMain>
         <footer>
         </footer>

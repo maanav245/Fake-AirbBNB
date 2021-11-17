@@ -70,7 +70,7 @@ function Login () {
           </div>
         </StyledForm>
         <LinkButton to={'/'} onClick={loginUser} value="Login"/>
-        <LinkButton to={'/register'} onClick={() => page.setPage(2)} value="Register"/>
+        <LinkButton id={'registerButton'} to={'/register'} onClick={() => page.setPage(2)} value="Register"/>
         <LinkButton to={'/'} onClick={() => page.setPage(0)} value="Back"/>
       </StyledMain>
       <footer>

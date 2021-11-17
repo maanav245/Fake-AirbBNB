@@ -78,7 +78,7 @@ function Register () {
             <StyledInput id="registerPassword2" type="password" onChange={({ target }) => setPassword2(target.value)} placeholder="password"/>
           </div>
         </StyledForm>
-        <LinkButton to={'/'} onClick={registerUser} value="Register"/>
+        <LinkButton id={'submitRegister'} to={'/'} onClick={registerUser} value="Register"/>
         <LinkButton to={'/login'} onClick={() => page.setPage(1)} value="Back"/>
       </StyledMain>
       <footer>

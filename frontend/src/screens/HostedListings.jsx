@@ -315,7 +315,7 @@ function HostedListings () {
           </Modal>
 
             <h1>Hosted Listings</h1>
-            <LinkButton to={'/new-listing'} onClick={() => page.setPage(4)} value="Create New Listing"/>
+            <LinkButton id={'newListingButton'} to={'/new-listing'} onClick={() => page.setPage(4)} value="Create New Listing"/>
             <ListingsContainer>
               <DisplayListings/>
             </ListingsContainer>
@@ -340,7 +340,7 @@ function HostedListings () {
         </StyledHeader>
         <StyledMain>
           <h1>Hosted Listings</h1>
-          <LinkButton to={'/new-listing'} onClick={() => page.setPage(4)} value="Create New Listing"/>
+          <LinkButton id={'newListingButton'} to={'/new-listing'} onClick={() => page.setPage(4)} value="Create New Listing"/>
           <ListingsContainer>
             <DisplayListings/>
           </ListingsContainer>

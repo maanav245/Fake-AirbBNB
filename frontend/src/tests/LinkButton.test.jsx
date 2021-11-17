@@ -21,4 +21,9 @@ describe('LinkButton', () => {
     const button = shallow(<LinkButton to={'.'} onClick={noop} value={'test'} />);
     expect(button.find(StyledLink).first().text()).toBe('test');
   });
+
+  it('sets button id', () => {
+    const button = shallow(<LinkButton id={'button'} to={'.'} onClick={noop} value={'test'} />);
+    expect(button.find(StyledLink).first().props().id).toBe('button');
+  });
 });

@@ -23,10 +23,10 @@ const StyledLink = styled(Link)`
   }
 `
 
-function LinkButton ({ to, onClick, value }) {
+function LinkButton ({ id, to, onClick, value }) {
   return (
     <Router>
-      <StyledLink to={to} onClick={onClick}>
+      <StyledLink id={id} to={to} onClick={onClick}>
         {value}
       </StyledLink>
     </Router>
@@ -34,6 +34,7 @@ function LinkButton ({ to, onClick, value }) {
 }
 
 LinkButton.propTypes = {
+  id: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
