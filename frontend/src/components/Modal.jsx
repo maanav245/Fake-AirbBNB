@@ -4,6 +4,7 @@ import { Slider } from '@mui/material';
 import { LinkButton } from './LinkButton'
 import { StyledForm, StyledInput } from './StyledComponents.jsx'
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -27,6 +28,16 @@ const ModalContent = styled.div`
   margin-top: 100px;
 `
 
+export const ErrorContent = ({ content }) => {
+  return (
+    <p>{content}</p>
+  )
+}
+
+ErrorContent.propTypes = {
+  content: PropTypes.string.isRequired,
+};
+
 function Modal () {
   const { modal, filters } = React.useContext(StoreContext);
 
@@ -44,12 +55,6 @@ function Modal () {
       filters.setFilters({ search: search, bedrooms: bedrooms, startDate: startDate, endDate: endDate, price: price, review: review });
       modal.setModal('');
     }
-  }
-
-  const ErrorContent = () => {
-    return (
-      <p>{modal.modal}</p>
-    )
   }
 
   const handleBedroomChange = (event, newValue) => {
@@ -125,7 +130,7 @@ function Modal () {
       <ModalContainer>
         <ModalContent>
             <h2 className="modal-title">Error!</h2>
-            <ErrorContent/>
+            <ErrorContent content={modal.modal}/>
             <LinkButton to={'.'} onClick={() => modal.setModal('')} value="Close"/>
         </ModalContent>
       </ModalContainer>
