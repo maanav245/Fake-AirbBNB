@@ -1,17 +1,22 @@
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import * as React from 'react';
 import { LinkButton } from '../components/LinkButton';
 import LoggedInButtons from '../components/LoggedInButtons';
-import StoreProvider from '../Store'
 import { StoreContext } from '../Store';
 import { Banner } from '../components/StyledComponents';
 
 describe('LoggedInButtons', () => {
   it('does not display if not logged in', () => {
+    const testVal = {
+      token: {
+        token: '',
+        setToken: jest.fn(),
+      },
+    }
     const wrapper = mount(
-      <StoreProvider>
+      <StoreContext.Provider value={testVal}>
         <LoggedInButtons/>
-      </StoreProvider>
+      </StoreContext.Provider>
     );
     expect(wrapper.find(Banner)).toHaveLength(1);
     expect(wrapper.find(LinkButton)).toHaveLength(0);
