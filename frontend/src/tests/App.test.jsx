@@ -9,8 +9,6 @@ import NewListing from '../screens/NewListing';
 import EditListing from '../screens/EditListing';
 import ViewListing from '../screens/ViewListing';
 import ViewBookings from '../screens/ViewBookings';
-import { LinkButton, StyledLink } from '../components/LinkButton';
-import { MemoryRouter } from 'react-router';
 
 describe('App', () => {
   it('loads the listings page by default', () => {
@@ -37,7 +35,8 @@ describe('App', () => {
     expect(wrapper.find(NewListing)).toHaveLength(0);
     expect(wrapper.find(EditListing)).toHaveLength(0);
     expect(wrapper.find(ViewListing)).toHaveLength(0);
-    expect(wrapper.find(ViewBookings)).toHaveLength(0);  });
+    expect(wrapper.find(ViewBookings)).toHaveLength(0);
+  });
 
   it('loads the login page', () => {
     delete window.location;

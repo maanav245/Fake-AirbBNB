@@ -5,7 +5,6 @@ import { Banner } from './StyledComponents';
 
 function LoggedInButtons () {
   const { page, token } = React.useContext(StoreContext);
-
   if (token.token !== '') {
     return (
       <Banner>

@@ -70,7 +70,6 @@ function App () {
       <ViewBookings/>
     )
   } else {
-    console.log(route);
     return (
       <h1>Page Not Found!</h1>
     )
