@@ -1,16 +1,25 @@
 context('Happy Path', () => {
 
+  // Start by navigating to the correct URL
   before(() => {
     cy.visit('localhost:3000');
   });
 
-  const x = '148';
+  // All unique user and listing variables are controlled by this
+  // Change this variable to generate new unique users and listings
+  // We recommend that you restart the server before running this test
+  // to ensure uniqueness and improve performance
+  const x = 1;
 
   const title1 = 'NewHouse1' + x;
   const title2 = 'NewHouse2' + x;
-  const title3 = 'NewHouse151';
   const email1 = 'example1' + x + '@email.com';
 
+  // This variable should be the name of an existing live listing that can be
+  // booked
+  const title3 = 'NewHouse3';
+
+  // Test registration
   it('Registers Successfully', () => {
     const name = 'John Smith';
     const email = email1;
@@ -43,6 +52,7 @@ context('Happy Path', () => {
       .click();
   });
 
+  // Test listing creation
   it('Creates a new listing successfully', () => {
     const title = title1;
     const street = '10 Example Street';
@@ -97,6 +107,7 @@ context('Happy Path', () => {
       .focus()
       .type(price);
 
+    // Test thumbnail file upload
     cy.fixture(thumbnail).then(fileContent => {
       cy.get('[id=propertyThumbnail]')
         .attachFile(thumbnail);
@@ -146,6 +157,7 @@ context('Happy Path', () => {
       .click();
   });
 
+  // Test listing editing
   it('Updates the thumbnail and title of the listing successfully', () => {
     const title = title1;
     const newTitle = title2;
@@ -170,6 +182,7 @@ context('Happy Path', () => {
       .click();
   });
 
+  // Test listing publishing
   it('publishes a listing successfully', () => {
     const title = title2;
 
@@ -186,6 +199,7 @@ context('Happy Path', () => {
       .click();
   });
 
+  // Test listing unpublishing
   it('unpublishes a listing successfully', () => {
     const title = title2;
 
@@ -195,6 +209,7 @@ context('Happy Path', () => {
       .click();
   });
 
+  // Test booking
   it('makes a booking successfully', () => {
     const title = title3;
 
@@ -213,11 +228,13 @@ context('Happy Path', () => {
       .click();
   });
 
+  // Test user log out
   it('logs out of the application successfully', () => {
     cy.get('[id=logoutButton]')
       .click();
   });
 
+  // Test user log in
   it('logs back into the application successfully', () => {
     const email = email1;
     const password = 'password';

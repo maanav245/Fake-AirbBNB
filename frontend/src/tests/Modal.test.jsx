@@ -1,10 +1,13 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import Modal, { ErrorContent } from '../components/Modal';
+
 import { StoreContext } from '../Store';
+import Modal, { ErrorContent } from '../components/Modal';
 import { StyledForm } from '../components/StyledComponents.jsx'
 
+// Test the modal window displays appropriate content
 describe('Modal', () => {
+  // Check that it raises the correct error when raised
   it('raises a given error', () => {
     const testVal = {
       modal: {
@@ -20,6 +23,7 @@ describe('Modal', () => {
     expect(wrapper.find(StyledForm)).toHaveLength(0);
   });
 
+  // Check that it si not visible when there is no error
   it('does not exist when there is no error', () => {
     const testVal = {
       modal: {
@@ -35,6 +39,7 @@ describe('Modal', () => {
     expect(wrapper.find(StyledForm)).toHaveLength(0);
   });
 
+  // Check a special case, where it is used for the filter screen
   it('displays the filter modal as required', () => {
     const testVal = {
       modal: {

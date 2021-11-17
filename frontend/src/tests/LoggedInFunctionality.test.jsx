@@ -1,14 +1,19 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
+
+import { StoreContext } from '../Store';
 import HostedListings from '../screens/HostedListings';
 import NewListing from '../screens/NewListing';
 import EditListing from '../screens/EditListing';
 import ViewBookings from '../screens/ViewBookings';
 import ViewListing from '../screens/ViewListing';
 import { StyledForm, ListingsContainer, BookingContainer } from '../components/StyledComponents';
-import { StoreContext } from '../Store';
 
+// Test the hosted listings page loads appropriately
 describe('HostedListings', () => {
+  // Check that it does not display when not logged in
+  // Manipulate the test context to simulate an empty token representing no
+  // user logged in
   it('displays an empty page when not logged in', () => {
     const testVal = {
       token: {
@@ -27,6 +32,9 @@ describe('HostedListings', () => {
     expect(wrapper.find('h1').first().text()).toBe('You must log in to view this page');
   });
 
+  // Check that the page displays fully when logged in
+  // Manipulate the test context to simulate a non-empty token representing a
+  // user is logged in
   it('displays the page when logged in', () => {
     const testVal = {
       token: {
@@ -49,7 +57,11 @@ describe('HostedListings', () => {
   });
 });
 
+// Test the new listing page loads appropriately
 describe('NewListing', () => {
+  // Check that it does not display when not logged in
+  // Manipulate the test context to simulate an empty token representing no
+  // user logged in
   it('displays an empty page when not logged in', () => {
     const testVal = {
       token: {
@@ -65,6 +77,9 @@ describe('NewListing', () => {
     expect(wrapper.find('h1').first().text()).toBe('You must log in to view this page');
   });
 
+  // Check that the page displays fully when logged in
+  // Manipulate the test context to simulate a non-empty token representing a
+  // user is logged in
   it('displays the page when logged in', () => {
     const testVal = {
       token: {
@@ -84,7 +99,11 @@ describe('NewListing', () => {
   });
 });
 
+// Test the edit listing page loads appropriately
 describe('EditListing', () => {
+  // Check that it does not display when not logged in
+  // Manipulate the test context to simulate an empty token representing no
+  // user logged in
   it('displays an empty page when not logged in', () => {
     const testVal = {
       token: {
@@ -100,6 +119,9 @@ describe('EditListing', () => {
     expect(wrapper.find('h1').first().text()).toBe('You must log in to view this page');
   });
 
+  // Check that the page displays fully when logged in
+  // Manipulate the test context to simulate a non-empty token representing a
+  // user is logged in
   it('displays the page when logged in', () => {
     const testVal = {
       token: {
@@ -130,7 +152,11 @@ describe('EditListing', () => {
   });
 });
 
+// Test the view bookings page loads appropriately
 describe('ViewBookings', () => {
+  // Check that it does not display when not logged in
+  // Manipulate the test context to simulate an empty token representing no
+  // user logged in
   it('displays an empty page when not logged in', () => {
     const testVal = {
       token: {
@@ -145,6 +171,9 @@ describe('ViewBookings', () => {
     expect(wrapper.find('h1').first().text()).toBe('You must log in to view this page');
   });
 
+  // Check that the page displays fully when logged in
+  // Manipulate the test context to simulate a non-empty token representing a
+  // user is logged in
   it('displays the page when logged in', () => {
     const testVal = {
       token: {
@@ -174,7 +203,11 @@ describe('ViewBookings', () => {
   });
 });
 
+// Test the view listing page loads appropriately
 describe('ViewListing', () => {
+  // Check that it does not display a booking form when not logged in
+  // Manipulate the test context to simulate an empty token representing no
+  // user logged in
   it('does not let the user book when not logged in', () => {
     const testVal = {
       token: {
@@ -203,6 +236,9 @@ describe('ViewListing', () => {
     expect(wrapper.find(BookingContainer)).toHaveLength(0);
   });
 
+  // Check that the page displays fully when logged in
+  // Manipulate the test context to simulate a non-empty token representing a
+  // user is logged in
   it('lets the user book when logged in', () => {
     const testVal = {
       token: {

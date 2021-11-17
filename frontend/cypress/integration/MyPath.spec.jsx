@@ -1,15 +1,21 @@
 context('My Path', () => {
 
+  // Start by navigating to the correct URL
   before(() => {
     cy.visit('localhost:3000');
   });
 
-  const x = 5;
+  // All unique user and listing variables are controlled by this
+  // Change this variable to generate new unique users and listings
+  // We recommend that you restart the server before running this test
+  // to ensure uniqueness and improve performance
+  const x = 1;
 
   const email1 = 'example1' + x + '@email.com';
   const email2 = 'example2' + x + '@email.com';
   const title1 = 'NewHouse' + x;
 
+  // Test registration
   it('Registers first user', () => {
     const name = 'John Smith';
     const email = email1;
@@ -42,6 +48,7 @@ context('My Path', () => {
       .click();
   });
 
+  // Test listing creation
   it('Creates a new listing', () => {
     const title = title1;
     const street = '10 Example Street';
@@ -145,6 +152,7 @@ context('My Path', () => {
       .click();
   });
 
+  // Test listing publishing
   it('publishes a listing', () => {
     const title = title1;
 
@@ -161,11 +169,13 @@ context('My Path', () => {
       .click();
   });
 
+  // Test user log out
   it('logs out first user', () => {
     cy.get('[id=logoutButton]')
       .click();
   });
 
+  // Test registration
   it('Registers second user', () => {
     const name = 'John Smith';
     const email = email2;
@@ -198,6 +208,7 @@ context('My Path', () => {
       .click();
   });
 
+  // Test booking
   it('requests a booking', () => {
     const title = title1;
 
@@ -214,11 +225,13 @@ context('My Path', () => {
       .click();
   });
 
+  // Test user log out
   it('logs out second user', () => {
     cy.get('[id=logoutButton]')
       .click();
   });
 
+  // Test user log in
   it('logs back in as the first user', () => {
     const email = email1;
     const password = 'password';
@@ -238,6 +251,7 @@ context('My Path', () => {
       .click();
   });
 
+  // Test accepting a booking
   it('accepts a booking', () => {
     const title = title1;
 
@@ -253,11 +267,13 @@ context('My Path', () => {
       .click();
   });
 
+  // Test user log out
   it('logs out first user', () => {
     cy.get('[id=logoutButton]')
       .click();
   });
 
+  // Test user log in
   it('logs back in as the second user', () => {
     const email = email2;
     const password = 'password';
@@ -277,6 +293,7 @@ context('My Path', () => {
       .click();
   });
 
+  // Test review
   it('leaves a review', () => {
     const title = title1;
     const review = 'Best place ever!';
@@ -301,6 +318,7 @@ context('My Path', () => {
       .click();
   });
 
+  // Test user log out
   it('logs out second user', () => {
     cy.get('[id=logoutButton]')
       .click();
