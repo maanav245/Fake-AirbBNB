@@ -259,7 +259,7 @@ function HostedListings () {
               <p>Average rating: {e.info.averageReview}</p>
               <p>Number of reviews: {e.info.reviews.length}</p>
             </ListingInfo>
-            <LinkButton to={'/view-bookings/' + e.id} onClick={function () {
+            <LinkButton id={`viewBookings${e.info.title}`} to={'/view-bookings/' + e.id} onClick={function () {
               listingInfo.setlistingInfo(e.info);
               bookingsListingId.setBookingsListingId(e.id);
               page.setPage(7);

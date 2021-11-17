@@ -354,7 +354,7 @@ function ViewListing () {
             <Form>
               <Form.Group className="mb-3">
                 <Form.Label> Rating: {'     '} </Form.Label>
-                <Form.Select value={rating} onChange={(e) => { setRating(e.target.value) }}>
+                <Form.Select id="ratingFormSelect" value={rating} onChange={(e) => { setRating(e.target.value) }}>
                   <option value="0">Open this select menu</option>
                   <option value="1">1 (Poor)</option>
                   <option value="2">2 (not bad)</option>
@@ -365,6 +365,7 @@ function ViewListing () {
               </Form.Group>
               <FloatingLabel controlId="floatingTextarea2" label="Review" value={review} onChange = {(e) => { setReview(e.target.value) }}>
                 <Form.Control
+                  id="ratingFormControl"
                   as="textarea"
                   placeholder="Leave a review here"
                   style={{ height: '20vh' }}
@@ -377,7 +378,7 @@ function ViewListing () {
               <Button variant="secondary" onClick={closeModal}>
                 Close
               </Button>
-              <Button variant="primary" onClick={function () {
+              <Button id="submitReviewButton" variant="primary" onClick={function () {
                 submitReview()
                 closeModal()
               }}>
@@ -420,7 +421,7 @@ function ViewListing () {
 
             </OverlayTrigger>
             {canReview &&
-            <button type="button" className="btn btn-primary" onClick={function () {
+            <button id="reviewButton" type="button" className="btn btn-primary" onClick={function () {
               displayModal();
               console.log('Being clicked');
             }}>Leave Review</button>

@@ -1,17 +1,16 @@
-context('Happy Path', () => {
+context('My Path', () => {
 
   before(() => {
     cy.visit('localhost:3000');
   });
 
-  const x = '148';
+  const x = 5;
 
-  const title1 = 'NewHouse1' + x;
-  const title2 = 'NewHouse2' + x;
-  const title3 = 'NewHouse151';
   const email1 = 'example1' + x + '@email.com';
+  const email2 = 'example2' + x + '@email.com';
+  const title1 = 'NewHouse' + x;
 
-  it('Registers Successfully', () => {
+  it('Registers first user', () => {
     const name = 'John Smith';
     const email = email1;
     const password1 = 'password';
@@ -43,7 +42,7 @@ context('Happy Path', () => {
       .click();
   });
 
-  it('Creates a new listing successfully', () => {
+  it('Creates a new listing', () => {
     const title = title1;
     const street = '10 Example Street';
     const city = 'Sydney';
@@ -146,32 +145,8 @@ context('Happy Path', () => {
       .click();
   });
 
-  it('Updates the thumbnail and title of the listing successfully', () => {
+  it('publishes a listing', () => {
     const title = title1;
-    const newTitle = title2;
-    const newThumbnail = 'house2.jpeg'
-
-    cy.wait(500);
-
-    cy.get(`[id=editListing${title}]`)
-      .click();
-
-    cy.get('[id=editListingTitle]')
-      .focus()
-      .clear()
-      .type(newTitle);
-
-    cy.fixture(newThumbnail).then(fileContent => {
-      cy.get('[id=editPropertyThumbnail]')
-        .attachFile(newThumbnail);
-    });
-
-    cy.get('[id=confirmEditListing]')
-      .click();
-  });
-
-  it('publishes a listing successfully', () => {
-    const title = title2;
 
     cy.wait(500);
 
@@ -186,26 +161,52 @@ context('Happy Path', () => {
       .click();
   });
 
-  it('unpublishes a listing successfully', () => {
-    const title = title2;
-
-    cy.wait(500);
-
-    cy.get(`[id=unpublish${title}]`)
+  it('logs out first user', () => {
+    cy.get('[id=logoutButton]')
       .click();
   });
 
-  it('makes a booking successfully', () => {
-    const title = title3;
+  it('Registers second user', () => {
+    const name = 'John Smith';
+    const email = email2;
+    const password1 = 'password';
+    const password2 = 'password';
 
-    cy.get('[id=listingsButton]')
+    cy.get('[id=loginButton]')
       .click();
+
+    cy.get('[id=registerButton]')
+      .click();
+
+    cy.get('[id=registerName]')
+      .focus()
+      .type(name);
+
+    cy.get('[id=registerEmail]')
+      .focus()
+      .type(email);
+
+    cy.get('[id=registerPassword1]')
+      .focus()
+      .type(password1);
+
+    cy.get('[id=registerPassword2]')
+      .focus()
+      .type(password2);
+
+    cy.get('[id=submitRegister]')
+      .click();
+  });
+
+  it('requests a booking', () => {
+    const title = title1;
+
+    cy.wait(1000);
 
     cy.get(`[id=view${title}]`)
       .click();
 
     cy.get('.react-calendar')
-      .click()
       .click()
       .click();
 
@@ -213,12 +214,12 @@ context('Happy Path', () => {
       .click();
   });
 
-  it('logs out of the application successfully', () => {
+  it('logs out second user', () => {
     cy.get('[id=logoutButton]')
       .click();
   });
 
-  it('logs back into the application successfully', () => {
+  it('logs back in as the first user', () => {
     const email = email1;
     const password = 'password';
 
@@ -234,6 +235,74 @@ context('Happy Path', () => {
       .type(password);
 
     cy.get('[id=confirmLoginButton]')
+      .click();
+  });
+
+  it('accepts a booking', () => {
+    const title = title1;
+
+    cy.get('[id=hostedListingsButton]')
+      .click();
+
+    cy.wait(500);
+
+    cy.get(`[id=viewBookings${title}]`)
+      .click();
+
+    cy.get('[id^=accept]')
+      .click();
+  });
+
+  it('logs out first user', () => {
+    cy.get('[id=logoutButton]')
+      .click();
+  });
+
+  it('logs back in as the second user', () => {
+    const email = email2;
+    const password = 'password';
+
+    cy.get('[id=loginButton]')
+      .click();
+
+    cy.get('[id=loginEmail]')
+      .focus()
+      .type(email);
+
+    cy.get('[id=loginPassword]')
+      .focus()
+      .type(password);
+
+    cy.get('[id=confirmLoginButton]')
+      .click();
+  });
+
+  it('leaves a review', () => {
+    const title = title1;
+    const review = 'Best place ever!';
+
+    cy.wait(1000);
+
+    cy.get(`[id=view${title}]`)
+      .click();
+
+    cy.get('[id=reviewButton]')
+      .click();
+
+    cy.get('[id=ratingFormSelect]')
+      .select('5')
+      .should('have.value', '5');
+
+    cy.get('[id=ratingFormControl]')
+      .focus()
+      .type(review);
+
+    cy.get('[id=submitReviewButton]')
+      .click();
+  });
+
+  it('logs out second user', () => {
+    cy.get('[id=logoutButton]')
       .click();
   });
 
