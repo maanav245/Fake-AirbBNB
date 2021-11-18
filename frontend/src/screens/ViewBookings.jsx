@@ -12,10 +12,10 @@ import { StyledSection, StyledHeader, StyledMain, Banner } from '../components/S
 
 function ViewBookings () {
   const { token, modal, listingInfo, bookingsListingId } = React.useContext(StoreContext);
-
+  // Usestates used store the current bookings and 1 to render the page on command
   const [bookings, setBookings] = React.useState([]);
   const [render, setRender] = React.useState(0);
-
+  // Loads all the the booking requests the user has to decide on and all previous ones too
   React.useEffect(async () => {
     const fetchedBookings = await getBookings();
     setBookings([...fetchedBookings]);
@@ -44,7 +44,7 @@ function ViewBookings () {
     }
     return bookings2;
   }
-
+  // Function used to accept a request
   const acceptBooking = async (booking) => {
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/bookings/accept/${booking.id}`, {
       method: 'PUT',
@@ -95,7 +95,7 @@ function ViewBookings () {
   BookingRequestButtons.propTypes = {
     booking: PropTypes.object.isRequired,
   };
-
+  // Information about each request including owner, the date range, the price and its current status
   const BookingsForThisListing = () => {
     if (bookings !== []) {
       return (

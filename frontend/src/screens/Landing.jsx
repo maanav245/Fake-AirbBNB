@@ -11,9 +11,13 @@ import { StyledSection, StyledHeader, StyledMain, Banner, ListingsContainer, Lis
 
 function Landing () {
   const { token, modal, user, filters, listingInfo, viewListingId, page } = React.useContext(StoreContext);
-
+  /*
+  Use state used to store the listing displayed
+  */
   const [listings, setListings] = React.useState([]);
-
+  /*
+  Function used to print out current listings
+  */
   React.useEffect(async () => {
     const listings2 = [];
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings`, {
@@ -44,6 +48,9 @@ function Landing () {
     }
   }, [filters])
 
+  /*
+  Get particular information of a listing
+  */
   async function getSingleListing (id) {
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/${id}`, {
       method: 'GET',
@@ -60,7 +67,9 @@ function Landing () {
       Error(json.error, modal);
     }
   }
-
+  /*
+  Several sorting function used to sort the listing based on their particular qualities
+  */
   const sortListings = async (listings2) => {
     if (token.token !== '') {
       const bookedListings = [];
@@ -178,11 +187,10 @@ function Landing () {
     let total = 0;
     let count = 0;
     for (let i = 0; i < listing.info.reviews.length; i++) {
-      console.log(listing.info.reviews[i].rating);
       total += Number.parseInt(listing.info.reviews[i].rating);
       count++;
     }
-    console.log(total);
+
     return count === 0 ? 0 : total / count;
   }
 
@@ -248,7 +256,6 @@ function Landing () {
   }
 
   const DisplayListings = () => {
-    console.log(listings);
     if (listings.length !== 0) {
       return (
         listings.map((e, i) => (
@@ -263,7 +270,6 @@ function Landing () {
               <p>Number of reviews: {e.info.reviews.length}</p>
               <p>Average review: {e.info.averageReview}</p>
               <LinkButton to={'/view-listing/' + e.id} onClick={function () {
-                console.log(e);
                 listingInfo.setlistingInfo(e.info);
                 viewListingId.setViewListingId(e.id);
                 page.setPage(6);

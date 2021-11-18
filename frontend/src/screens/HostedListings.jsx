@@ -15,9 +15,10 @@ import { Modal, Button } from 'react-bootstrap';
 import { StyledSection, StyledHeader, StyledMain, Banner, ListingsContainer, ListingContainer, ListingImage, ListingInfo, ListingButtons } from '../components/StyledComponents'
 
 function HostedListings () {
+  /*
+  Use states used to control the display of any rendered modals, also used to pass info to other screens when clicked on
+  */
   const { page, token, modal, user, listingInfo, editListingId, bookingsListingId } = React.useContext(StoreContext);
-  // console.log(token);
-  // console.log(user.user);
   const closePublishModal = () => setShowPublishModal(false);
   const displayPublishModal = () => setShowPublishModal(true);
   const [done, setDone] = React.useState([]);
@@ -27,8 +28,11 @@ function HostedListings () {
   const [bookings, setBookings] = React.useState([]);
   const [showPublishModal, setShowPublishModal] = React.useState(false);
   page.setPage(3);
-  console.log(bookings);
 
+  /*
+  Loads all listings of that user when page first renders and also gets the bookings list used to display
+  the profit graph.
+  */
   React.useEffect(async () => {
     const listings = [];
     const listings2 = [];
@@ -43,13 +47,9 @@ function HostedListings () {
     });
     const json = await response.json();
     if (response.ok) {
-      // console.log('got fetch');
-      // console.log(json.listings);
-
       for (let i = 0; i < json.listings.length; i++) {
         if (json.listings[i].owner === user.user) {
           if (!listings.includes(json.listings[i].owner)) {
-            // console.log(json.listings[i].id);
             listings.push(json.listings[i].id);
           }
         }
@@ -90,18 +90,11 @@ function HostedListings () {
     const num = parseInt(TodayDate.getMonth()) + 1
     if (response.ok) {
       for (let i = 0; i < json.bookings.length; i++) {
-        console.log(json.bookings);
-        console.log(user.user)
-        console.log(done);
         for (let index = 0; index < list.length; index++) {
           const element = list[index].id;
-          console.log(element);
-          console.log(parseInt(json.bookings[i].listingId));
 
-          console.log('month of booking is: ' + num);
           if (parseInt(json.bookings[i].listingId) === element && json.bookings[i].status === 'accepted' &&
           parseInt(json.bookings[i].dateRange[0].split('-')[1]) === num) {
-            console.log('success')
             if (bookingMap.has(json.bookings[i].dateRange[0])) {
               bookingMap.set(json.bookings[i].dateRange[0], bookingMap.get(json.bookings[i].dateRange[0]) + json.bookings[i].totalPrice)
             } else {
@@ -119,6 +112,9 @@ function HostedListings () {
     return bookings2;
   }
 
+  /*
+  Used to get more information about a single listing
+  */
   async function getSingleListing (id) {
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/${id}`, {
       method: 'GET',
@@ -135,7 +131,9 @@ function HostedListings () {
       Error(json.error, modal);
     }
   }
-
+  /*
+  Used to sort the listings appearing based on title
+  */
   const sortListings = async (listings2) => {
     return listings2.sort((a, b) => (a.info.title > b.info.title) ? 1 : ((b.info.title > a.info.title) ? -1 : 0));
   }
@@ -144,14 +142,15 @@ function HostedListings () {
     let total = 0;
     let count = 0;
     for (let i = 0; i < listing.info.reviews.length; i++) {
-      console.log(listing.info.reviews[i].rating);
       total += Number.parseInt(listing.info.reviews[i].rating);
       count++;
     }
-    console.log(total);
+
     return count === 0 ? 0 : total / count;
   }
-
+  /*
+  Used to publish a listing by passing in dates
+  */
   async function publish (id) {
     const publishData = { availability: date }
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/publish/${id}`, {
@@ -187,10 +186,10 @@ function HostedListings () {
       Error(json.error, modal);
     }
   }
-
+  /*
+  Used to delete a particular listing
+  */
   async function deleteSingleListing (id) {
-    // console.log('clicked delete')
-    // console.log(id);
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/${id}`, {
       method: 'DELETE',
       headers: {
@@ -205,7 +204,9 @@ function HostedListings () {
     }
     setRender(Math.random);
   }
-
+  /*
+  Used to show a modal which helps users publish a particular listing over date ranges
+  */
   const PublishButton = ({ listing }) => {
     if (listing.info.published) {
       return (
@@ -225,13 +226,12 @@ function HostedListings () {
     listing: PropTypes.object.isRequired,
   };
 
+  /*
+  Used to generate the associated information for a particular listing
+  */
+
   const DisplayListings = () => {
     if (done !== []) {
-      // console.log('rendering');
-
-      for (let index = 0; index < done.length; index++) {
-        // console.log(done[index]);
-      }
       return (
         done.map((e, i) => (
           <ListingContainer key={i}>
@@ -240,7 +240,6 @@ function HostedListings () {
               </ListingImage>
               <ListingButtons>
                 <LinkButton to={'/edit-listing/' + e.id} onClick={function () {
-                  // console.log(e);
                   listingInfo.setlistingInfo(e.info);
                   editListingId.seteditListingId(e.id);
                   page.setPage(5);
@@ -298,7 +297,6 @@ function HostedListings () {
             <Modal.Body>
               <Calendar value = {date} onChange={function (e) {
                 setDate(e)
-                // console.log(date);
               } } selectRange={true}/>
             </Modal.Body>
             <Modal.Footer>

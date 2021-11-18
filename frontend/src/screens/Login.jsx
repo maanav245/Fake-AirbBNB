@@ -12,7 +12,7 @@ function Login () {
   const { page, token, modal, users, user } = React.useContext(StoreContext);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-
+  // Function used to login user
   async function loginUser () {
     const data = { email: email, password: password };
 

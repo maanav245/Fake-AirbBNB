@@ -7,7 +7,7 @@ import LoggedInButtons from '../components/LoggedInButtons';
 import { LinkButton } from '../components/LinkButton'
 import Logo from '../components/Logo'
 import { StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, Banner } from '../components/StyledComponents'
-
+// Function similar to login which takes in 5 user fields instead
 function Register () {
   const { page, token, modal, users, user } = React.useContext(StoreContext);
   const [name, setName] = React.useState('');
