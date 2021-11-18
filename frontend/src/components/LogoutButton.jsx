@@ -4,6 +4,10 @@ import Port from '../config.json';
 import Error from '../Error';
 import { LinkButton } from './LinkButton'
 
+/*
+A button when clicked send a logout request to the server and clears the global variables set for that user
+*/
+
 function LogoutButton () {
   const { page, token, modal } = React.useContext(StoreContext);
 

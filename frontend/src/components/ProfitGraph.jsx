@@ -1,7 +1,11 @@
 import { Line } from 'react-chartjs-2';
 import React from 'react';
 import PropTypes from 'prop-types';
-// Stub code borrowed from website
+// Stub code borrowed from https://www.educative.io/edpresso/how-to-use-chartjs-to-create-charts-in-react
+
+/*
+Simple function used to convert a specific date string into something more user friendly dd/mm/yy
+*/
 const formatDate = (date) => {
   const year = date.split('-')[0];
   const month = date.split('-')[1];
@@ -13,6 +17,10 @@ ProfitGraph.propTypes = {
   bookings: PropTypes.array,
 
 };
+
+/*
+A profit graph created up from a external library, which calculates the earning of an individual
+*/
 
 export default function ProfitGraph ({ bookings }) {
   const totalList = bookings
@@ -39,7 +47,7 @@ export default function ProfitGraph ({ bookings }) {
   }
 
   return (
-    <div style={{ height: '50vh', width: '50vw' }}>
+    <div style={{ height: '50vh', width: '80vw' }}>
         <Line
         data={state}
         options={{

@@ -38,6 +38,10 @@ ErrorContent.propTypes = {
   content: PropTypes.string.isRequired,
 };
 
+/*
+A modal for different situation, including errors, for filtering listings etc.
+*/
+
 function Modal () {
   const { modal, filters } = React.useContext(StoreContext);
 

@@ -1,4 +1,11 @@
 import styled from 'styled-components';
+import Calendar from 'react-calendar'
+import { Carousel } from 'react-responsive-carousel';
+
+const StyledCarousel = styled(Carousel)`
+  width: 70vw;
+
+`
 
 const StyledSection = styled.section`
   display: flex;
@@ -7,6 +14,7 @@ const StyledSection = styled.section`
 `
 
 const StyledHeader = styled.header`
+  width: 100vw;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -84,8 +92,8 @@ const ListingContainer = styled.div`
 const ListingImage = styled.img`
   height: 100%;
   width: 100%;
-  max-height: 300px;
-  max-width: 300px;
+  max-height: 70vh;
+  max-width: 50vw;
   padding: 20px;
 `
 
@@ -98,13 +106,15 @@ const ListingInfo = styled.div`
 `
 
 const ListingButtons = styled.div`
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
   display: flex;
 `
 
 const ViewingTitle = styled.h1`
   font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
   font-weight: 500;
-  margin-right: 75vw;
   margin-top: 2vh;
 
 `
@@ -116,12 +126,11 @@ const ViewingMain = styled.div`
 `
 const RatingButtonPrimary = styled.div`
   background-colour: white;
-  width: 25%;
   cursor: pointer;
 `
 
 const RatingPopover = styled.div`
-  width: 30vw;
+  width: 65vw;
   height: 60vh;
 `
 const RatingProgress = styled.div`
@@ -136,7 +145,7 @@ const ViewingBodyInfo = styled.div`
 
   display: flex;
   flex-direction: row;
-  margin-bottom: 10vh;
+  margin-bottom: 5vh;
 `
 const ViewingInfoText = styled.div`
 
@@ -157,15 +166,50 @@ const BookingContainer = styled.div`
 `
 
 const ViewingInfoTypeTitle = styled.div`
-  width: 40vw;
+  width: 70vw;
 
   font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
   font-weight: 300;
 
   padding-bottom: 1vh;
-  margin-bottom: 2vh;
+  margin-bottom: 8vh;
   border-bottom: 0.5px rgb(214, 214, 214) solid;
 
 `
+const ReviewBox = styled.div`
 
-export { ViewingInfoTypeTitle, BookingContainer, ViewingInfoText, ViewingBodyInfo, RatingProgress, RatingPopover, RatingButtonPrimary, ViewingMain, ViewingTitle, StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, StyledFileInput, Banner, ListingsContainer, ListingContainer, ListingImage, ListingInfo, ListingButtons }
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 5vh;
+
+`
+
+const ReviewsList = styled.div`
+  overflow-y: scroll;
+  height: 70vh;
+`
+
+const ReviewItself = styled.div`
+  width: 100%;
+  height: 20vh;
+`
+
+const ReviewUser = styled.div` 
+  font-size: large;
+  font-weight: bold;
+  height: 5vh;
+`
+
+const ReviewBody = styled.div`
+  font-size: medium;
+  height: 10vh;
+`
+const StyledCalendar = styled(Calendar)`
+  margin: auto;
+`
+const AllInfoMain = styled.div`
+  margin-left: 5vw;
+`
+
+export { AllInfoMain, StyledCarousel, StyledCalendar, ReviewsList, ReviewBody, ReviewUser, ReviewItself, ReviewBox, ViewingInfoTypeTitle, BookingContainer, ViewingInfoText, ViewingBodyInfo, RatingProgress, RatingPopover, RatingButtonPrimary, ViewingMain, ViewingTitle, StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, StyledFileInput, Banner, ListingsContainer, ListingContainer, ListingImage, ListingInfo, ListingButtons }

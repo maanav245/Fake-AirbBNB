@@ -12,6 +12,9 @@ const StyledLogo = styled.div`
   width: 100px;
   text-align: center;
 `
+/*
+Airbnb logo
+*/
 
 function Logo () {
   return (
