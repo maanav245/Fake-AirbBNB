@@ -284,7 +284,7 @@ function EditListing () {
               }}> Add Amenity</Button>
               </div>
             </StyledForm>
-            <LinkButton to={'/hosted-listings'} onClick={editListing} value="Confirm"/>
+            <LinkButton id={'confirmEditListing'}to={'/hosted-listings'} onClick={editListing} value="Confirm"/>
           </StyledMain>
           <footer>
           </footer>

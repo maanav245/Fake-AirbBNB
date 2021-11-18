@@ -83,8 +83,8 @@ function ViewBookings () {
     if (booking.status === 'pending') {
       return (
         <div>
-          <LinkButton to={'.'} onClick={() => acceptBooking(booking)} value="Accept"/>
-          <LinkButton to={'.'} onClick={() => declineBooking(booking.id)} value="Decline"/>
+          <LinkButton id={`accept${booking.id}`} to={'.'} onClick={() => acceptBooking(booking)} value="Accept"/>
+          <LinkButton id={`decline${booking.id}`} to={'.'} onClick={() => declineBooking(booking.id)} value="Decline"/>
         </div>
       );
     } else {
@@ -120,7 +120,7 @@ function ViewBookings () {
   }
 
   const formatDate = (date) => {
-    if (date === null) {
+    if (date === null || date === undefined) {
       return;
     }
     const year = date.split('-')[0];

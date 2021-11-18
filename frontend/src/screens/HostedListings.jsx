@@ -210,11 +210,11 @@ function HostedListings () {
   const PublishButton = ({ listing }) => {
     if (listing.info.published) {
       return (
-        <LinkButton to={'.'} onClick={() => unpublish(listing.id)} value="Unpublish"/>
+        <LinkButton id={`unpublish${listing.info.title}`} to={'.'} onClick={() => unpublish(listing.id)} value="Unpublish"/>
       )
     } else {
       return (
-        <LinkButton to={'.'} onClick={function () {
+        <LinkButton id={`publish${listing.info.title}`} to={'.'} onClick={function () {
           setPid(listing.id);
           displayPublishModal();
         }} value="Publish"/>
@@ -239,7 +239,8 @@ function HostedListings () {
               <ListingImage src={e.info.thumbnail}>
               </ListingImage>
               <ListingButtons>
-                <LinkButton to={'/edit-listing/' + e.id} onClick={function () {
+                <LinkButton id={`editListing${e.info.title}`} to={'/edit-listing/' + e.id} onClick={function () {
+                  // console.log(e);
                   listingInfo.setlistingInfo(e.info);
                   editListingId.seteditListingId(e.id);
                   page.setPage(5);
@@ -258,7 +259,7 @@ function HostedListings () {
               <p>Average rating: {e.info.averageReview}</p>
               <p>Number of reviews: {e.info.reviews.length}</p>
             </ListingInfo>
-            <LinkButton to={'/view-bookings/' + e.id} onClick={function () {
+            <LinkButton id={`viewBookings${e.info.title}`} to={'/view-bookings/' + e.id} onClick={function () {
               listingInfo.setlistingInfo(e.info);
               bookingsListingId.setBookingsListingId(e.id);
               page.setPage(7);
@@ -303,7 +304,7 @@ function HostedListings () {
               <Button variant="secondary" onClick={closePublishModal}>
                 Close
               </Button>
-              <Button type="button" className="btn btn-primary" onClick={function () {
+              <Button id="confirmPublishButton" type="button" className="btn btn-primary" onClick={function () {
                 publish(pid);
                 setPid('');
                 closePublishModal();
@@ -313,7 +314,7 @@ function HostedListings () {
           </Modal>
 
             <h1>Hosted Listings</h1>
-            <LinkButton to={'/new-listing'} onClick={() => page.setPage(4)} value="Create New Listing"/>
+            <LinkButton id={'newListingButton'} to={'/new-listing'} onClick={() => page.setPage(4)} value="Create New Listing"/>
             <ListingsContainer>
               <DisplayListings/>
             </ListingsContainer>
@@ -338,7 +339,7 @@ function HostedListings () {
         </StyledHeader>
         <StyledMain>
           <h1>Hosted Listings</h1>
-          <LinkButton to={'/new-listing'} onClick={() => page.setPage(4)} value="Create New Listing"/>
+          <LinkButton id={'newListingButton'} to={'/new-listing'} onClick={() => page.setPage(4)} value="Create New Listing"/>
           <ListingsContainer>
             <DisplayListings/>
           </ListingsContainer>
@@ -363,7 +364,6 @@ function HostedListings () {
         </StyledHeader>
         <StyledMain>
           <h1>You must log in to view this page</h1>
-
         </StyledMain>
         <footer>
         </footer>

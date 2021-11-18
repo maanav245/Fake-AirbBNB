@@ -69,8 +69,8 @@ function Login () {
             <StyledInput id="loginPassword" type="password" onChange={({ target }) => setPassword(target.value)} placeholder="password"/>
           </div>
         </StyledForm>
-        <LinkButton to={'/'} onClick={loginUser} value="Login"/>
-        <LinkButton to={'/register'} onClick={() => page.setPage(2)} value="Register"/>
+        <LinkButton id={'confirmLoginButton'} to={'/'} onClick={loginUser} value="Login"/>
+        <LinkButton id={'registerButton'} to={'/register'} onClick={() => page.setPage(2)} value="Register"/>
         <LinkButton to={'/'} onClick={() => page.setPage(0)} value="Back"/>
       </StyledMain>
       <footer>

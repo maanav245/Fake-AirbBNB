@@ -202,7 +202,7 @@ function NewListing () {
               }}> Add Amenity</Button>
             </div>
           </StyledForm>
-          <LinkButton to={'/hosted-listings'} onClick={createListing} value="Confirm"/>
+          <LinkButton id={'confirmNewListing'} to={'/hosted-listings'} onClick={createListing} value="Confirm"/>
         </StyledMain>
         <footer>
         </footer>

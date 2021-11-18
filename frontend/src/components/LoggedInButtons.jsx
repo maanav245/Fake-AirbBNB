@@ -13,8 +13,8 @@ function LoggedInButtons () {
   if (token.token !== '') {
     return (
       <Banner>
-        <LinkButton to={'/hosted-listings'} onClick={() => page.setPage(3)} value="Hosted Listings"/>
-        <LinkButton to={'/'} onClick={() => page.setPage(0)} value="Listings"/>
+        <LinkButton id={'hostedListingsButton'} to={'/hosted-listings'} onClick={() => page.setPage(3)} value="Hosted Listings"/>
+        <LinkButton id={'listingsButton'} to={'/'} onClick={() => page.setPage(0)} value="Listings"/>
       </Banner>
     );
   } else {
