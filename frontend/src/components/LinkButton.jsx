@@ -4,6 +4,10 @@ import { BrowserRouter as Router, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const StyledLink = styled(Link)`
+  @media (max-width: 768px) {
+    width: 19vw;
+    font-size: 10pt;
+  }
   background-color: blue;
   color: white;
   padding: 10px;
@@ -22,7 +26,9 @@ const StyledLink = styled(Link)`
     color: blue;
   }
 `
-
+/*
+Component used for 'link' buttons which lead to different screens
+*/
 function LinkButton ({ to, onClick, value }) {
   return (
     <Router>
