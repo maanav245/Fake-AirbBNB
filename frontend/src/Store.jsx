@@ -20,15 +20,25 @@ function Store ({ children }) {
   const [bookingsListingId, setBookingsListingId] = React.useState('');
 
   const store = {
+    // The page number
     page: { page, setPage },
+    // The token of the user
     token: { token, setToken },
+    // The specific information in the modal
     modal: { modal, setModal },
+    // Info about multiple users
     users: { users, setUsers },
+    // Email of the user
     user: { user, setUser },
+    // Specific listing info about a particular listing
     listingInfo: { listingInfo, setlistingInfo },
+    // The id of a listing about to be edited
     editListingId: { editListingId, seteditListingId },
+    // The filters required
     filters: { filters, setFilters },
+    // The id of a listing about to be viewed
     viewListingId: { viewListingId, setViewListingId },
+    // The id of a listing about to be booked
     bookingsListingId: { bookingsListingId, setBookingsListingId },
   }
 

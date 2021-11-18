@@ -25,5 +25,15 @@
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "semi": 0,
         "comma-dangle": 0
+    },
+    "settings": {
+        "react": {
+          "version": "detect"
+        },
+        "import/resolver": {
+          "node": {
+            "extensions": [".js", ".jsx", ".ts", ".tsx"]
+          }
+        }
     }
 }
