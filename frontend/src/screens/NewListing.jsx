@@ -8,7 +8,11 @@ import Modal from '../components/Modal';
 import { LinkButton } from '../components/LinkButton'
 import Logo from '../components/Logo'
 import { StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, StyledFileInput, Banner } from '../components/StyledComponents'
+import { CloseButton, ListGroup, Button } from 'react-bootstrap';
 
+/*
+Function similar to editing a listing, uses same format, however no need to display previous info as there isnt any
+*/
 function NewListing () {
   const { page, token, modal } = React.useContext(StoreContext);
   const [title, setTitle] = React.useState('');
@@ -18,6 +22,9 @@ function NewListing () {
   const [metadata, setMetadata] = React.useState({});
   const [numBedrooms, setNumBedrooms] = React.useState(0);
   const [bedrooms, setBedrooms] = React.useState([]);
+  const [amenities, setAmenities] = React.useState([]);
+  const [singleAmenity, setSingleAmenity] = React.useState('');
+  const [render, setRender] = React.useState(Math.random());
 
   React.useEffect(() => {
     if (numBedrooms >= 0) {
@@ -39,7 +46,7 @@ function NewListing () {
       totalbedrooms = parseInt(totalbedrooms) + parseInt(metadata.bedrooms[index].number);
     }
     const newMetadata = { ...metadata, totalbedrooms: totalbedrooms }
-    const actMetadata = { ...newMetadata, images: [] };
+    const actMetadata = { ...newMetadata, images: [], amenities: amenities };
     console.log(token.token);
     const data = { title: title, address: address, price: price, thumbnail: thumbnail, metadata: actMetadata };
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/new`, {
@@ -125,6 +132,10 @@ function NewListing () {
               <StyledInput id="listingTitle" type="text" onChange={({ target }) => setTitle(target.value)} placeholder="Beach House"/>
             </div>
             <div className="listingInput">
+              <label htmlFor="propertyType">Property Description:</label>
+              <StyledInput id="propertyType" type="textarea" onChange={({ target }) => setMetadata({ ...metadata, authorDescription: target.value })} placeholder="..."/>
+            </div>
+            <div className="listingInput">
               <label htmlFor="addressStreet">Street Address:</label>
               <StyledInput id="addressStreet" type="text" onChange={({ target }) => setAddress({ ...address, street: target.value })} placeholder="10 Example Street"/>
             </div>
@@ -167,7 +178,28 @@ function NewListing () {
             {BedroomFields()}
             <div className="listingInput">
               <label htmlFor="amenities">Property Amenities:</label>
-              <StyledInput id="amenities" type="textarea" onChange={({ target }) => setMetadata({ ...metadata, amenities: target.value })} placeholder="Kitchen/Pool/WiFi/etc."/>
+              <ListGroup>
+              {console.log(amenities)}
+              {amenities.map((e, i) => (
+                <ListGroup.Item key={i} > <CloseButton style={{ marginLeft: '20px' }} variant="secondary" onClick={function () {
+                  const index = amenities.indexOf(e);
+                  const copy = amenities;
+
+                  copy.splice(index, 1);
+                  console.log(copy);
+                  setAmenities(copy);
+                  console.log(render);
+                  setRender(Math.random());
+                }}/> {e}</ListGroup.Item>
+
+              ))}
+              </ListGroup>
+              <StyledInput id="amenities" type="textarea" onChange={({ target }) => setSingleAmenity(target.value)} placeholder="Kitchen/Pool/WiFi/etc."/>
+              <Button onClick={function () {
+                console.log(singleAmenity);
+
+                setAmenities([...amenities, singleAmenity])
+              }}> Add Amenity</Button>
             </div>
           </StyledForm>
           <LinkButton to={'/hosted-listings'} onClick={createListing} value="Confirm"/>

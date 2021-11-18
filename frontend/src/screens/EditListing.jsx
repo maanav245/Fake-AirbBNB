@@ -8,10 +8,14 @@ import Error from '../Error';
 import { LinkButton } from '../components/LinkButton'
 import Logo from '../components/Logo'
 import { StyledSection, StyledHeader, StyledMain, StyledForm, StyledInput, StyledFileInput, Banner } from '../components/StyledComponents'
+import { CloseButton, ListGroup, Button } from 'react-bootstrap';
 
 function EditListing () {
+  /*
+  UseStates which are used to re render the page when the user edits their own listing information.
+  */
   const { listingInfo, token, modal, page, editListingId } = React.useContext(StoreContext);
-  console.log(editListingId);
+
   const [title, setTitle] = React.useState('');
   const [street, setStreet] = React.useState('');
   const [city, setCity] = React.useState('');
@@ -22,22 +26,28 @@ function EditListing () {
   const [thumbnail, setThumbnail] = React.useState('');
   const [type, setType] = React.useState('');
   const [bathrooms, setBathrooms] = React.useState('');
-  const [amenities, setAmenities] = React.useState('');
+  const [amenities, setAmenities] = React.useState([]);
+  const [singleAmenity, setSingleAmenity] = React.useState('');
+  const [render, setRender] = React.useState(Math.random());
   const [numBedrooms, setNumBedrooms] = React.useState(0);
   const [bedrooms, setBedrooms] = React.useState([]);
   const [newPhoto, setNewPhoto] = React.useState('')
-  console.log(bedrooms);
+  const [description, setDescription] = React.useState('');
+  console.log(render);
 
   React.useEffect(() => {
+    /*
+    Used to initialise the bedroom data inside the metadate. Requires a few checks due to the schema implemented
+    */
     if (token.token !== '') {
       const arr = listingInfo.listingInfo.metadata.bedrooms
       const len = arr.length;
       if (numBedrooms !== len) {
         if (numBedrooms < bedrooms.length) {
           const arr1 = bedrooms;
-          console.log(arr1);
+
           const end = arr1.pop();
-          console.log(arr1);
+
           setBedrooms(arr1);
           console.log(end);
         }
@@ -46,6 +56,9 @@ function EditListing () {
   }, [numBedrooms]);
 
   React.useEffect(() => {
+  /*
+  UseStates which are set to the current listing info, so the user has a choice to easily add or delete info very easily
+  */
     if (token.token !== '') {
       setTitle(listingInfo.listingInfo.title);
       setStreet(listingInfo.listingInfo.address.street);
@@ -59,24 +72,28 @@ function EditListing () {
       setAmenities(listingInfo.listingInfo.metadata.amenities);
       setBathrooms(listingInfo.listingInfo.metadata.bathrooms);
       setBedrooms(listingInfo.listingInfo.metadata.bedrooms);
+      setDescription(listingInfo.listingInfo.metadata.authorDescription);
       const arr = listingInfo.listingInfo.metadata.bedrooms
       const len = arr.length;
       setNumBedrooms(len);
-      console.log(listingInfo.listingInfo.metadata.bedrooms);
     }
   }, []);
 
+  /*
+  A function which send the edited data to the server and shows an appropriate error when needed, also returns user back to main menu
+  */
+
   async function editListing () {
     let totalbedrooms = 0;
-    console.log(bedrooms);
+
     const imgList = [];
     if (listingInfo.listingInfo.metadata.images === undefined) {
       imgList.push(newPhoto);
     } else {
       listingInfo.listingInfo.metadata.images.push(newPhoto);
     }
-    console.log(newPhoto);
-    const metadata = { type: type, amenities: amenities, bathrooms: bathrooms, bedrooms: bedrooms, images: imgList }
+
+    const metadata = { type: type, amenities: amenities, bathrooms: bathrooms, bedrooms: bedrooms, images: imgList, authorDescription: description }
     for (let index = 0; index < metadata.bedrooms.length; index++) {
       if (metadata.bedrooms[index].number !== '') {
         totalbedrooms = parseInt(totalbedrooms) + parseInt(metadata.bedrooms[index].number);
@@ -102,6 +119,10 @@ function EditListing () {
     }
     page.setPage(3);
   }
+
+  /*
+  Used to dynamically render the bedroom info and cause the page to change when bedroom info is changed.
+  */
 
   const BedroomFields = () => {
     if (numBedrooms > 0) {
@@ -141,6 +162,9 @@ function EditListing () {
     }
   }
 
+  /*
+  A simple function borrowwed from CSE (Assignment 2) which converts images to a image url
+  */
   function fileToDataUrl (file) {
     const validFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
     const valid = validFileTypes.find((type) => type === file.type);
@@ -158,7 +182,6 @@ function EditListing () {
   }
   async function uploadImage (e) {
     const dataURL = await fileToDataUrl(e.target.files[0]);
-    console.log(dataURL);
     setThumbnail(dataURL);
   }
 
@@ -183,11 +206,14 @@ function EditListing () {
           </StyledHeader>
           <StyledMain>
             <h1>Edit Listing</h1>
-
             <StyledForm>
               <div className="listingInput">
                 <label htmlFor="editListingTitle">Listing Title:</label>
                 <StyledInput id="editListingTitle" type="text" value={title} onChange={({ target }) => setTitle(target.value)} placeholder="Beach House"/>
+              </div>
+              <div className="listingInput">
+              <label htmlFor="propertyType">Property Description:</label>
+              <StyledInput id="propertyType" type="textarea" onChange={({ target }) => setDescription(target.value)} placeholder="..."/>
               </div>
               <div className="listingInput">
                 <label htmlFor="editAddressStreet">Street Address:</label>
@@ -236,7 +262,26 @@ function EditListing () {
               {BedroomFields()}
               <div className="listingInput">
                 <label htmlFor="editAmenities">Property Amenities:</label>
-                <StyledInput id="editAmenities" type="textarea" value={amenities} onChange={({ target }) => setAmenities(target.value)} placeholder="Kitchen/Pool/WiFi/etc."/>
+                <ListGroup>
+
+              {amenities.map((e, i) => (
+                <ListGroup.Item key={i} > <CloseButton style={{ marginLeft: '20px' }} variant="secondary" onClick={function () {
+                  const index = amenities.indexOf(e);
+                  const copy = amenities;
+
+                  copy.splice(index, 1);
+
+                  setAmenities(copy);
+
+                  setRender(Math.random());
+                }}/> {e}</ListGroup.Item>
+
+              ))}
+              </ListGroup>
+              <StyledInput id="amenities" type="textarea" onChange={({ target }) => setSingleAmenity(target.value)} placeholder="Kitchen/Pool/WiFi/etc."/>
+              <Button onClick={function () {
+                setAmenities([...amenities, singleAmenity])
+              }}> Add Amenity</Button>
               </div>
             </StyledForm>
             <LinkButton to={'/hosted-listings'} onClick={editListing} value="Confirm"/>
