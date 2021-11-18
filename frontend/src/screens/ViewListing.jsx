@@ -1,22 +1,22 @@
 import React from 'react';
 import LoggedInButtons from '../components/LoggedInButtons';
 import LoginButton from '../components/LoginButton';
-import '../App.css';
+
 import { StoreContext } from '../Store';
 import Modal1 from '../components/Modal';
 import 'react-calendar/dist/Calendar.css';
 import Port from '../config.json';
-import Calendar from 'react-calendar'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
-import { Carousel } from 'react-responsive-carousel';
 import Error from '../Error';
 import Logo from '../components/Logo'
 import { ProgressBar, OverlayTrigger, Popover, Badge, Form, Modal, Button, FloatingLabel } from 'react-bootstrap';
 import Ratings from 'react-ratings-declarative';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { ViewingInfoTypeTitle, BookingContainer, ViewingBodyInfo, ViewingInfoText, RatingProgress, RatingPopover, RatingButtonPrimary, ViewingTitle, StyledSection, StyledHeader, StyledMain, Banner } from '../components/StyledComponents'
+
+import { AllInfoMain, StyledCarousel, StyledCalendar, ReviewBody, ReviewUser, ReviewItself, ReviewBox, ViewingInfoTypeTitle, ViewingBodyInfo, ViewingInfoText, RatingProgress, RatingPopover, RatingButtonPrimary, ViewingTitle, StyledSection, StyledHeader, StyledMain, Banner } from '../components/StyledComponents'
 
 function ViewListing () {
+  // Usestates used to control the display off certain modals when clicked, also used to store reviews to calculate stats on them, also used to store booking info
   const { token, listingInfo, viewListingId, modal, user } = React.useContext(StoreContext);
   const [dateRange, setDateRange] = React.useState(null);
   console.log(listingInfo.listingInfo);
@@ -24,10 +24,12 @@ function ViewListing () {
   const [reviewList, setreviewList] = React.useState({ one: [], two: [], three: [], four: [], five: [] })
   const [showModal, setShowModal] = React.useState(false);
   const [showReviewModal, setShowReviewModal] = React.useState(false);
+  const [showBookingModal, setShowBookingModal] = React.useState(false);
   const [rating, setRating] = React.useState('0');
   const [review, setReview] = React.useState('');
   const [totalReviews, setTotalReviews] = React.useState(0);
   const [bStatus, setBStatus] = React.useState('Not booked');
+  const [bLongStatus, setBLongStatus] = React.useState('Not booked');
   const [bID, setBID] = React.useState('');
   console.log(rating);
   console.log(review);
@@ -35,11 +37,14 @@ function ViewListing () {
   const displayModal = () => setShowModal(true);
   const closeReviewModal = () => setShowReviewModal(false);
   const displayReviewModal = () => setShowReviewModal(true);
+  const closeBookingModal = () => setShowBookingModal(false);
+  const displayBookingModal = () => setShowBookingModal(true);
   const [specificReviews, setSpecificReviews] = React.useState([]);
   const [canReview, setCanReview] = React.useState(false);
   const [totalRating, setTotalRating] = React.useState(0);
   const [render, setRender] = React.useState(Math.random());
 
+  // A function used to generate the the associated images of particular listing in a user friendly carousel
   function GenerateCarousel () {
     if (listingInfo.listingInfo.metadata.images === undefined || listingInfo.listingInfo.metadata.images.length === 0) {
       console.log('error');
@@ -57,6 +62,8 @@ function ViewListing () {
     }
   }
 
+  // A function used to generate the particular stats of a certain review rating, including the number of reviews
+  // and total percentage of certain reviews
   const generateRatingPopover = (
 
       <Popover style={{ maxWidth: '100vw', zIndex: '0' }}>
@@ -109,6 +116,7 @@ function ViewListing () {
 
   );
 
+  // Function used to get the reviews of a particular listing and store them in a particular data structures so they can be easily analaysed
   async function getReviewList () {
     const response = await fetch(`http://localhost:${Port.BACKEND_PORT}/listings/${viewListingId.viewListingId}`, {
       method: 'GET',
@@ -148,12 +156,13 @@ function ViewListing () {
     }
   }
 
+  // A function used to style the reviews when they are rendered, with their own start ratings
   function ProduceReviewsList () {
     return (
       Object.keys(reviewList).map((key, s) => (
         reviewList[key].map((e, i) => (
-            <div className="review_itself" key={i}>
-              <div className="review_user">{e.name}</div>
+            <ReviewItself key={i}>
+              <ReviewUser>{e.name}</ReviewUser>
               <RatingButtonPrimary>
                 <Ratings
                   rating={parseInt(e.rating)}
@@ -167,18 +176,18 @@ function ViewListing () {
                   <Ratings.Widget widgetRatedColor="Gold" />
                 </Ratings>
               </RatingButtonPrimary>
-              <div className="review_body">{e.review}</div>
-            </div>
+              <ReviewBody>{e.review}</ReviewBody>
+            </ReviewItself>
         ))
       ))
     );
   }
-
+  // A function used to generate the reviews under a particular rating
   function ProduceSpecificReviews () {
     return (
       specificReviews.map((e, i) => (
-          <div className="review_itself" key={i}>
-            <div className="review_user">{e.name}</div>
+          <ReviewItself key={i}>
+            <ReviewUser>{e.name}</ReviewUser>
             <RatingButtonPrimary>
                 <Ratings
                   rating={parseInt(e.rating)}
@@ -192,16 +201,24 @@ function ViewListing () {
                   <Ratings.Widget widgetRatedColor="Gold" />
                 </Ratings>
               </RatingButtonPrimary>
-            <div className="review_body">{e.review}</div>
-          </div>
+            <ReviewBody>{e.review}</ReviewBody>
+          </ReviewItself>
       ))
     );
   }
-
+  // A function used to get the review list when page is rendered
   React.useEffect(async () => {
     getReviewList()
   }, [showModal])
 
+  const formatDate = (date) => {
+    const year = date.split('-')[0];
+    const month = date.split('-')[1];
+    const day = date.split('-')[2].split('T')[0];
+    const formattedDate = day + '/' + month + '/' + year;
+    return formattedDate;
+  }
+  // A function used to check the booking status of a particular user and to also check if they can leave a review or not
   React.useEffect(async () => {
     if (token.token !== '') {
       let answer = false;
@@ -216,6 +233,8 @@ function ViewListing () {
       const json = await response.json();
       if (response.ok) {
         let actStatus = 'not booked';
+        let date1 = 'no date';
+        let date2;
         for (let index = 0; index < json.bookings.length; index++) {
           const element = json.bookings[index];
           console.log(element.owner)
@@ -223,9 +242,15 @@ function ViewListing () {
           console.log(element.listingId)
           console.log(viewListingId.viewListingId)
           if (element.owner === user.user && parseInt(element.listingId) === viewListingId.viewListingId) {
-            if (actStatus === 'not booked' || actStatus === 'booked') {
+            if (actStatus === 'not booked' || element.status === 'pending') {
               console.log('Inside if : ' + element.status);
               actStatus = element.status;
+              date1 = element.dateRange[0];
+              date2 = element.dateRange[1];
+            } else if (element.status === 'accepted' && actStatus !== 'pending') {
+              actStatus = element.status;
+              date1 = element.dateRange[0];
+              date2 = element.dateRange[1];
             }
             setBID(element.id);
 
@@ -237,6 +262,9 @@ function ViewListing () {
         }
         console.log('final status is: ' + actStatus);
         setBStatus(actStatus);
+        if (date1 !== 'no date') {
+          setBLongStatus('Booking between ' + formatDate(date1) + ' and ' + formatDate(date2) + ' ' + actStatus);
+        }
       } else {
         Error(json.error, modal);
         answer = false;
@@ -245,7 +273,7 @@ function ViewListing () {
     }
   }, [render])
   console.log(canReview)
-
+  // Function used to submit a review
   async function submitReview () {
     const review1 = { name: user.user, rating: rating, review: review };
     const data = { review: review1 }
@@ -265,7 +293,7 @@ function ViewListing () {
       Error(json.error, modal);
     }
   }
-
+  // A function used to submit a booking
   async function submitBooking () {
     if (dateRange === null) {
       return
@@ -309,44 +337,7 @@ function ViewListing () {
         </StyledHeader>
         <StyledMain>
 
-          <ViewingTitle>{listingInfo.listingInfo.title}</ViewingTitle>
-
-          <div className="image_location">
-            <Carousel>
-              <div>
-                  <img src={listingInfo.listingInfo.thumbnail} />
-
-              </div>
-              <GenerateCarousel/>
-            </Carousel>
-          </div>
-          <ViewingBodyInfo>
-            <ViewingInfoText>
-
-              <ViewingInfoTypeTitle>
-                <h1>{formD.metadata.type}</h1>
-                Bedrooms: {formD.metadata.bedrooms.length} {' '}
-                Beds: {formD.metadata.totalbedrooms} {' '}
-                Bathrooms: {formD.metadata.bathrooms}
-              </ViewingInfoTypeTitle>
-              <p>{formD.address.street}, {formD.address.city}, {formD.address.state}, {formD.address.postcode}, {formD.address.country}</p>
-
-            </ViewingInfoText>
-            {token.token !== '' && <BookingContainer>
-              <h1>${formD.price} per night</h1>
-              <Calendar value={dateRange} className="react-calendar" selectRange={true} onChange={function (e) {
-                setDateRange(e)
-                console.log(dateRange);
-              } }/>
-              <div className="book_btn_container">
-                  <button type="button" className="btn btn-primary " onClick={function () {
-                    submitBooking();
-                  }}>Book </button>
-                  <Badge bg="secondary">{bStatus}</Badge>
-              </div>
-            </BookingContainer>}
-          </ViewingBodyInfo>
-          <Modal show={showModal} onHide={closeModal}>
+        <Modal show={showModal} onHide={closeModal}>
             <Modal.Header closeButton>
               <Modal.Title>Leave a Review</Modal.Title>
             </Modal.Header>
@@ -400,34 +391,102 @@ function ViewListing () {
             </Modal.Footer>
           </Modal>
 
-          <div className="review_box">
-            <h1 className="reviews_title">Reviews</h1>
-            {console.log(totalRating)}
-            <OverlayTrigger trigger="click" placement="right" overlay={generateRatingPopover}>
-              <RatingButtonPrimary>
-                <Ratings
-                  rating={totalRating}
-                  widgetDimensions="3vw"
-                  widgetSpacings="0.2vw"
-                >
-                  <Ratings.Widget widgetRatedColor="Gold" />
-                  <Ratings.Widget widgetRatedColor="Gold" />
-                  <Ratings.Widget widgetRatedColor="Gold" />
-                  <Ratings.Widget widgetRatedColor="Gold" />
-                  <Ratings.Widget widgetRatedColor="Gold" />
-                </Ratings>
-              </RatingButtonPrimary>
+          <Modal show={showBookingModal} onHide={closeBookingModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>${formD.price} per night</Modal.Title>
+            </Modal.Header>
+            <Modal.Body >
 
-            </OverlayTrigger>
-            {canReview &&
-            <button type="button" className="btn btn-primary" onClick={function () {
-              displayModal();
-              console.log('Being clicked');
-            }}>Leave Review</button>
-            }
-            <ProduceReviewsList/>
-          </div>
+              <StyledCalendar value={dateRange} selectRange={true} onChange={function (e) {
+                setDateRange(e)
+                console.log(dateRange);
+              } }/>
 
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={closeBookingModal}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={function () {
+                submitBooking();
+              }}>Book </Button>
+              <Badge bg="secondary">{bStatus}</Badge>
+            </Modal.Footer>
+          </Modal>
+            <AllInfoMain>
+            <ViewingTitle>{listingInfo.listingInfo.title}</ViewingTitle>
+
+            <div>
+              <StyledCarousel>
+                <div>
+                    <img src={listingInfo.listingInfo.thumbnail} />
+
+                </div>
+              <GenerateCarousel/>
+
+              </StyledCarousel>
+            </div>
+            <ViewingBodyInfo>
+              <ViewingInfoText>
+
+                <ViewingInfoTypeTitle>
+                  <h1>{formD.metadata.type}</h1>
+                  Bedrooms: {formD.metadata.bedrooms.length} {' '} {' '}
+                  Beds: {formD.metadata.totalbedrooms} {' '} {' '}
+                  Bathrooms: {formD.metadata.bathrooms}
+                </ViewingInfoTypeTitle>
+                <ViewingInfoTypeTitle>{formD.metadata.authorDescription}</ViewingInfoTypeTitle>
+                <ViewingInfoTypeTitle>
+                  <h4>Address</h4>
+                  <p>{formD.address.street}, {formD.address.city}, {formD.address.state}, {formD.address.postcode}, {formD.address.country}</p>
+                </ViewingInfoTypeTitle>
+                <ViewingInfoTypeTitle>
+                  <h4>Amenities</h4>
+                  <ul>
+                    {formD.metadata.amenities.map((e, i) => (
+                      <li key={i}>{e}</li>
+                    ))}
+                  </ul>
+                </ViewingInfoTypeTitle>
+              </ViewingInfoText>
+              ·
+            </ViewingBodyInfo>
+            {token.token !== '' && <div style={{ marginBottom: '8vh' }}> <Button variant="primary" onClick={displayBookingModal}>
+                  Book <i className="bi bi-box-arrow-in-up-right"/>
+                </Button> {'  '} <Badge pill bg="secondary">{bLongStatus}</Badge> </div>}
+
+            <ReviewBox>
+              {console.log(totalRating)}
+              <ViewingInfoTypeTitle style={{ display: 'flex', flexDirection: 'row' }}>
+              <div style={{ marginTop: '5px', fontSize: '20pt' }}> {totalReviews} Reviews ·  </div>
+                <OverlayTrigger trigger="click" placement="bottom" overlay={generateRatingPopover}>
+                  <RatingButtonPrimary >
+                    <Ratings
+                      rating={totalRating}
+                      widgetDimensions="30px"
+                      widgetSpacings="0.2vw"
+                    >
+                      <Ratings.Widget widgetRatedColor="Gold" />
+                      <Ratings.Widget widgetRatedColor="Gold" />
+                      <Ratings.Widget widgetRatedColor="Gold" />
+                      <Ratings.Widget widgetRatedColor="Gold" />
+                      <Ratings.Widget widgetRatedColor="Gold" />
+                    </Ratings>
+                    <i className="bi bi-caret-down"></i>
+                  </RatingButtonPrimary>
+
+                </OverlayTrigger>
+
+              </ViewingInfoTypeTitle>
+              {canReview &&
+              <Button style={{ marginBottom: '5vh' }} onClick={function () {
+                displayModal();
+                console.log('Being clicked');
+              }}>Write a Review <i className="bi bi-box-arrow-in-up-right"/> </Button>
+              }
+              <ProduceReviewsList/>
+            </ReviewBox>
+          </AllInfoMain>
         </StyledMain>
         <footer>
         </footer>
